@@ -11,7 +11,7 @@ function NavButton({ isActive, children }: NavButtonProps) {
     return (<Button variant={variant} color={color}>{children}</Button>)
 }
 
-export function App() {
+function App() {
     return (
         <div id="app">
             <div id="header" style={{ padding: '8px' }}>
