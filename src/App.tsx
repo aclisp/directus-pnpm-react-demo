@@ -1,4 +1,5 @@
-import { Button } from "antd";
+import { LoginOutlined } from "@ant-design/icons";
+import { Button, theme } from "antd";
 import type { NavLinkRenderProps } from "react-router";
 import { Link, NavLink, Outlet } from "react-router";
 
@@ -10,6 +11,15 @@ function NavButton({ isActive, children }: NavButtonProps) {
     const color = isActive ? "primary" : "default"
     const variant = isActive ? "outlined" : "link"
     return (<Button variant={variant} color={color}>{children}</Button>)
+}
+
+function LoginButton() {
+    const { token } = theme.useToken()
+    return (
+        <div style={{ width: 50, height: '100%', display: 'flex', justifyContent: 'center' }}>
+            <LoginOutlined style={{ fontSize: 20, color: token.colorText }} />
+        </div>
+    )
 }
 
 function App() {
@@ -28,7 +38,9 @@ function App() {
                     )}</NavLink>
                 </div>
                 <div>
-                    <Link to="/login"><Button type="default">Login</Button></Link>
+                    <Link to="/login">
+                        <LoginButton />
+                    </Link>
                 </div>
             </div>
             <div id="main" style={{ padding: '24px' }} >
