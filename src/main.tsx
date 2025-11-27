@@ -1,5 +1,4 @@
 import { App, ConfigProvider } from 'antd';
-import "antd/dist/reset.css";
 import zhCN from 'antd/locale/zh_CN';
 import 'dayjs/locale/zh-cn';
 import { StrictMode } from 'react';
@@ -9,11 +8,18 @@ import { About } from "./About";
 import AppLayout from './App.tsx';
 import { Demo1 } from "./Demo1";
 import { Home } from "./Home";
+import { Login } from './Login.tsx';
+
+import "antd/dist/reset.css";
 import './index.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ConfigProvider locale={zhCN}>
+    <ConfigProvider locale={zhCN} theme={{
+      token: {
+        fontSize: 16,
+      }
+    }}>
       <App>
         <BrowserRouter>
           <Routes>
@@ -21,6 +27,8 @@ createRoot(document.getElementById('root')!).render(
               <Route index element={<Home />} />
               <Route path="about" element={<About />} />
               <Route path="demo1" element={<Demo1 />} />
+            </Route>
+            <Route path="login" element={<Login />}>
             </Route>
           </Routes>
         </BrowserRouter>

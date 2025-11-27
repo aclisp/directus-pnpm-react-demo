@@ -1,5 +1,6 @@
 import { Button } from "antd";
-import { NavLink, type NavLinkRenderProps, Outlet } from "react-router";
+import type { NavLinkRenderProps } from "react-router";
+import { Link, NavLink, Outlet } from "react-router";
 
 type NavButtonProps = {
     children: React.ReactNode;
@@ -14,16 +15,21 @@ function NavButton({ isActive, children }: NavButtonProps) {
 function App() {
     return (
         <div id="app">
-            <div id="header" style={{ padding: '8px' }}>
-                <NavLink to="/">{({ isActive }) => (
-                    <NavButton isActive={isActive}>Home</NavButton>
-                )}</NavLink>
-                <NavLink to="/demo1">{({ isActive }) => (
-                    <NavButton isActive={isActive}>Demo1</NavButton>
-                )}</NavLink>
-                <NavLink to="/about">{({ isActive }) => (
-                    <NavButton isActive={isActive}>About</NavButton>
-                )}</NavLink>
+            <div id="header" style={{ padding: '8px', display: 'flex', justifyContent: 'space-between' }}>
+                <div>
+                    <NavLink to="/">{({ isActive }) => (
+                        <NavButton isActive={isActive}>Home</NavButton>
+                    )}</NavLink>
+                    <NavLink to="/demo1">{({ isActive }) => (
+                        <NavButton isActive={isActive}>Demo1</NavButton>
+                    )}</NavLink>
+                    <NavLink to="/about">{({ isActive }) => (
+                        <NavButton isActive={isActive}>About</NavButton>
+                    )}</NavLink>
+                </div>
+                <div>
+                    <Link to="/login"><Button type="default">Login</Button></Link>
+                </div>
             </div>
             <div id="main" style={{ padding: '24px' }} >
                 <Outlet />
