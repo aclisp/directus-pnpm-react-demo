@@ -1,9 +1,10 @@
+import { HomeOutlined } from "@ant-design/icons";
 import { readMe } from "@directus/sdk";
 import { useRequest } from "ahooks";
 import type { FormProps } from 'antd';
-import { App, Button, Card, Flex, Form, Input } from "antd";
+import { App, Button, Card, Flex, Form, Input, theme } from "antd";
 import { useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useDirectus } from "./directus";
 import { directusError } from "./directus/errors";
 
@@ -91,10 +92,24 @@ export function Login() {
     })
 
     return (
-        <Flex vertical style={{ width: '100%', minHeight: '100dvh' }} justify="center" align="center" gap="large">
-            {isLogin
-                ? <UserInfo data={data} onLogoutSuccess={onLogoutSuccess} />
-                : <LoginForm onLoginSuccess={onLoginSuccess} />}
-        </Flex>
+        <>
+            {isLogin || <div style={{ padding: '8px', position: 'absolute' }}>
+                <Link to="/"><HomeButton /></Link>
+            </div>}
+            <Flex vertical style={{ width: '100%', minHeight: '100dvh' }} justify="center" align="center" gap="large">
+                {isLogin
+                    ? <UserInfo data={data} onLogoutSuccess={onLogoutSuccess} />
+                    : <LoginForm onLoginSuccess={onLoginSuccess} />}
+            </Flex>
+        </>
+    )
+}
+
+function HomeButton() {
+    const { token } = theme.useToken()
+    return (
+        <div style={{ width: 50, height: 32, display: 'flex', justifyContent: 'center' }}>
+            <HomeOutlined style={{ fontSize: 20, color: token.colorText }} />
+        </div>
     )
 }
