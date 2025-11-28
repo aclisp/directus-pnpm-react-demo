@@ -9,6 +9,7 @@ import AppLayout from './App.tsx';
 import { Demo1 } from "./Demo1";
 import { Home } from "./Home";
 import { Login } from './Login.tsx';
+import { ProductDetail } from './pages/ProductDetail.tsx';
 
 import "antd/dist/reset.css";
 import './index.css';
@@ -27,6 +28,7 @@ createRoot(document.getElementById('root')!).render(
               <Route index element={<Home />} />
               <Route path="about" element={<About />} />
               <Route path="demo1" element={<Demo1 />} />
+              <Route path="product/:id" element={<ProductDetail />} />
             </Route>
             <Route path="login" element={<Login />}>
             </Route>

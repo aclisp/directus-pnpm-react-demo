@@ -1,0 +1,20 @@
+.form-grid {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 40px; /* Adjust gap as needed */
+}
+
+.form-item {
+    /* Prohibit items grow and shrink, but set a base width */
+    /* This base width is for the 'two per row' layout on desktop */
+    flex: 0 0 calc(50% - 20px);
+    /* The 'calc' accounts for half of the 40px 'gap' on each side */
+}
+
+@media (max-width: 448px) {
+    .form-item {
+        /* Set the base width to 100% on mobile */
+        /* flex: grow shrink basis; */
+        flex: 1 1 100%;
+    }
+}
