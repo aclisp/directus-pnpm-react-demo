@@ -76,7 +76,7 @@ function ProductList() {
                     }
                 >
                     <Card.Meta
-                        avatar={<Avatar src={asset(directus, product.brand_id?.image, { token })} />}
+                        avatar={<Avatar shape="square" src={asset(directus, product.brand_id?.image, { token })} />}
                         title={product.name}
                         description={product.description}
                     />

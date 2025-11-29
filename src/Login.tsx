@@ -46,8 +46,7 @@ function LoginForm({ onLoginSuccess }: { onLoginSuccess: () => void }) {
 }
 
 function UserInfo({ data, onLogoutSuccess }: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    data: Record<string, any> | undefined;
+    data: Record<string, unknown> | undefined;
     onLogoutSuccess: () => void;
 }) {
     const directus = useDirectus()
