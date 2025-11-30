@@ -5,6 +5,7 @@ import { Button, Divider, Form, Input, Radio } from 'antd'
 import { useParams } from 'react-router'
 import { DebugItem } from '../components/DebugItem'
 import { LookupSelect } from '../components/LookupSelect'
+import { RelatedList } from '../components/RelatedList'
 import { useDirectus } from '../directus'
 import { datetime } from '../directus/datetime'
 import { username } from '../directus/users'
@@ -31,25 +32,13 @@ export function ProductDetail() {
                 'name',
                 'description',
                 'status',
-                {
-                    brand_id: [
-                        'id',
-                        'name',
-                    ],
-                },
-                {
-                    user_created: [
-                        'first_name',
-                        'last_name',
-                    ],
-                },
+                'brand_id.id',
+                'brand_id.name',
+                'user_created.first_name',
+                'user_created.last_name',
                 'date_created',
-                {
-                    user_updated: [
-                        'first_name',
-                        'last_name',
-                    ],
-                },
+                'user_updated.first_name',
+                'user_updated.last_name',
                 'date_updated',
             ],
         }))
@@ -91,7 +80,38 @@ export function ProductDetail() {
                         />
                     </Form.Item>
                 </div>
-                <Divider />
+                <Form.Item layout="vertical" label="产品图片">
+                    <RelatedList
+                        foreignKeyField="product_id"
+                        foreignKeyValue={data?.id}
+                        collection="product_files"
+                        collectionFields={[
+                            { field: ['directus_files_id', 'id'], title: '图片ID' },
+                        ]}
+                    />
+                </Form.Item>
+                <Form.Item layout="vertical" label="产品类别">
+                    <RelatedList
+                        foreignKeyField="product_id"
+                        foreignKeyValue={data?.id}
+                        collection="product_category"
+                        collectionFields={[
+                            { field: ['category_id', 'id'], title: '品类ID' },
+                            { field: ['category_id', 'name'], title: '品类名称' },
+                        ]}
+                    />
+                </Form.Item>
+                <Form.Item layout="vertical" label="产品评论">
+                    <RelatedList
+                        foreignKeyField="product_id"
+                        foreignKeyValue={data?.id}
+                        collection="product_reviews"
+                        collectionFields={[
+                            { field: ['rating'], title: '评分（1-5 星）' },
+                            { field: ['content'], title: '内容' },
+                        ]}
+                    />
+                </Form.Item>
                 <div className="form-grid">
                     <Form.Item<FormValues> className="form-item" label="创建人">
                         <div>{username(data?.user_created)}</div>
