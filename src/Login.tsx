@@ -1,14 +1,14 @@
-import { HomeOutlined } from "@ant-design/icons";
-import { readMe } from "@directus/sdk";
-import { useRequest } from "ahooks";
-import type { FormProps } from 'antd';
-import { App, Button, Card, Flex, Form, Input, theme } from "antd";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router";
-import { useDirectus } from "./directus";
-import { directusError } from "./directus/errors";
+import { HomeOutlined } from '@ant-design/icons'
+import { readMe } from '@directus/sdk'
+import { useRequest } from 'ahooks'
+import type { FormProps } from 'antd'
+import { App, Button, Card, Flex, Form, Input, theme } from 'antd'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router'
+import { useDirectus } from './directus'
+import { directusError } from './directus/errors'
 
-type LoginReq = {
+interface LoginReq {
     username: string
     password: string
 }
@@ -22,11 +22,11 @@ function LoginForm({ onLoginSuccess }: { onLoginSuccess: () => void }) {
             await directus.login({ email: values.username, password: values.password })
             onLoginSuccess()
             modal.info({ content: '登录成功' })
-            navigate("/login")
+            navigate('/login')
         } catch (error) {
             modal.error({ content: directusError(error) })
         }
-    };
+    }
 
     return (
         <Form layout="vertical" style={{ width: '80%', maxWidth: '300px' }} onFinish={onFinish}>
@@ -46,18 +46,18 @@ function LoginForm({ onLoginSuccess }: { onLoginSuccess: () => void }) {
 }
 
 function UserInfo({ data, onLogoutSuccess }: {
-    data: Record<string, unknown> | undefined;
-    onLogoutSuccess: () => void;
+    data: Record<string, unknown> | undefined
+    onLogoutSuccess: () => void
 }) {
     const directus = useDirectus()
     const navigate = useNavigate()
     const logout = async () => {
-        await directus.logout().catch(() => { })
+        await directus.logout().catch(() => { /* empty */ })
         onLogoutSuccess()
-        navigate("/login")
+        navigate('/login')
     }
     const goHome = () => {
-        navigate("/")
+        navigate('/')
     }
 
     return (
@@ -79,8 +79,8 @@ function UserInfo({ data, onLogoutSuccess }: {
 
 export function Login() {
     const [isLogin, setIsLogin] = useState(false)
-    const onLoginSuccess = () => { setIsLogin(true) }
-    const onLogoutSuccess = () => { setIsLogin(false) }
+    const onLoginSuccess = () => setIsLogin(true)
+    const onLogoutSuccess = () => setIsLogin(false)
     const directus = useDirectus()
     const { data } = useRequest(async () => {
         return await directus.request(readMe())
@@ -92,9 +92,11 @@ export function Login() {
 
     return (
         <>
-            {isLogin || <div style={{ padding: '8px', position: 'absolute' }}>
-                <Link to="/"><HomeButton /></Link>
-            </div>}
+            {isLogin || (
+                <div style={{ padding: '8px', position: 'absolute' }}>
+                    <Link to="/"><HomeButton /></Link>
+                </div>
+            )}
             <Flex vertical style={{ width: '100%', minHeight: '100dvh' }} justify="center" align="center" gap="large">
                 {isLogin
                     ? <UserInfo data={data} onLogoutSuccess={onLogoutSuccess} />

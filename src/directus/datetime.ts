@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 
 export function datetime(datetime: string | undefined | null): string {
     if (!datetime) {

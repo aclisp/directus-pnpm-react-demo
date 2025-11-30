@@ -1,9 +1,9 @@
-import type { FormProps } from "antd";
-import { Button, Form, Typography } from "antd";
-import { PriceInput, type PriceValue } from "./components/PriceInput";
-import { useDirectusAuth } from "./directus";
+import type { FormProps } from 'antd'
+import { Button, Form, Typography } from 'antd'
+import { PriceInput, type PriceValue } from './components/PriceInput'
+import { useDirectusAuth } from './directus'
 
-const { Text } = Typography;
+const { Text } = Typography
 
 export function About() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,23 +21,23 @@ export function About() {
     )
 }
 
-export default About;
+export default About
 
-type PriceInputFormFieldType = {
+interface PriceInputFormFieldType {
     price: PriceValue
 }
 
 function TestPriceInputForm() {
     const onFinish: FormProps<PriceInputFormFieldType>['onFinish'] = (values) => {
-        console.log('Received values from form: ', values);
-    };
+        console.log('Received values from form: ', values)
+    }
 
     const checkPrice = (_: unknown, value: { number: number }) => {
         if (value.number > 0) {
-            return Promise.resolve();
+            return Promise.resolve()
         }
-        return Promise.reject(new Error('Price must be greater than zero!'));
-    };
+        return Promise.reject(new Error('Price must be greater than zero!'))
+    }
 
     return (
         <Form
@@ -57,5 +57,5 @@ function TestPriceInputForm() {
                 </Button>
             </Form.Item>
         </Form>
-    );
+    )
 }

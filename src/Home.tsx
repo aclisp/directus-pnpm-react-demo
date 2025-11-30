@@ -1,10 +1,9 @@
-import { readItems, readMe, serverInfo } from "@directus/sdk";
-import { useRequest } from "ahooks";
-import { Avatar, Card, Flex } from "antd";
-import { useNavigate } from "react-router";
-import { useDirectus, useDirectusAuth } from "./directus";
-import { asset } from "./directus/assets";
-
+import { readItems, readMe, serverInfo } from '@directus/sdk'
+import { useRequest } from 'ahooks'
+import { Avatar, Card, Flex } from 'antd'
+import { useNavigate } from 'react-router'
+import { useDirectus, useDirectusAuth } from './directus'
+import { asset } from './directus/assets'
 
 function ServerInfo() {
     const directus = useDirectus()
@@ -46,8 +45,8 @@ function ProductList() {
                 'brand_id.image',
                 'images.directus_files_id',
                 'categories.category_id.id',
-                'categories.category_id.name'
-            ]
+                'categories.category_id.name',
+            ],
         }))
     })
 
@@ -61,19 +60,19 @@ function ProductList() {
 
     return (
         <Flex wrap gap="large">
-            {data?.map((product) => (
+            {data?.map(product => (
                 <Card
                     onClick={() => onClickCard(product.id)}
                     key={product.id}
                     hoverable
                     style={{ width: 300 }}
-                    cover={
+                    cover={(
                         <img
                             draggable={false}
                             alt="image"
                             src={asset(directus, product.images[0]?.directus_files_id, { token })}
                         />
-                    }
+                    )}
                 >
                     <Card.Meta
                         avatar={<Avatar shape="square" src={asset(directus, product.brand_id?.image, { token })} />}
@@ -82,8 +81,8 @@ function ProductList() {
                     />
                     <Flex vertical style={{ marginTop: 20 }}>
                         <div>{product.status}</div>
-                        {/*@ts-expect-error category is any type*/}
-                        {product.categories.map((category) => (
+                        {/* @ts-expect-error category is any type */}
+                        {product.categories.map(category => (
                             <div key={category.category_id.id}>{category.category_id.name}</div>
                         ))}
                     </Flex>
@@ -104,4 +103,4 @@ export function Home() {
     )
 }
 
-export default Home;
+export default Home

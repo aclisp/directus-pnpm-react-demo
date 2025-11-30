@@ -1,4 +1,3 @@
-
 export function username(user: Record<string, unknown> | undefined | null): string {
     let name = ''
 

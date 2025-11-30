@@ -1,5 +1,5 @@
-import { App, Button, DatePicker, Space, version } from "antd";
-import { version as reactVersion } from "react";
+import { App, Button, DatePicker, Space, version } from 'antd'
+import { version as reactVersion } from 'react'
 
 export function Demo1() {
     const { modal } = App.useApp()
@@ -10,7 +10,10 @@ export function Demo1() {
 
     return (
         <>
-            antd@{version}, react@{reactVersion}
+            antd@
+            {version}
+            , react@
+            {reactVersion}
             <br />
             <br />
             <Space>
@@ -21,4 +24,4 @@ export function Demo1() {
     )
 }
 
-export default Demo1;
+export default Demo1

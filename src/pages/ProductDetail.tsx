@@ -1,14 +1,15 @@
-import { readItem } from "@directus/sdk";
-import { useRequest } from "ahooks";
-import type { FormProps } from "antd";
-import { Button, Divider, Form, Input, Radio } from "antd";
-import { useParams } from "react-router";
-import { LookupSelect } from "../components/LookupSelect";
-import { useDirectus } from "../directus";
-import { datetime } from "../directus/datetime";
-import { username } from "../directus/users";
+import { readItem } from '@directus/sdk'
+import { useRequest } from 'ahooks'
+import type { FormProps } from 'antd'
+import { Button, Divider, Form, Input, Radio } from 'antd'
+import { useParams } from 'react-router'
+import { DebugItem } from '../components/DebugItem'
+import { LookupSelect } from '../components/LookupSelect'
+import { useDirectus } from '../directus'
+import { datetime } from '../directus/datetime'
+import { username } from '../directus/users'
 
-type FormValues = {
+interface FormValues {
     name: string
     description: string
     status: string
@@ -19,7 +20,7 @@ type FormValues = {
 }
 
 export function ProductDetail() {
-    const [form] = Form.useForm();
+    const [form] = Form.useForm()
     const params = useParams()
     const directus = useDirectus()
     const { data } = useRequest(async () => {
@@ -31,33 +32,33 @@ export function ProductDetail() {
                 'description',
                 'status',
                 {
-                    'brand_id': [
+                    brand_id: [
                         'id',
                         'name',
                     ],
                 },
                 {
-                    'user_created': [
+                    user_created: [
                         'first_name',
                         'last_name',
                     ],
                 },
                 'date_created',
                 {
-                    'user_updated': [
+                    user_updated: [
                         'first_name',
                         'last_name',
                     ],
                 },
                 'date_updated',
-            ]
+            ],
         }))
     }, {
-        onSuccess: (data) => form.setFieldsValue(data)
+        onSuccess: data => form.setFieldsValue(data),
     })
     const onFinish: FormProps<FormValues>['onFinish'] = (values) => {
-        console.log('Received values from form: ', values);
-    };
+        console.log('Received values from form: ', values)
+    }
 
     return (
         <>
@@ -81,9 +82,13 @@ export function ProductDetail() {
                         />
                     </Form.Item>
                     <Form.Item<FormValues> className="form-item" label="品牌" name="brand_id">
-                        <LookupSelect allowClear lookupCollection="brand" lookupCollectionFields={[
-                            { field: "name", title: "品牌名称" }
-                        ]} />
+                        <LookupSelect
+                            allowClear
+                            lookupCollection="brand"
+                            lookupCollectionFields={[
+                                { field: 'name', title: '品牌名称' },
+                            ]}
+                        />
                     </Form.Item>
                 </div>
                 <Divider />
@@ -108,8 +113,8 @@ export function ProductDetail() {
                 </Form.Item>
             </Form>
 
-            {/* <Divider />
-            <DebugItem collection="product" id={params.id} /> */}
+            <Divider />
+            <DebugItem collection="product" id={params.id} />
         </>
     )
 }

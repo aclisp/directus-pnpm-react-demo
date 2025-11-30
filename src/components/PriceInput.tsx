@@ -1,5 +1,5 @@
-import { Input, Select } from 'antd';
-import React, { useState } from 'react';
+import { Input, Select } from 'antd'
+import React, { useState } from 'react'
 
 /**
 
@@ -13,56 +13,56 @@ From https://ant-design.antgroup.com/components/form-cn#form-demo-customized-for
 
 */
 
-type Currency = 'rmb' | 'dollar';
+type Currency = 'rmb' | 'dollar'
 
 export interface PriceValue {
-    number?: number;
-    currency?: Currency;
+    number?: number
+    currency?: Currency
 }
 
 interface PriceInputProps {
-    id?: string;
-    value?: PriceValue;
-    onChange?: (value: PriceValue) => void;
+    id?: string
+    value?: PriceValue
+    onChange?: (value: PriceValue) => void
 }
 
 export const PriceInput: React.FC<PriceInputProps> = (props) => {
-    const { id, value = {}, onChange } = props;
-    const [number, setNumber] = useState(0);
-    const [currency, setCurrency] = useState<Currency>('rmb');
+    const { id, value = {}, onChange } = props
+    const [number, setNumber] = useState(0)
+    const [currency, setCurrency] = useState<Currency>('rmb')
 
-    const triggerChange = (changedValue: { number?: number; currency?: Currency }) => {
-        onChange?.({ number, currency, ...value, ...changedValue });
-    };
+    const triggerChange = (changedValue: { number?: number, currency?: Currency }) => {
+        onChange?.({ number, currency, ...value, ...changedValue })
+    }
 
     const onNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const newNumber = Number.parseInt(e.target.value || '0', 10);
+        const newNumber = Number.parseInt(e.target.value || '0', 10)
         if (Number.isNaN(number)) {
-            return;
+            return
         }
         if (!('number' in value)) {
-            setNumber(newNumber);
+            setNumber(newNumber)
         }
-        triggerChange({ number: newNumber });
-    };
+        triggerChange({ number: newNumber })
+    }
 
     const onCurrencyChange = (newCurrency: Currency) => {
         if (!('currency' in value)) {
-            setCurrency(newCurrency);
+            setCurrency(newCurrency)
         }
-        triggerChange({ currency: newCurrency });
-    };
+        triggerChange({ currency: newCurrency })
+    }
 
     return (
         <span id={id}>
             <Input
                 type="text"
-                value={value.number || number}
+                value={value.number ?? number}
                 onChange={onNumberChange}
                 style={{ width: 100 }}
             />
             <Select
-                value={value.currency || currency}
+                value={value.currency ?? currency}
                 style={{ width: 80, margin: '0 8px' }}
                 onChange={onCurrencyChange}
                 options={[
@@ -71,5 +71,5 @@ export const PriceInput: React.FC<PriceInputProps> = (props) => {
                 ]}
             />
         </span>
-    );
-};
+    )
+}

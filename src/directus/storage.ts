@@ -1,4 +1,4 @@
-import type { AuthenticationData, AuthenticationStorage } from "@directus/sdk";
+import type { AuthenticationData, AuthenticationStorage } from '@directus/sdk'
 
 export const localStorage = (key: string) => {
     return {
@@ -17,5 +17,5 @@ export const localStorage = (key: string) => {
                 window.localStorage.setItem(key, JSON.stringify(value))
             }
         },
-    } as AuthenticationStorage;
-};
+    } as AuthenticationStorage
+}

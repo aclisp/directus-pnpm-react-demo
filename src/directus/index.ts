@@ -1,11 +1,12 @@
-import { authentication, createDirectus, rest } from '@directus/sdk';
-import { useRequest } from 'ahooks';
-import { localStorage } from './storage';
+import { authentication, createDirectus, rest } from '@directus/sdk'
+import { useRequest } from 'ahooks'
+import { localStorage } from './storage'
 
 const directus = createDirectus('https://cms.aclisp.xyz')
     .with(rest())
     .with(authentication('json', { storage: localStorage('directus-pnpm-react-login') }))
 
+// eslint-disable-next-line react-x/no-unnecessary-use-prefix
 export function useDirectus() {
     return directus
 }
