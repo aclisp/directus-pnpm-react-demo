@@ -19,10 +19,11 @@ interface LookupSelectProps {
     /** Clear the lookup relationship by nullifying the value, defaults to `false` */
     allowClear?: boolean
     /** The "looked up" collection name */
-    lookupCollection: string
+    collection: string
     /** The fields of the lookup collection */
-    lookupCollectionFields: {
-        field: string
+    collectionFields: {
+        /** Support nested field's path by array */
+        field: string[]
         title: string
     }[]
 }
@@ -45,8 +46,8 @@ export const LookupSelect: React.FC<LookupSelectProps> = (props) => {
         onChange,
         displayField = 'name',
         allowClear = false,
-        lookupCollection,
-        lookupCollectionFields,
+        collection,
+        collectionFields,
     } = props
 
     // Controller state for modal visibility
@@ -92,8 +93,8 @@ export const LookupSelect: React.FC<LookupSelectProps> = (props) => {
             />
             <LookupSelectionModal
                 open={isSelectOpen}
-                lookupCollection={lookupCollection}
-                lookupCollectionFields={lookupCollectionFields}
+                collection={collection}
+                collectionFields={collectionFields}
                 currentValue={value}
                 onSelect={handleSelection} // Pass back selected item
                 onCancel={handleCancel} // Close modal
@@ -104,16 +105,16 @@ export const LookupSelect: React.FC<LookupSelectProps> = (props) => {
 
 function LookupSelectionModal({
     open,
-    lookupCollection,
-    lookupCollectionFields,
+    collection,
+    collectionFields,
     currentValue,
     onSelect,
     onCancel,
 }: {
     open: boolean
     // Fields needed for Directus request and table display
-    lookupCollection: string
-    lookupCollectionFields: { field: string, title: string }[]
+    collection: string
+    collectionFields: { field: string[], title: string }[]
     // Current value passed down to pre-select the row
     currentValue?: LookupSelectValueType
     // Callbacks to communicate back to the parent
@@ -125,8 +126,8 @@ function LookupSelectionModal({
     const [selection, setSelection] = useState<SelectionType>(() => valueToSelection(currentValue))
 
     // Columns are derived from props
-    const selectionListColumns = lookupCollectionFields.map(x => ({
-        key: x.field,
+    const selectionListColumns = collectionFields.map(x => ({
+        key: x.field.join('.'),
         dataIndex: x.field,
         title: x.title,
     }))
@@ -139,8 +140,8 @@ function LookupSelectionModal({
     // Effect 2: Fetch data when the modal opens
     const { run } = useRequest(async () => {
         // Ensure that the id field is always included
-        const fields = lookupCollectionFields.map(x => x.field).concat('id')
-        return await directus.request(readItems(lookupCollection, { fields }))
+        const fields = selectionListColumns.map(x => x.key).concat('id')
+        return await directus.request(readItems(collection, { fields }))
     }, {
         onSuccess: data => setSelectionList(data as LookupSelectValueType[]),
         manual: true,

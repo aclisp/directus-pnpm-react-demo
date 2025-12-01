@@ -73,9 +73,10 @@ export function ProductDetail() {
                     <Form.Item<FormValues> className="form-item" label="品牌" name="brand_id">
                         <LookupSelect
                             allowClear
-                            lookupCollection="brand"
-                            lookupCollectionFields={[
-                                { field: 'name', title: '品牌名称' },
+                            collection="brand"
+                            collectionFields={[
+                                { field: ['name'], title: '品牌名称' },
+                                { field: ['image', 'title'], title: '图片' },
                             ]}
                         />
                     </Form.Item>
