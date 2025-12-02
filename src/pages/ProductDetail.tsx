@@ -121,7 +121,9 @@ export function ProductDetail() {
                         collectionFields={[
                             { field: ['rating'], title: '评分（1-5 星）', width: 130 },
                             { field: ['title'], title: '标题' },
-                            { field: ['user_created', 'email'], title: '评论者', width: 200 },
+                            { field: ['user_created'], title: '评论者', width: 160, render: { type: 'user' } },
+                            { field: ['user_created', 'first_name'], title: '', hidden: true },
+                            { field: ['user_created', 'last_name'], title: '', hidden: true },
                         ]}
                         showEdit
                     />

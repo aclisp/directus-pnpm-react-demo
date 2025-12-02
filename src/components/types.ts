@@ -3,8 +3,10 @@ export interface CollectionField {
     field: string[]
     title: string
     width?: number
+    /** Hidden column is used to provide infomation to some renders, default to `false` */
+    hidden?: boolean
     /** What this field will be rendered to */
-    render?: CollectionFieldRenderImage | CollectionFieldRenderLink
+    render?: CollectionFieldRenderImage | CollectionFieldRenderLink | CollectionFieldRenderUser
 }
 
 export interface CollectionFieldRenderImage {
@@ -17,4 +19,8 @@ export interface CollectionFieldRenderImage {
 
 export interface CollectionFieldRenderLink {
     type: 'link'
+}
+
+export interface CollectionFieldRenderUser {
+    type: 'user'
 }

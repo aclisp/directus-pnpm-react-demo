@@ -7,6 +7,7 @@ import { ActionRender } from './ActionRender'
 import { ImageRender } from './ImageRender'
 import { LinkRender } from './LinkRender'
 import type { CollectionField } from './types'
+import { UserRender } from './UserRender'
 
 interface RelatedListProps {
     /** The foreign key references the "parent" table's `id` field */
@@ -41,11 +42,14 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
             title: x.title,
             width: x.width,
             minWidth: x.width,
+            hidden: x.hidden,
         }
         if (x.render?.type == 'image') {
             return { ...column, render: value => <ImageRender value={value} {...x.render} /> }
         } else if (x.render?.type == 'link') {
             return { ...column, render: (value, record) => <LinkRender value={value} record={record} collection={collection} /> }
+        } else if (x.render?.type == 'user') {
+            return { ...column, render: value => <UserRender user={value} /> }
         } else {
             return column
         }

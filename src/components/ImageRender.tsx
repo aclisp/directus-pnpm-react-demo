@@ -4,6 +4,7 @@ import { asset } from '../directus/assets'
 import type { CollectionFieldRenderImage } from './types'
 
 type ImageRenderProps = Omit<CollectionFieldRenderImage, 'type'> & {
+    /** The value to be rendered as an image */
     value: unknown
 }
 

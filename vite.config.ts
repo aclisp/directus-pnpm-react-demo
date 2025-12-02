@@ -9,9 +9,9 @@ export default defineConfig({
         rollupOptions: {
             output: {
                 manualChunks: {
-                    react: ['react', 'react-dom', 'react-router'],
+                    react: ['react', 'react-dom', 'react-router', 'ahooks'],
                     antd: ['antd'],
-                    ahooks: ['ahooks'],
+                    utils: ['dayjs', 'lodash'],
                 },
             },
         },
