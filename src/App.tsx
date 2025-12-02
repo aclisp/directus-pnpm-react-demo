@@ -1,5 +1,5 @@
 import { LoginOutlined } from '@ant-design/icons'
-import { Button, theme } from 'antd'
+import { Button, Flex, theme } from 'antd'
 import type { NavLinkRenderProps } from 'react-router'
 import { Link, NavLink, Outlet } from 'react-router'
 
@@ -24,8 +24,8 @@ function LoginButton() {
 
 function App() {
     return (
-        <div id="app">
-            <div id="header" style={{ padding: '8px', display: 'flex', justifyContent: 'space-between' }}>
+        <>
+            <Flex id="header" justify="space-between" style={{ padding: '8px' }}>
                 <div>
                     <NavLink to="/">
                         {({ isActive }) => (
@@ -48,11 +48,11 @@ function App() {
                         <LoginButton />
                     </Link>
                 </div>
-            </div>
+            </Flex>
             <div id="main" style={{ padding: '24px' }}>
                 <Outlet />
             </div>
-        </div>
+        </>
     )
 }
 

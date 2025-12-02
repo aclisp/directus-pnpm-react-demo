@@ -1,9 +1,8 @@
 import { readItem } from '@directus/sdk'
 import { useRequest } from 'ahooks'
 import type { FormProps } from 'antd'
-import { Button, Divider, Form, Input, Radio } from 'antd'
+import { Affix, Button, Flex, Form, Input, Radio, theme } from 'antd'
 import { useParams } from 'react-router'
-import { DebugItem } from '../components/DebugItem'
 import { LookupSelect } from '../components/LookupSelect'
 import { RelatedList } from '../components/RelatedList'
 import { useDirectus } from '../directus'
@@ -24,6 +23,7 @@ export function ProductDetail() {
     const [form] = Form.useForm()
     const params = useParams()
     const directus = useDirectus()
+    const { token } = theme.useToken()
     const { data } = useRequest(async () => {
         if (!params.id) return undefined
         return await directus.request(readItem('product', params.id, {
@@ -51,7 +51,17 @@ export function ProductDetail() {
 
     return (
         <>
-            <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false} onFinish={onFinish}>
+            <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false} onFinish={onFinish} styles={{ label: { color: token.colorTextSecondary } }}>
+                <Form.Item layout="vertical" label="操作">
+                    <Affix>
+                        <Flex wrap style={{ paddingTop: 8, paddingBottom: 8, gap: 8, backgroundColor: token.colorBgElevated }}>
+                            <Button type="primary" htmlType="submit">保存</Button>
+                            <Button>新增图片</Button>
+                            <Button>关联品类</Button>
+                            <Button>添加评论</Button>
+                        </Flex>
+                    </Affix>
+                </Form.Item>
                 <div className="form-grid">
                     <Form.Item<FormValues> className="form-item" label="产品ID">
                         <div>{data?.id}</div>
@@ -75,8 +85,8 @@ export function ProductDetail() {
                             allowClear
                             collection="brand"
                             collectionFields={[
+                                { field: ['image'], title: '品牌图片', render: { type: 'image' } },
                                 { field: ['name'], title: '品牌名称' },
-                                { field: ['image', 'title'], title: '图片' },
                             ]}
                         />
                     </Form.Item>
@@ -87,7 +97,7 @@ export function ProductDetail() {
                         foreignKeyValue={data?.id}
                         collection="product_files"
                         collectionFields={[
-                            { field: ['directus_files_id', 'id'], title: '图片ID' },
+                            { field: ['directus_files_id', 'id'], title: '图片', render: { type: 'image', height: 96, maxWidth: 192, preview: true } },
                         ]}
                     />
                 </Form.Item>
@@ -110,6 +120,7 @@ export function ProductDetail() {
                         collectionFields={[
                             { field: ['rating'], title: '评分（1-5 星）' },
                             { field: ['content'], title: '内容' },
+                            { field: ['user_created', 'email'], title: '评论者' },
                         ]}
                     />
                 </Form.Item>
@@ -127,15 +138,10 @@ export function ProductDetail() {
                         <div>{datetime(data?.date_updated)}</div>
                     </Form.Item>
                 </div>
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Submit
-                    </Button>
-                </Form.Item>
             </Form>
 
-            <Divider />
-            <DebugItem collection="product" id={params.id} />
+            {/* <Divider />
+            <DebugItem collection="product" id={params.id} /> */}
         </>
     )
 }

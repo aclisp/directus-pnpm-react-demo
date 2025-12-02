@@ -2,6 +2,8 @@ import { readItems } from '@directus/sdk'
 import { useRequest } from 'ahooks'
 import { Table } from 'antd'
 import { useDirectus } from '../directus'
+import { ImageRender } from './ImageRender'
+import type { CollectionField } from './types'
 
 interface RelatedListProps {
     /** The foreign key references the "parent" table's `id` field */
@@ -12,11 +14,7 @@ interface RelatedListProps {
     /** The collection name to retrieve the related list */
     collection: string
     /** The collection's fields */
-    collectionFields: {
-        /** Support nested field's path by array */
-        field: string[]
-        title: string
-    }[]
+    collectionFields: CollectionField[]
 }
 
 export const RelatedList: React.FC<RelatedListProps> = (props) => {
@@ -27,11 +25,18 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         collectionFields,
     } = props
 
-    const columns = collectionFields.map(x => ({
-        key: x.field.join('.'),
-        dataIndex: x.field,
-        title: x.title,
-    }))
+    const columns = collectionFields.map((x) => {
+        const column = {
+            key: x.field.join('.'),
+            dataIndex: x.field,
+            title: x.title,
+        }
+        if (x.render?.type == 'image') {
+            return { ...column, render: (value: unknown) => <ImageRender value={value} {...x.render} /> }
+        } else {
+            return column
+        }
+    })
 
     const directus = useDirectus()
 
@@ -58,6 +63,13 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
             size="small"
             pagination={false}
             bordered
+            styles={{
+                header: {
+                    cell: {
+                        fontWeight: 'normal',
+                    },
+                },
+            }}
         />
     )
 }

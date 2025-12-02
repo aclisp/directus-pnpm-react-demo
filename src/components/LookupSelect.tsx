@@ -4,6 +4,8 @@ import type { TableProps } from 'antd'
 import { Modal, Select, Table } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDirectus } from '../directus'
+import { ImageRender } from './ImageRender'
+import type { CollectionField } from './types'
 
 type LookupSelectValueType = Record<string, unknown> & {
     id: string | number
@@ -21,11 +23,7 @@ interface LookupSelectProps {
     /** The "looked up" collection name */
     collection: string
     /** The fields of the lookup collection */
-    collectionFields: {
-        /** Support nested field's path by array */
-        field: string[]
-        title: string
-    }[]
+    collectionFields: CollectionField[]
 }
 
 interface SelectionType {
@@ -114,7 +112,7 @@ function LookupSelectionModal({
     open: boolean
     // Fields needed for Directus request and table display
     collection: string
-    collectionFields: { field: string[], title: string }[]
+    collectionFields: CollectionField[]
     // Current value passed down to pre-select the row
     currentValue?: LookupSelectValueType
     // Callbacks to communicate back to the parent
@@ -126,11 +124,18 @@ function LookupSelectionModal({
     const [selection, setSelection] = useState<SelectionType>(() => valueToSelection(currentValue))
 
     // Columns are derived from props
-    const selectionListColumns = collectionFields.map(x => ({
-        key: x.field.join('.'),
-        dataIndex: x.field,
-        title: x.title,
-    }))
+    const columns = collectionFields.map((x) => {
+        const column = {
+            key: x.field.join('.'),
+            dataIndex: x.field,
+            title: x.title,
+        }
+        if (x.render?.type == 'image') {
+            return { ...column, render: (value: unknown) => <ImageRender value={value} {...x.render} /> }
+        } else {
+            return column
+        }
+    })
 
     // Effect 1: Synchronize selection state when the external value changes
     useEffect(() => {
@@ -140,7 +145,7 @@ function LookupSelectionModal({
     // Effect 2: Fetch data when the modal opens
     const { run } = useRequest(async () => {
         // Ensure that the id field is always included
-        const fields = selectionListColumns.map(x => x.key).concat('id')
+        const fields = columns.map(x => x.key).concat('id')
         return await directus.request(readItems(collection, { fields }))
     }, {
         onSuccess: data => setSelectionList(data as LookupSelectValueType[]),
@@ -191,7 +196,7 @@ function LookupSelectionModal({
             <Table<LookupSelectValueType>
                 rowKey="id"
                 dataSource={selectionList}
-                columns={selectionListColumns}
+                columns={columns}
                 rowSelection={rowSelection}
                 onRow={record => ({
                     onClick: () => handleRowClick(record),

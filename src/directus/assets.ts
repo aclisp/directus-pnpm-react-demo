@@ -2,7 +2,7 @@ import type { AssetsQuery } from '@directus/sdk'
 import { useDirectus } from '.'
 
 type AssetOptions = Extract<AssetsQuery, { key?: never }> & {
-    token?: string
+    token?: string | null
 }
 
 export function asset(

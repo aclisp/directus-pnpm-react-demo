@@ -1,4 +1,4 @@
-import { App, ConfigProvider } from 'antd'
+import { App, ConfigProvider, theme } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import 'dayjs/locale/zh-cn'
 import { StrictMode } from 'react'
@@ -19,6 +19,7 @@ createRoot(document.getElementById('root')!).render(
         <ConfigProvider
             locale={zhCN}
             theme={{
+                algorithm: theme.defaultAlgorithm,
                 token: {
                     fontSize: 16,
                 },
