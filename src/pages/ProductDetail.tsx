@@ -107,7 +107,7 @@ export function ProductDetail() {
                         foreignKeyValue={data?.id}
                         collection="product_category"
                         collectionFields={[
-                            { field: ['category_id', 'id'], title: '品类ID' },
+                            { field: ['category_id', 'id'], title: '品类ID', width: 130 },
                             { field: ['category_id', 'name'], title: '品类名称' },
                         ]}
                     />
@@ -118,10 +118,11 @@ export function ProductDetail() {
                         foreignKeyValue={data?.id}
                         collection="product_reviews"
                         collectionFields={[
-                            { field: ['rating'], title: '评分（1-5 星）' },
+                            { field: ['rating'], title: '评分（1-5 星）', width: 130 },
                             { field: ['content'], title: '内容' },
-                            { field: ['user_created', 'email'], title: '评论者' },
+                            { field: ['user_created', 'email'], title: '评论者', width: 200 },
                         ]}
+                        showEdit
                     />
                 </Form.Item>
                 <div className="form-grid">

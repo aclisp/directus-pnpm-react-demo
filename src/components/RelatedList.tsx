@@ -1,7 +1,9 @@
 import { readItems } from '@directus/sdk'
 import { useRequest } from 'ahooks'
+import type { TableColumnsType } from 'antd'
 import { Table } from 'antd'
 import { useDirectus } from '../directus'
+import { ActionRender } from './ActionRender'
 import { ImageRender } from './ImageRender'
 import type { CollectionField } from './types'
 
@@ -15,6 +17,8 @@ interface RelatedListProps {
     collection: string
     /** The collection's fields */
     collectionFields: CollectionField[]
+    /** Show `edit` button in the action column, default is `false` */
+    showEdit?: boolean
 }
 
 export const RelatedList: React.FC<RelatedListProps> = (props) => {
@@ -23,19 +27,32 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         foreignKeyValue,
         collection,
         collectionFields,
+        showEdit = false,
     } = props
 
-    const columns = collectionFields.map((x) => {
+    const columns: TableColumnsType = collectionFields.map((x) => {
         const column = {
             key: x.field.join('.'),
             dataIndex: x.field,
             title: x.title,
+            width: x.width,
+            minWidth: x.width,
         }
         if (x.render?.type == 'image') {
-            return { ...column, render: (value: unknown) => <ImageRender value={value} {...x.render} /> }
+            return { ...column, render: value => <ImageRender value={value} {...x.render} /> }
         } else {
             return column
         }
+    })
+
+    // The last column contains the row actions
+    columns.push({
+        key: 'action',
+        title: '操作',
+        width: 65,
+        minWidth: 65,
+        fixed: 'end',
+        render: (_, record) => <ActionRender record={record} collection={collection} showEdit={showEdit} />,
     })
 
     const directus = useDirectus()
@@ -46,7 +63,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         }
 
         // Ensure that the id field is always included
-        const fields = columns.map(x => x.key).concat('id')
+        const fields = columns.map(x => String(x.key)).filter(x => x != 'action').concat('id')
         return await directus.request(readItems(collection, {
             fields,
             filter: { [foreignKeyField]: { _eq: foreignKeyValue } },
@@ -62,6 +79,10 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
             columns={columns}
             size="small"
             pagination={false}
+            tableLayout="auto"
+            scroll={{
+                x: 600,
+            }}
             bordered
             styles={{
                 header: {

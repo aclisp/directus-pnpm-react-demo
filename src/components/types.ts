@@ -2,6 +2,7 @@ export interface CollectionField {
     /** Support nested field's path by array */
     field: string[]
     title: string
+    width?: number
     /** What this field will be rendered to */
     render?: CollectionFieldRenderImage
 }
