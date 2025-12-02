@@ -24,3 +24,6 @@ export interface CollectionFieldRenderLink {
 export interface CollectionFieldRenderUser {
     type: 'user'
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Item = Record<string, any>
