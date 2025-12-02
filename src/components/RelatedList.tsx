@@ -5,6 +5,7 @@ import { Table } from 'antd'
 import { useDirectus } from '../directus'
 import { ActionRender } from './ActionRender'
 import { ImageRender } from './ImageRender'
+import { LinkRender } from './LinkRender'
 import type { CollectionField } from './types'
 
 interface RelatedListProps {
@@ -17,6 +18,8 @@ interface RelatedListProps {
     collection: string
     /** The collection's fields */
     collectionFields: CollectionField[]
+    /** Index to the collection's title field */
+    collectionTitle?: string[]
     /** Show `edit` button in the action column, default is `false` */
     showEdit?: boolean
 }
@@ -27,6 +30,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         foreignKeyValue,
         collection,
         collectionFields,
+        collectionTitle,
         showEdit = false,
     } = props
 
@@ -40,6 +44,8 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         }
         if (x.render?.type == 'image') {
             return { ...column, render: value => <ImageRender value={value} {...x.render} /> }
+        } else if (x.render?.type == 'link') {
+            return { ...column, render: (value, record) => <LinkRender value={value} record={record} collection={collection} /> }
         } else {
             return column
         }
@@ -52,7 +58,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         width: 65,
         minWidth: 65,
         fixed: 'end',
-        render: (_, record) => <ActionRender record={record} collection={collection} showEdit={showEdit} />,
+        render: (_, record) => <ActionRender record={record} collection={collection} showEdit={showEdit} collectionTitle={collectionTitle} />,
     })
 
     const directus = useDirectus()

@@ -4,7 +4,7 @@ export interface CollectionField {
     title: string
     width?: number
     /** What this field will be rendered to */
-    render?: CollectionFieldRenderImage
+    render?: CollectionFieldRenderImage | CollectionFieldRenderLink
 }
 
 export interface CollectionFieldRenderImage {
@@ -13,4 +13,8 @@ export interface CollectionFieldRenderImage {
     width?: string | number
     maxWidth?: string | number
     preview?: boolean
+}
+
+export interface CollectionFieldRenderLink {
+    type: 'link'
 }
