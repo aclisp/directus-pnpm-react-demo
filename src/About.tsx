@@ -1,6 +1,7 @@
 import type { FormProps } from 'antd'
 import { Button, Form, Typography } from 'antd'
 import { PriceInput, type PriceValue } from './components/PriceInput'
+import { Title } from './components/Title'
 import { useDirectusAuth } from './directus'
 
 const { Text } = Typography
@@ -9,11 +10,17 @@ export function About() {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [_directus, token] = useDirectusAuth()
     if (!token) {
-        return (<div>This page need you login</div>)
+        return (
+            <>
+                <Title title="关于" />
+                <div>This page need you login</div>
+            </>
+        )
     }
 
     return (
         <>
+            <Title title="关于" />
             <div>About</div>
             <Text ellipsis>{token}</Text>
             <TestPriceInputForm />

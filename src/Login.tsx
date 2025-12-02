@@ -5,6 +5,7 @@ import type { FormProps } from 'antd'
 import { App, Button, Card, Flex, Form, Input, theme } from 'antd'
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
+import { Title } from './components/Title'
 import { useDirectus } from './directus'
 import { directusError } from './directus/errors'
 
@@ -92,6 +93,7 @@ export function Login() {
 
     return (
         <>
+            <Title title="登录" />
             {isLogin || (
                 <div style={{ padding: '8px', position: 'absolute' }}>
                     <Link to="/"><HomeButton /></Link>

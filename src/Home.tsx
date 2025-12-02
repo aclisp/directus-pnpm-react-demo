@@ -2,6 +2,7 @@ import { readItems, readMe, serverInfo } from '@directus/sdk'
 import { useRequest } from 'ahooks'
 import { Avatar, Card, Flex } from 'antd'
 import { useNavigate } from 'react-router'
+import { Title } from './components/Title'
 import { useDirectus, useDirectusAuth } from './directus'
 import { asset } from './directus/assets'
 
@@ -95,6 +96,7 @@ function ProductList() {
 export function Home() {
     return (
         <Flex vertical gap="large">
+            <Title title="首页" />
             <div>首页</div>
             <ProductList />
             <ServerInfo />

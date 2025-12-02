@@ -1,5 +1,6 @@
 import { App, Button, DatePicker, Space, version } from 'antd'
 import { version as reactVersion } from 'react'
+import { Title } from './components/Title'
 
 export function Demo1() {
     const { modal } = App.useApp()
@@ -10,6 +11,7 @@ export function Demo1() {
 
     return (
         <>
+            <Title title="Demo1" />
             antd@
             {version}
             , react@

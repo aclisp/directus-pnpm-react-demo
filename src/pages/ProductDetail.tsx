@@ -5,6 +5,7 @@ import { Affix, Button, Flex, Form, Input, Radio, theme } from 'antd'
 import { useParams, useSearchParams } from 'react-router'
 import { LookupSelect } from '../components/LookupSelect'
 import { RelatedList } from '../components/RelatedList'
+import { Title } from '../components/Title'
 import type { Item } from '../components/types'
 import { useDirectus } from '../directus'
 import { datetime } from '../directus/datetime'
@@ -61,6 +62,7 @@ export function ProductDetail() {
 
     return (
         <>
+            <Title title="产品详情" data={data} />
             <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false} onFinish={onFinish} styles={{ label: { color: token.colorTextSecondary } }}>
                 <Form.Item layout="vertical" label="操作">
                     <Affix>
