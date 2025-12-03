@@ -20,7 +20,7 @@ interface FormValues {
     }
 }
 
-export function ProductDetail() {
+export function Product() {
     const { token } = theme.useToken()
 
     const {
