@@ -1,16 +1,13 @@
-import { readItem } from '@directus/sdk'
-import { useRequest } from 'ahooks'
 import type { FormProps } from 'antd'
-import { Affix, Button, Flex, Form, Input, Radio, theme } from 'antd'
-import { useParams, useSearchParams } from 'react-router'
+import { Affix, Button, Divider, Flex, Form, Input, Radio, theme } from 'antd'
+import { DebugItem } from '../components/DebugItem'
 import { LookupSelect } from '../components/LookupSelect'
 import { RelatedList } from '../components/RelatedList'
 import { Title } from '../components/Title'
 import type { Item } from '../components/types'
-import { useDirectus } from '../directus'
 import { datetime } from '../directus/datetime'
 import { username } from '../directus/users'
-import { queryToNestedObject } from '../utils/query-to-nested-object'
+import { useItemFromPage } from './use-item-from-page'
 
 interface FormValues {
     name: string
@@ -23,39 +20,28 @@ interface FormValues {
 }
 
 export function ProductDetail() {
-    const [form] = Form.useForm()
-    const params = useParams()
-    const [searchParams] = useSearchParams()
-    const directus = useDirectus()
     const { token } = theme.useToken()
 
-    const prefill = queryToNestedObject(searchParams)
-    const isEdit = (params.id && params.id != '+')
+    const {
+        form,
+        id,
+        data,
+        isEdit,
+    } = useItemFromPage('product', [
+        'id',
+        'name',
+        'description',
+        'status',
+        'brand_id.id',
+        'brand_id.name',
+        'user_created.first_name',
+        'user_created.last_name',
+        'date_created',
+        'user_updated.first_name',
+        'user_updated.last_name',
+        'date_updated',
+    ])
 
-    const { data } = useRequest(async () => {
-        if (!params.id || !isEdit) {
-            return prefill
-        }
-
-        return await directus.request(readItem('product', params.id, {
-            fields: [
-                'id',
-                'name',
-                'description',
-                'status',
-                'brand_id.id',
-                'brand_id.name',
-                'user_created.first_name',
-                'user_created.last_name',
-                'date_created',
-                'user_updated.first_name',
-                'user_updated.last_name',
-                'date_updated',
-            ],
-        }))
-    }, {
-        onSuccess: data => form.setFieldsValue(data),
-    })
     const onFinish: FormProps<FormValues>['onFinish'] = (values) => {
         console.log('Received values from form: ', values)
     }
@@ -108,8 +94,8 @@ export function ProductDetail() {
                 {isEdit && <SystemFields data={data} />}
             </Form>
 
-            {/* <Divider />
-            <DebugItem collection="product" id={params.id} /> */}
+            <Divider />
+            <DebugItem collection="product" id={id} />
         </>
     )
 }
@@ -169,16 +155,16 @@ function ProductFiles({ data }: { data?: Item }) {
 function SystemFields({ data }: { data?: Item }) {
     return (
         <div className="form-grid">
-            <Form.Item<FormValues> className="form-item" label="创建人">
+            <Form.Item className="form-item" label="创建人">
                 <div>{username(data?.user_created)}</div>
             </Form.Item>
-            <Form.Item<FormValues> className="form-item" label="创建时间">
+            <Form.Item className="form-item" label="创建时间">
                 <div>{datetime(data?.date_created)}</div>
             </Form.Item>
-            <Form.Item<FormValues> className="form-item" label="更新人">
+            <Form.Item className="form-item" label="更新人">
                 <div>{username(data?.user_updated)}</div>
             </Form.Item>
-            <Form.Item<FormValues> className="form-item" label="更新时间">
+            <Form.Item className="form-item" label="更新时间">
                 <div>{datetime(data?.date_updated)}</div>
             </Form.Item>
         </div>
@@ -187,7 +173,7 @@ function SystemFields({ data }: { data?: Item }) {
 
 function ProductID({ data }: { data?: Item }) {
     return (
-        <Form.Item<FormValues> className="form-item" label="产品ID">
+        <Form.Item className="form-item" label="产品ID">
             <div>{data?.id}</div>
         </Form.Item>
     )
