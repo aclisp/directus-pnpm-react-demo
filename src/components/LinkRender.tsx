@@ -5,12 +5,19 @@ interface LinkRenderProps {
     value: unknown
     record: Record<string, unknown>
     collection: string
+    foreignKeyField: string
+    foreignKeyValue?: string | number
 }
 
-export function LinkRender({ value, record, collection }: LinkRenderProps) {
-    const id = String(record.id)
+export function LinkRender({
+    value,
+    record,
+    collection,
+    foreignKeyField,
+    foreignKeyValue,
+}: LinkRenderProps) {
     return (
-        <Link to={`/${collection}/${id}`}>
+        <Link to={`/${collection}/${record.id}?${foreignKeyField}.id=${foreignKeyValue}`}>
             {String(value)}
         </Link>
     )

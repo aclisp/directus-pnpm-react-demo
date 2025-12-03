@@ -12,6 +12,7 @@ import AppLayout from './App.tsx'
 import { Demo1 } from './Demo1'
 import { Home } from './Home'
 import { Login } from './Login.tsx'
+import { ProductCategoryPage } from './pages/ProductCategoryPage.tsx'
 import { ProductPage } from './pages/ProductPage.tsx'
 import { ProductReviewPage } from './pages/ProductReviewPage.tsx'
 
@@ -35,6 +36,7 @@ createRoot(document.getElementById('root')!).render(
                             <Route path="demo1" element={<Demo1 />} />
                             <Route path="product/:id" element={<ProductPage />} />
                             <Route path="product_reviews/:id" element={<ProductReviewPage />} />
+                            <Route path="product_category/:id" element={<ProductCategoryPage />} />
                         </Route>
                         <Route path="login" element={<Login />}>
                         </Route>

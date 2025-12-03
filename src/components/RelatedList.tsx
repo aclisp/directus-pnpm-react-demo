@@ -45,11 +45,34 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
             hidden: x.hidden,
         }
         if (x.render?.type == 'image') {
-            return { ...column, render: value => <ImageRender value={value} {...x.render} /> }
+            return {
+                ...column, render: value => (
+                    <ImageRender
+                        value={value}
+                        {...x.render}
+                    />
+                ),
+            }
         } else if (x.render?.type == 'link') {
-            return { ...column, render: (value, record) => <LinkRender value={value} record={record} collection={collection} /> }
+            return {
+                ...column, render: (value, record) => (
+                    <LinkRender
+                        value={value}
+                        record={record}
+                        collection={collection}
+                        foreignKeyField={foreignKeyField}
+                        foreignKeyValue={foreignKeyValue}
+                    />
+                ),
+            }
         } else if (x.render?.type == 'user') {
-            return { ...column, render: value => <UserRender user={value} /> }
+            return {
+                ...column, render: value => (
+                    <UserRender
+                        user={value}
+                    />
+                ),
+            }
         } else {
             return column
         }

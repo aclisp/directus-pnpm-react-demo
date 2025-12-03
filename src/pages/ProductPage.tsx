@@ -60,6 +60,10 @@ export function ProductPage() {
         navigate(`/product_reviews/+?product_id.id=${id}&product_id.name=${data?.name}`)
     }
 
+    const createProductCategory = () => {
+        navigate(`/product_category/+?product_id.id=${id}&product_id.name=${data?.name}`)
+    }
+
     return (
         <>
             <Title title="产品详情" data={data} />
@@ -69,7 +73,7 @@ export function ProductPage() {
                         <Flex wrap style={{ paddingTop: 8, paddingBottom: 8, gap: 8, backgroundColor: token.colorBgElevated }}>
                             <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
                             {isEdit && <Button>新增图片</Button>}
-                            {isEdit && <Button>关联品类</Button>}
+                            {isEdit && <Button onClick={createProductCategory}>关联品类</Button>}
                             {isEdit && <Button onClick={createProductReview}>添加评论</Button>}
                         </Flex>
                     </Affix>
