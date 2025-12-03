@@ -1,12 +1,13 @@
+import { updateItem } from '@directus/sdk'
 import type { FormProps } from 'antd'
-import { Affix, Button, Divider, Flex, Form, Input, Radio, theme } from 'antd'
-import { DebugItem } from '../components/DebugItem'
+import { Affix, Button, Flex, Form, Input, Radio, theme } from 'antd'
 import { LookupSelect } from '../components/LookupSelect'
 import { RelatedList } from '../components/RelatedList'
 import { Title } from '../components/Title'
 import type { Item } from '../components/types'
 import { datetime } from '../directus/datetime'
 import { username } from '../directus/users'
+import { reviseFormValuesForUpdate } from '../utils/revise-form-values-for-update'
 import { useItemFromPage } from './use-item-from-page'
 
 interface FormValues {
@@ -23,10 +24,15 @@ export function ProductDetail() {
     const { token } = theme.useToken()
 
     const {
+        directus,
         form,
         id,
         data,
         isEdit,
+        isDirty,
+        fields,
+        updatePage,
+        handleValuesChange,
     } = useItemFromPage('product', [
         'id',
         'name',
@@ -42,18 +48,20 @@ export function ProductDetail() {
         'date_updated',
     ])
 
-    const onFinish: FormProps<FormValues>['onFinish'] = (values) => {
-        console.log('Received values from form: ', values)
+    const onFinish: FormProps<FormValues>['onFinish'] = async (values) => {
+        const item = reviseFormValuesForUpdate(values)
+        const data = await directus.request(updateItem('product', id!, item, { fields }))
+        updatePage(data)
     }
 
     return (
         <>
             <Title title="产品详情" data={data} />
-            <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false} onFinish={onFinish} styles={{ label: { color: token.colorTextSecondary } }}>
+            <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false} onFinish={onFinish} onValuesChange={handleValuesChange} styles={{ label: { color: token.colorTextSecondary } }}>
                 <Form.Item layout="vertical" label="操作">
                     <Affix>
                         <Flex wrap style={{ paddingTop: 8, paddingBottom: 8, gap: 8, backgroundColor: token.colorBgElevated }}>
-                            <Button type="primary" htmlType="submit">保存</Button>
+                            <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
                             {isEdit && <Button>新增图片</Button>}
                             {isEdit && <Button>关联品类</Button>}
                             {isEdit && <Button>添加评论</Button>}
@@ -94,8 +102,8 @@ export function ProductDetail() {
                 {isEdit && <SystemFields data={data} />}
             </Form>
 
-            <Divider />
-            <DebugItem collection="product" id={id} />
+            {/* <Divider />
+            <DebugItem collection="product" id={id} /> */}
         </>
     )
 }
