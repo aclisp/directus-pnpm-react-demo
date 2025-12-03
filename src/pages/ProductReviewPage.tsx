@@ -85,10 +85,11 @@ export function ProductReviewPage() {
                     <Form.Item<FormValues> className="form-item" label="标题" name="title">
                         <Input />
                     </Form.Item>
-                    <Form.Item<FormValues> className="form-item" label="内容" name="content">
-                        <Input.TextArea />
-                    </Form.Item>
                 </div>
+
+                <Form.Item<FormValues> labelCol={{ span: 2 }} className="form-item-full" label="内容" name="content">
+                    <Input.TextArea />
+                </Form.Item>
 
                 {isEdit && <SystemFields data={data} />}
             </Form>

@@ -11,10 +11,19 @@
     /* The 'calc' accounts for half of the 40px 'gap' on each side */
 }
 
+.form-item-full {
+    width: calc(100% - 40px);
+}
+
 @media (max-width: 448px) {
+
     .form-item {
         /* Set the base width to 100% on mobile */
         /* flex: grow shrink basis; */
         flex: 1 1 100%;
+    }
+
+    .form-item-full {
+        width: 100%;
     }
 }
