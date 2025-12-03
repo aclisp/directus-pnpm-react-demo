@@ -1,15 +1,22 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
+import { deleteItem } from '@directus/sdk'
 import { App, Button, ConfigProvider, theme } from 'antd'
 import { get } from 'lodash'
 import { Link } from 'react-router'
+import { useDirectus } from '../directus'
 
-export function ActionRender({ record, collection, showEdit, collectionTitle }: {
+interface ActionRenderProps {
+    refresh: () => void
     record: Record<string, unknown>
     collection: string
     showEdit: boolean
     collectionTitle?: string[]
-}) {
-    const id = String(record.id)
+    foreignKeyField: string
+    foreignKeyValue?: string | number
+}
+
+export function ActionRender(props: ActionRenderProps) {
+    const { record, collectionTitle, showEdit } = props
     let name: string | undefined
     if (collectionTitle) {
         name = get(record, collectionTitle)
@@ -20,22 +27,25 @@ export function ActionRender({ record, collection, showEdit, collectionTitle }: 
     }
     return (
         <>
-            {showEdit && <EditButton collection={collection} id={id} />}
-            <DeleteButton collection={collection} id={id} name={name} />
+            {showEdit && <EditButton name={name} {...props} />}
+            <DeleteButton name={name} {...props} />
         </>
     )
 }
 
-interface EditOrDeleteProps {
-    collection: string
-    id: string
+type EditOrDeleteProps = ActionRenderProps & {
     /** The `name` field in the collection is used for deletion hint */
     name?: string
 }
 
-function EditButton({ collection, id }: EditOrDeleteProps) {
+function EditButton({
+    collection,
+    record,
+    foreignKeyField,
+    foreignKeyValue,
+}: EditOrDeleteProps) {
     return (
-        <Link to={`/${collection}/${id}`}>
+        <Link to={`/${collection}/${record.id}?${foreignKeyField}.id=${foreignKeyValue}`}>
             <Button
                 variant="text"
                 size="small"
@@ -46,7 +56,13 @@ function EditButton({ collection, id }: EditOrDeleteProps) {
     )
 }
 
-function DeleteButton({ collection, id, name }: EditOrDeleteProps) {
+function DeleteButton({
+    collection,
+    record,
+    name,
+    refresh,
+}: EditOrDeleteProps) {
+    const directus = useDirectus()
     const { modal } = App.useApp()
     const { token } = theme.useToken()
     const content = name ? `确定删除【${name}】吗？` : '确定删除吗？'
@@ -54,7 +70,7 @@ function DeleteButton({ collection, id, name }: EditOrDeleteProps) {
         modal.confirm({
             content,
             onOk: () => {
-                console.log(`Delete ${collection} by id = ${id}`)
+                directus.request(deleteItem(collection, String(record.id))).then(refresh)
             },
         })
     }

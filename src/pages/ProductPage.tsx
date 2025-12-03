@@ -1,12 +1,12 @@
 import { updateItem } from '@directus/sdk'
 import type { FormProps } from 'antd'
 import { Affix, Button, Flex, Form, Input, Radio, theme } from 'antd'
+import { useNavigate } from 'react-router'
 import { LookupSelect } from '../components/LookupSelect'
 import { RelatedList } from '../components/RelatedList'
+import { SystemFields } from '../components/SystemFields'
 import { Title } from '../components/Title'
 import type { Item } from '../components/types'
-import { datetime } from '../directus/datetime'
-import { username } from '../directus/users'
 import { reviseFormValuesForUpdate } from '../utils/revise-form-values-for-update'
 import { useItemFromPage } from './use-item-from-page'
 
@@ -20,7 +20,7 @@ interface FormValues {
     }
 }
 
-export function Product() {
+export function ProductPage() {
     const { token } = theme.useToken()
 
     const {
@@ -54,6 +54,12 @@ export function Product() {
         updatePage(data)
     }
 
+    const navigate = useNavigate()
+
+    const createProductReview = () => {
+        navigate(`/product_reviews/+?product_id.id=${id}&product_id.name=${data?.name}`)
+    }
+
     return (
         <>
             <Title title="产品详情" data={data} />
@@ -64,7 +70,7 @@ export function Product() {
                             <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
                             {isEdit && <Button>新增图片</Button>}
                             {isEdit && <Button>关联品类</Button>}
-                            {isEdit && <Button>添加评论</Button>}
+                            {isEdit && <Button onClick={createProductReview}>添加评论</Button>}
                         </Flex>
                     </Affix>
                 </Form.Item>
@@ -157,25 +163,6 @@ function ProductFiles({ data }: { data?: Item }) {
                 ]}
             />
         </Form.Item>
-    )
-}
-
-function SystemFields({ data }: { data?: Item }) {
-    return (
-        <div className="form-grid">
-            <Form.Item className="form-item" label="创建人">
-                <div>{username(data?.user_created)}</div>
-            </Form.Item>
-            <Form.Item className="form-item" label="创建时间">
-                <div>{datetime(data?.date_created)}</div>
-            </Form.Item>
-            <Form.Item className="form-item" label="更新人">
-                <div>{username(data?.user_updated)}</div>
-            </Form.Item>
-            <Form.Item className="form-item" label="更新时间">
-                <div>{datetime(data?.date_updated)}</div>
-            </Form.Item>
-        </div>
     )
 }
 

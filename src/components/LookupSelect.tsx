@@ -7,7 +7,7 @@ import { useDirectus } from '../directus'
 import { ImageRender } from './ImageRender'
 import type { CollectionField } from './types'
 
-type LookupSelectValueType = Record<string, unknown> & {
+export type LookupSelectValueType = Record<string, unknown> & {
     id: string | number
 }
 
@@ -24,6 +24,8 @@ interface LookupSelectProps {
     collection: string
     /** The fields of the lookup collection */
     collectionFields: CollectionField[]
+    /** Once initialValue is set, other options are not available */
+    initialValue?: LookupSelectValueType
 }
 
 interface SelectionType {
@@ -46,6 +48,7 @@ export const LookupSelect: React.FC<LookupSelectProps> = (props) => {
         allowClear = false,
         collection,
         collectionFields,
+        initialValue,
     } = props
 
     // Controller state for modal visibility
@@ -96,6 +99,7 @@ export const LookupSelect: React.FC<LookupSelectProps> = (props) => {
                 currentValue={value}
                 onSelect={handleSelection} // Pass back selected item
                 onCancel={handleCancel} // Close modal
+                initialValue={initialValue}
             />
         </span>
     )
@@ -108,6 +112,7 @@ function LookupSelectionModal({
     currentValue,
     onSelect,
     onCancel,
+    initialValue,
 }: {
     open: boolean
     // Fields needed for Directus request and table display
@@ -118,6 +123,8 @@ function LookupSelectionModal({
     // Callbacks to communicate back to the parent
     onSelect: (value: LookupSelectValueType | null) => void
     onCancel: () => void
+    // Once initialValue is set, other options are not available
+    initialValue?: LookupSelectValueType
 }) {
     const directus = useDirectus()
     const [selectionList, setSelectionList] = useState<LookupSelectValueType[]>([])
@@ -146,7 +153,10 @@ function LookupSelectionModal({
     const { run } = useRequest(async () => {
         // Ensure that the id field is always included
         const fields = columns.map(x => x.key).concat('id')
-        return await directus.request(readItems(collection, { fields }))
+        return await directus.request(readItems(collection, {
+            fields,
+            filter: { id: { _eq: initialValue?.id } },
+        }))
     }, {
         onSuccess: data => setSelectionList(data as LookupSelectValueType[]),
         manual: true,

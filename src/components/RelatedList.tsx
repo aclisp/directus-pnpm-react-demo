@@ -55,19 +55,9 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         }
     })
 
-    // The last column contains the row actions
-    columns.push({
-        key: 'action',
-        title: '操作',
-        width: 65,
-        minWidth: 65,
-        fixed: 'end',
-        render: (_, record) => <ActionRender record={record} collection={collection} showEdit={showEdit} collectionTitle={collectionTitle} />,
-    })
-
     const directus = useDirectus()
 
-    const { data } = useRequest(async () => {
+    const { data, refresh } = useRequest(async () => {
         if (foreignKeyValue == undefined) {
             return undefined
         }
@@ -80,6 +70,26 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         }))
     }, {
         refreshDeps: [foreignKeyValue],
+    })
+
+    // The last column contains the row actions
+    columns.push({
+        key: 'action',
+        title: '操作',
+        width: 65,
+        minWidth: 65,
+        fixed: 'end',
+        render: (_, record) => (
+            <ActionRender
+                refresh={refresh}
+                record={record}
+                collection={collection}
+                showEdit={showEdit}
+                collectionTitle={collectionTitle}
+                foreignKeyField={foreignKeyField}
+                foreignKeyValue={foreignKeyValue}
+            />
+        ),
     })
 
     return (

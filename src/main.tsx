@@ -1,3 +1,6 @@
+import 'antd/dist/reset.css'
+import './index.css'
+
 import { App, ConfigProvider, theme } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
 import 'dayjs/locale/zh-cn'
@@ -9,10 +12,8 @@ import AppLayout from './App.tsx'
 import { Demo1 } from './Demo1'
 import { Home } from './Home'
 import { Login } from './Login.tsx'
-import { Product } from './pages/Product.tsx'
-
-import 'antd/dist/reset.css'
-import './index.css'
+import { ProductPage } from './pages/ProductPage.tsx'
+import { ProductReviewPage } from './pages/ProductReviewPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -32,7 +33,8 @@ createRoot(document.getElementById('root')!).render(
                             <Route index element={<Home />} />
                             <Route path="about" element={<About />} />
                             <Route path="demo1" element={<Demo1 />} />
-                            <Route path="product/:id" element={<Product />} />
+                            <Route path="product/:id" element={<ProductPage />} />
+                            <Route path="product_reviews/:id" element={<ProductReviewPage />} />
                         </Route>
                         <Route path="login" element={<Login />}>
                         </Route>
