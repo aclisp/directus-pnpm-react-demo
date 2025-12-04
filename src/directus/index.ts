@@ -11,9 +11,9 @@ export function useDirectus() {
     return directus
 }
 
-export function useDirectusAuth(): [typeof directus, string | null | undefined] {
-    const { data: token } = useRequest(async () => {
+export function useDirectusAuth(): [typeof directus, string | null | undefined, () => void] {
+    const { data: token, refresh: refreshToken } = useRequest(async () => {
         return await directus.getToken()
     })
-    return [directus, token]
+    return [directus, token, refreshToken]
 }

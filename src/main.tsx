@@ -13,6 +13,7 @@ import { Demo1 } from './Demo1'
 import { Home } from './Home'
 import { Login } from './Login.tsx'
 import { ProductCategoryPage } from './pages/ProductCategoryPage.tsx'
+import { ProductFilesPage } from './pages/ProductFilesPage.tsx'
 import { ProductPage } from './pages/ProductPage.tsx'
 import { ProductReviewPage } from './pages/ProductReviewPage.tsx'
 
@@ -37,6 +38,7 @@ createRoot(document.getElementById('root')!).render(
                             <Route path="product/:id" element={<ProductPage />} />
                             <Route path="product_reviews/:id" element={<ProductReviewPage />} />
                             <Route path="product_category/:id" element={<ProductCategoryPage />} />
+                            <Route path="product_files/:id" element={<ProductFilesPage />} />
                         </Route>
                         <Route path="login" element={<Login />}>
                         </Route>

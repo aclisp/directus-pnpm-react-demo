@@ -1,7 +1,9 @@
 import { updateItem } from '@directus/sdk'
 import type { FormProps } from 'antd'
-import { Affix, Button, Flex, Form, Input, Radio, theme } from 'antd'
+import { Button, Form, Input, Radio } from 'antd'
 import { useNavigate } from 'react-router'
+import { Form1 } from '../components/Form1'
+import { FormAction } from '../components/FormAction'
 import { LookupSelect } from '../components/LookupSelect'
 import { RelatedList } from '../components/RelatedList'
 import { SystemFields } from '../components/SystemFields'
@@ -21,8 +23,6 @@ interface FormValues {
 }
 
 export function ProductPage() {
-    const { token } = theme.useToken()
-
     const {
         directus,
         form,
@@ -64,20 +64,23 @@ export function ProductPage() {
         navigate(`/product_category/+?product_id.id=${id}&product_id.name=${data?.name}`)
     }
 
+    const createProductFile = () => {
+        navigate(`/product_files/+?product_id.id=${id}&product_id.name=${data?.name}`)
+    }
+
     return (
         <>
             <Title title="产品详情" data={data} />
-            <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false} onFinish={onFinish} onValuesChange={handleValuesChange} styles={{ label: { color: token.colorTextSecondary } }}>
-                <Form.Item layout="vertical" label="操作">
-                    <Affix>
-                        <Flex wrap style={{ paddingTop: 8, paddingBottom: 8, gap: 8, backgroundColor: token.colorBgElevated }}>
-                            <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
-                            {isEdit && <Button>新增图片</Button>}
-                            {isEdit && <Button onClick={createProductCategory}>关联品类</Button>}
-                            {isEdit && <Button onClick={createProductReview}>添加评论</Button>}
-                        </Flex>
-                    </Affix>
-                </Form.Item>
+
+            <Form1 form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
+
+                <FormAction label="操作">
+                    <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
+                    {isEdit && <Button onClick={createProductFile}>新增图片</Button>}
+                    {isEdit && <Button onClick={createProductCategory}>关联品类</Button>}
+                    {isEdit && <Button onClick={createProductReview}>添加评论</Button>}
+                </FormAction>
+
                 <div className="form-grid">
                     {isEdit && <ProductID data={data} />}
 
@@ -106,11 +109,12 @@ export function ProductPage() {
                         />
                     </Form.Item>
                 </div>
+
                 {isEdit && <ProductFiles data={data} />}
                 {isEdit && <ProductCategory data={data} />}
                 {isEdit && <ProductReviews data={data} />}
                 {isEdit && <SystemFields data={data} />}
-            </Form>
+            </Form1>
 
             {/* <Divider />
             <DebugItem collection="product" id={id} /> */}
@@ -165,6 +169,7 @@ function ProductFiles({ data }: { data?: Item }) {
                 collectionFields={[
                     { field: ['directus_files_id', 'id'], title: '图片', render: { type: 'image', height: 96, maxWidth: 192, preview: true } },
                 ]}
+                showEdit
             />
         </Form.Item>
     )

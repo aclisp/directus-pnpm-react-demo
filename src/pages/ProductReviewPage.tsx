@@ -1,5 +1,7 @@
 import { createItem, updateItem } from '@directus/sdk'
-import { Affix, Button, Flex, Form, Input, InputNumber, theme, type FormProps } from 'antd'
+import { Button, Form, Input, InputNumber, type FormProps } from 'antd'
+import { Form1 } from '../components/Form1'
+import { FormAction } from '../components/FormAction'
 import { LookupSelect, type LookupSelectValueType } from '../components/LookupSelect'
 import { SystemFields } from '../components/SystemFields'
 import { Title } from '../components/Title'
@@ -15,8 +17,6 @@ interface FormValues {
 }
 
 export function ProductReviewPage() {
-    const { token } = theme.useToken()
-
     const {
         navigate,
         directus,
@@ -60,14 +60,10 @@ export function ProductReviewPage() {
     return (
         <>
             <Title title="产品评论" data={data} />
-            <Form form={form} labelCol={{ span: 4 }} labelAlign="left" colon={false} onFinish={onFinish} onValuesChange={handleValuesChange} styles={{ label: { color: token.colorTextSecondary } }}>
-                <Form.Item layout="vertical" label="操作">
-                    <Affix>
-                        <Flex wrap style={{ paddingTop: 8, paddingBottom: 8, gap: 8, backgroundColor: token.colorBgElevated }}>
-                            <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
-                        </Flex>
-                    </Affix>
-                </Form.Item>
+            <Form1 form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
+                <FormAction label="操作">
+                    <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
+                </FormAction>
 
                 <div className="form-grid">
                     <Form.Item<FormValues> className="form-item" label="产品" name="product_id">
@@ -92,7 +88,7 @@ export function ProductReviewPage() {
                 </Form.Item>
 
                 {isEdit && <SystemFields data={data} />}
-            </Form>
+            </Form1>
         </>
     )
 }
