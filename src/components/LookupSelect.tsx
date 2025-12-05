@@ -1,11 +1,11 @@
-import { readItems } from '@directus/sdk'
-import { useRequest } from 'ahooks'
+import { aggregate, readItem, readItems } from '@directus/sdk'
+import { useDebounce, useRequest } from 'ahooks'
 import type { TableProps } from 'antd'
-import { Modal, Select, Table } from 'antd'
+import { Flex, Input, Modal, Select, Table, theme } from 'antd'
 import { useEffect, useState } from 'react'
 import { useDirectus } from '../directus'
 import { ImageRender } from './ImageRender'
-import type { CollectionField } from './types'
+import type { CollectionField, Item } from './types'
 
 export type LookupSelectValueType = Record<string, unknown> & {
     id: string | number
@@ -144,6 +144,24 @@ function LookupSelectionModal({
         }
     })
 
+    // Ensure that the id field is always included
+    const fields = columns.map(x => x.key).concat('id')
+
+    // Limit the count of directus readItems request
+    const limit = 10
+
+    const {
+        showSearch,
+        setShowSearch,
+        searchValue,
+        setSearchValue,
+    } = useSearchRequest({
+        collection,
+        fields,
+        limit,
+        onSuccess: data => setSelectionList(data as LookupSelectValueType[]),
+    })
+
     // Effect 1: Synchronize selection state when the external value changes
     useEffect(() => {
         setSelection(valueToSelection(currentValue))
@@ -151,12 +169,37 @@ function LookupSelectionModal({
 
     // Effect 2: Fetch data when the modal opens
     const { run } = useRequest(async () => {
-        // Ensure that the id field is always included
-        const fields = columns.map(x => x.key).concat('id')
-        return await directus.request(readItems(collection, {
+        // If there's initialValue, then use it and exclude others.
+        if (initialValue) {
+            const data = await directus.request(readItem(collection, initialValue.id, { fields }))
+            return [data]
+        }
+
+        // Get the data list as the options for selection.
+        const dataList = await directus.request(readItems(collection, {
             fields,
-            filter: { id: { _eq: initialValue?.id } },
+            limit,
         }))
+
+        // If there's currentValue, then get it and merge it into the final result.
+        if (currentValue) {
+            const data = await directus.request(readItem(collection, currentValue.id, { fields }))
+            if (dataList.find(v => v.id == data.id) === undefined) {
+                dataList.unshift(data)
+                dataList.pop()
+            }
+        }
+
+        // Determine if 'Search' shoud be present
+        directus.request(aggregate(collection, {
+            aggregate: { count: '*' },
+        })).then((data) => {
+            if (Number(data[0]?.count) > limit) {
+                setShowSearch(true)
+            }
+        })
+
+        return dataList
     }, {
         onSuccess: data => setSelectionList(data as LookupSelectValueType[]),
         manual: true,
@@ -203,17 +246,78 @@ function LookupSelectionModal({
             onOk={handleOk}
             onCancel={handleCancel}
         >
-            <Table<LookupSelectValueType>
-                rowKey="id"
-                dataSource={selectionList}
-                columns={columns}
-                rowSelection={rowSelection}
-                onRow={record => ({
-                    onClick: () => handleRowClick(record),
-                })}
-                pagination={false}
-                size="small"
-            />
+            <Flex vertical gap="small">
+                {showSearch && (
+                    <Input
+                        placeholder="搜索..."
+                        value={searchValue}
+                        onChange={e => setSearchValue(e.target.value)}
+                    />
+                )}
+                <Table<LookupSelectValueType>
+                    rowKey="id"
+                    dataSource={selectionList}
+                    columns={columns}
+                    rowSelection={rowSelection}
+                    onRow={record => ({
+                        onClick: () => handleRowClick(record),
+                    })}
+                    pagination={false}
+                    size="small"
+                />
+                {showSearch && <SearchHint />}
+            </Flex>
         </Modal>
     )
-};
+}
+
+function useSearchRequest({
+    collection,
+    fields,
+    limit,
+    onSuccess,
+}: {
+    collection: string
+    fields: string[]
+    limit: number
+    onSuccess: (data: Item[]) => void
+}) {
+    const directus = useDirectus()
+    const [showSearch, setShowSearch] = useState(false)
+    const [searchValue, setSearchValue] = useState('')
+
+    const debouncedSearchTerm = useDebounce(searchValue.trim(), { wait: 500 })
+    const { run: runSearchRequest } = useRequest(async () => {
+        return await directus.request(readItems(
+            collection,
+            {
+                fields,
+                limit,
+                search: debouncedSearchTerm,
+            },
+        ))
+    }, {
+        manual: true,
+        onSuccess,
+    })
+    useEffect(() => {
+        if (debouncedSearchTerm) {
+            runSearchRequest()
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [debouncedSearchTerm])
+
+    return {
+        showSearch,
+        setShowSearch,
+        searchValue,
+        setSearchValue,
+    }
+}
+
+function SearchHint() {
+    const { token } = theme.useToken()
+    return (
+        <div style={{ color: token.colorTextTertiary }}>备注：请搜索更多选择项</div>
+    )
+}
