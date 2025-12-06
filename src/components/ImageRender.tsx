@@ -16,7 +16,7 @@ export function ImageRender(props: ImageRenderProps) {
         maxWidth = 48,
         preview = false,
     } = props
-    const [directus, token] = useDirectusAuth()
+    const { directus, token } = useDirectusAuth()
     return (
         <Image
             preview={preview}

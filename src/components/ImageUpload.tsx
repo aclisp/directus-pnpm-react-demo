@@ -19,7 +19,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
         onChange,
     } = props
 
-    const [directus, token, refreshToken] = useDirectusAuth()
+    const { directus, token, refreshToken } = useDirectusAuth()
 
     // Notify external component
     const triggerChange = (changedValue: ImageUploadValueType | null) => {

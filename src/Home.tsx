@@ -33,7 +33,7 @@ function UserInfo() {
 function ProductList() {
     const navigate = useNavigate()
 
-    const [directus, token] = useDirectusAuth()
+    const { directus, token } = useDirectusAuth()
 
     const { data } = useRequest(async () => {
         return await directus.request(readItems('product', {

@@ -7,8 +7,7 @@ import { useDirectusAuth } from './directus'
 const { Text } = Typography
 
 export function About() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_directus, token] = useDirectusAuth()
+    const { token } = useDirectusAuth()
     if (!token) {
         return (
             <>
