@@ -35,10 +35,12 @@ createRoot(document.getElementById('root')!).render(
                             <Route index element={<Home />} />
                             <Route path="about" element={<About />} />
                             <Route path="demo1" element={<Demo1 />} />
-                            <Route path="product/:id" element={<ProductPage />} />
-                            <Route path="product_reviews/:id" element={<ProductReviewPage />} />
-                            <Route path="product_category/:id" element={<ProductCategoryPage />} />
-                            <Route path="product_files/:id" element={<ProductFilesPage />} />
+                            <Route path="form">
+                                <Route path="product/:id" element={<ProductPage />} />
+                                <Route path="product_reviews/:id" element={<ProductReviewPage />} />
+                                <Route path="product_category/:id" element={<ProductCategoryPage />} />
+                                <Route path="product_files/:id" element={<ProductFilesPage />} />
+                            </Route>
                         </Route>
                         <Route path="login" element={<Login />}>
                         </Route>

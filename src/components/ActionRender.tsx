@@ -45,7 +45,7 @@ function EditButton({
     foreignKeyValue,
 }: EditOrDeleteProps) {
     return (
-        <Link to={`/${collection}/${record.id}?${foreignKeyField}.id=${foreignKeyValue}`}>
+        <Link to={`/form/${collection}/${record.id}?${foreignKeyField}.id=${foreignKeyValue}`}>
             <Button
                 variant="text"
                 size="small"

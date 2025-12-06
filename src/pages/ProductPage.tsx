@@ -57,15 +57,15 @@ export function ProductPage() {
     const navigate = useNavigate()
 
     const createProductReview = () => {
-        navigate(`/product_reviews/+?product_id.id=${id}&product_id.name=${data?.name}`)
+        navigate(`/form/product_reviews/+?product_id.id=${id}&product_id.name=${data?.name}`)
     }
 
     const createProductCategory = () => {
-        navigate(`/product_category/+?product_id.id=${id}&product_id.name=${data?.name}`)
+        navigate(`/form/product_category/+?product_id.id=${id}&product_id.name=${data?.name}`)
     }
 
     const createProductFile = () => {
-        navigate(`/product_files/+?product_id.id=${id}&product_id.name=${data?.name}`)
+        navigate(`/form/product_files/+?product_id.id=${id}&product_id.name=${data?.name}`)
     }
 
     return (

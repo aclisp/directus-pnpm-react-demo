@@ -17,7 +17,7 @@ export function LinkRender({
     foreignKeyValue,
 }: LinkRenderProps) {
     return (
-        <Link to={`/${collection}/${record.id}?${foreignKeyField}.id=${foreignKeyValue}`}>
+        <Link to={`/form/${collection}/${record.id}?${foreignKeyField}.id=${foreignKeyValue}`}>
             {String(value)}
         </Link>
     )

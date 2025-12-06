@@ -56,7 +56,7 @@ function ProductList() {
     }
 
     const onClickCard = (productId: string) => {
-        navigate(`/product/${productId}`)
+        navigate(`/form/product/${productId}`)
     }
 
     return (
