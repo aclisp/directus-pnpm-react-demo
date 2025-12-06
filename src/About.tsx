@@ -1,6 +1,7 @@
 import type { FormProps } from 'antd'
 import { Button, Form, Typography } from 'antd'
 import { PriceInput, type PriceValue } from './components/PriceInput'
+import { StyledText } from './components/StyledText/StyledText'
 import { Title } from './components/Title'
 import { useDirectusAuth } from './directus'
 
@@ -23,6 +24,7 @@ export function About() {
             <div>About</div>
             <Text ellipsis>{token}</Text>
             <TestPriceInputForm />
+            <StyledText value="风格文字" />
         </>
     )
 }

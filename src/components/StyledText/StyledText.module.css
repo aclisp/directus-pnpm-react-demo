@@ -1,0 +1,4 @@
+/* Should overwrite the `.isolated-red` defined in src/index.css */
+.isolated-red {
+    color: orange;
+}

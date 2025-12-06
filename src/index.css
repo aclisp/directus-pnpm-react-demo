@@ -27,3 +27,8 @@
         width: 100%;
     }
 }
+
+/* This style exists for CSS Modules file isolation testing */
+.isolated-red {
+    color: red;
+}
