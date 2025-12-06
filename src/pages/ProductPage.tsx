@@ -15,7 +15,7 @@ import { useItemFromPage } from './hooks/use-item-from-page'
 interface FormValues {
     name: string
     description: string
-    status: string
+    status: 'draft' | 'published' | 'archived'
     brand_id: {
         id: number
         name: string
