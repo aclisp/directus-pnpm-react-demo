@@ -1,9 +1,9 @@
+import { useDirectus } from '@/directus'
 import { aggregate, readItem, readItems } from '@directus/sdk'
 import { useDebounce, useRequest } from 'ahooks'
 import type { TableProps } from 'antd'
 import { Flex, Input, Modal, Select, Table, theme } from 'antd'
 import { useEffect, useState } from 'react'
-import { useDirectus } from '../directus'
 import { ImageRender } from './ImageRender'
 import type { CollectionField, Item } from './types'
 

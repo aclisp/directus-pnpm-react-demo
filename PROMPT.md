@@ -36,7 +36,7 @@
     - 统一放在 `pages` 目录，
     - 一般以 `Page` 结尾来命名
 自定义 Hooks 同样遵循以上原则：
-    - 与 "Page" 强相关的 Hook，放在 `pages` 目录下
+    - 与 "Page" 强相关的 Hook，放在 `pages/hooks` 目录下
 多文件组件，
     - 以组件名新建目录，目录下为该组件专用的 `.tsx`, `.module.css`, `.ts`, `.test.ts`，
     - 每个 Hook 是单独的 `.ts` 文件，以全小写 Kebab-Case 来命名

@@ -1,4 +1,4 @@
-import { username } from '../directus/users'
+import { username } from '@/directus/users'
 
 /**
  * Solely used by RelatedList for antd Table Column render.

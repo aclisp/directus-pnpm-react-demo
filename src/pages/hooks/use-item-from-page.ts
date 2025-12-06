@@ -1,11 +1,11 @@
+import type { Item } from '@/components/types'
+import { useDirectus } from '@/directus'
+import { queryToNestedObject } from '@/utils/query-to-nested-object'
 import { readItem } from '@directus/sdk'
 import { useRequest } from 'ahooks'
 import { Form } from 'antd'
 import { useState } from 'react'
 import { useNavigate, useParams, useSearchParams } from 'react-router'
-import type { Item } from '../components/types'
-import { useDirectus } from '../directus'
-import { queryToNestedObject } from '../utils/query-to-nested-object'
 
 /**
  * This hook can only be called from the Page component.

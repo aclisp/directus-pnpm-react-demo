@@ -1,6 +1,6 @@
+import { useDirectusAuth } from '@/directus'
+import { asset } from '@/directus/assets'
 import { Image } from 'antd'
-import { useDirectusAuth } from '../directus'
-import { asset } from '../directus/assets'
 import type { CollectionFieldRenderImage } from './types'
 
 type ImageRenderProps = Omit<CollectionFieldRenderImage, 'type'> & {

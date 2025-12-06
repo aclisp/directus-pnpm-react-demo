@@ -1,9 +1,9 @@
+import { useDirectus } from '@/directus'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { deleteItem } from '@directus/sdk'
 import { App, Button, ConfigProvider, theme } from 'antd'
 import { get } from 'lodash'
 import { Link } from 'react-router'
-import { useDirectus } from '../directus'
 
 interface ActionRenderProps {
     refresh: () => void

@@ -1,7 +1,7 @@
+import { useDirectusAuth } from '@/directus'
+import { asset } from '@/directus/assets'
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, Flex, Image, Upload, type UploadProps } from 'antd'
-import { useDirectusAuth } from '../directus'
-import { asset } from '../directus/assets'
 
 type ImageUploadValueType = string
 

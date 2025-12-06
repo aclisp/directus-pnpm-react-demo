@@ -1,4 +1,4 @@
-import type { Item } from '../components/types'
+import type { Item } from '@/components/types'
 
 /**
  * Clean up nested form data before sending it to Directus API.

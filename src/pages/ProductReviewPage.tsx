@@ -1,12 +1,12 @@
+import { Form1 } from '@/components/Form1'
+import { FormAction } from '@/components/FormAction'
+import { LookupSelect, type LookupSelectValueType } from '@/components/LookupSelect'
+import { SystemFields } from '@/components/SystemFields'
+import { Title } from '@/components/Title'
+import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update'
 import { createItem, updateItem } from '@directus/sdk'
 import { Button, Form, Input, InputNumber, type FormProps } from 'antd'
-import { Form1 } from '../components/Form1'
-import { FormAction } from '../components/FormAction'
-import { LookupSelect, type LookupSelectValueType } from '../components/LookupSelect'
-import { SystemFields } from '../components/SystemFields'
-import { Title } from '../components/Title'
-import { reviseFormValuesForUpdate } from '../utils/revise-form-values-for-update'
-import { useItemFromPage } from './use-item-from-page'
+import { useItemFromPage } from './hooks/use-item-from-page'
 
 interface FormValues {
     title: string

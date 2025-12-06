@@ -1,8 +1,8 @@
+import { useDirectus } from '@/directus'
 import { readFieldsByCollection, readItem, readRelations } from '@directus/sdk'
 import { useRequest } from 'ahooks'
 import type { CollapseProps } from 'antd'
 import { Collapse, Table } from 'antd'
-import { useDirectus } from '../directus'
 
 /**
  * Used to debug the specific directus item.

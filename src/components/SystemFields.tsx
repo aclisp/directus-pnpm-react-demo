@@ -1,6 +1,6 @@
+import { datetime } from '@/directus/datetime'
+import { username } from '@/directus/users'
 import { Form } from 'antd'
-import { datetime } from '../directus/datetime'
-import { username } from '../directus/users'
 import type { Item } from './types'
 
 /**
