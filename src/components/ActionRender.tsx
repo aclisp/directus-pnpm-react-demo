@@ -15,6 +15,9 @@ interface ActionRenderProps {
     foreignKeyValue?: string | number
 }
 
+/**
+ * Solely used by RelatedList for antd Table Column render.
+ */
 export function ActionRender(props: ActionRenderProps) {
     const { record, collectionTitle, showEdit } = props
     let name: string | undefined

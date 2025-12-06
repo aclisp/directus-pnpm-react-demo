@@ -25,6 +25,9 @@ interface RelatedListProps {
     showEdit?: boolean
 }
 
+/**
+ * A custom component for the directus O2M field type
+ */
 export const RelatedList: React.FC<RelatedListProps> = (props) => {
     const {
         foreignKeyField,

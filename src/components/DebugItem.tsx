@@ -4,6 +4,11 @@ import type { CollapseProps } from 'antd'
 import { Collapse, Table } from 'antd'
 import { useDirectus } from '../directus'
 
+/**
+ * Used to debug the specific directus item.
+ * It mainly shows the values data,
+ * as well as fields and relations meta data about this item.
+ */
 export function DebugItem({ collection, id }: {
     collection: string
     id?: string | number

@@ -1,7 +1,9 @@
 export interface CollectionField {
     /** Support nested field's path by array */
     field: string[]
+    /** Used as antd Table Column title */
     title: string
+    /** Used as antd Table Column width and minWidth */
     width?: number
     /** Hidden column is used to provide infomation to some renders, default to `false` */
     hidden?: boolean

@@ -9,6 +9,9 @@ interface LinkRenderProps {
     foreignKeyValue?: string | number
 }
 
+/**
+ * Solely used by RelatedList for antd Table Column render.
+ */
 export function LinkRender({
     value,
     record,

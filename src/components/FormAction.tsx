@@ -5,6 +5,9 @@ interface FormActionProps {
     children: React.ReactNode
 }
 
+/**
+ * Stands for the Form action panel.
+ */
 export const FormAction: React.FC<FormActionProps> = ({ label, children }) => {
     const { token } = theme.useToken()
 

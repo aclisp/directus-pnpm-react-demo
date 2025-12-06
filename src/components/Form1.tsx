@@ -1,5 +1,8 @@
 import { Form, theme, type FormProps } from 'antd'
 
+/**
+ * General styled Form of antd Form
+ */
 export function Form1(props: FormProps) {
     const { token } = theme.useToken()
     const { children, ...restProps } = props

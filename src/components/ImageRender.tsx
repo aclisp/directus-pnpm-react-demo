@@ -8,6 +8,9 @@ type ImageRenderProps = Omit<CollectionFieldRenderImage, 'type'> & {
     value: unknown
 }
 
+/**
+ * Solely used by RelatedList and LookupSelect for antd Table Column render.
+ */
 export function ImageRender(props: ImageRenderProps) {
     const {
         value,

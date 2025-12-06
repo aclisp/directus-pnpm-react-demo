@@ -3,6 +3,9 @@ import { datetime } from '../directus/datetime'
 import { username } from '../directus/users'
 import type { Item } from './types'
 
+/**
+ * A custom component to view the directus system fields
+ */
 export function SystemFields({ data }: { data?: Item }) {
     return (
         <div className="form-grid">

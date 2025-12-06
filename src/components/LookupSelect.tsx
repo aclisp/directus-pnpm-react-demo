@@ -14,7 +14,9 @@ export type LookupSelectValueType = Record<string, unknown> & {
 interface LookupSelectProps {
     /** The DOM element ID */
     id?: string
+    /** The value property as required by the form controlled input */
     value?: LookupSelectValueType
+    /** The onChange event as required by the form controlled input */
     onChange?: (value: LookupSelectValueType | null) => void
     /** Defaults to the `name` property in `LookupValue` */
     displayField?: string
@@ -39,6 +41,9 @@ function valueToSelection(value?: LookupSelectValueType): SelectionType {
         : { keys: [], values: [] }
 }
 
+/**
+ * A custom component for the directus M2O field type
+ */
 export const LookupSelect: React.FC<LookupSelectProps> = (props) => {
     const {
         id,

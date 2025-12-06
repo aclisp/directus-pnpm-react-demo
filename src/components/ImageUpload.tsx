@@ -8,10 +8,15 @@ type ImageUploadValueType = string
 interface ImageUploadProps {
     /** The DOM element ID */
     id?: string
+    /** The value property as required by the form controlled input */
     value?: ImageUploadValueType
+    /** The onChange event as required by the form controlled input */
     onChange?: (value: ImageUploadValueType | null) => void
 }
 
+/**
+ * A custom component for the directus image field type
+ */
 export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
     const {
         id,
