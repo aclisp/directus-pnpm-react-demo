@@ -16,6 +16,7 @@ import { ProductCategoryPage } from './pages/ProductCategoryPage.tsx'
 import { ProductFilesPage } from './pages/ProductFilesPage.tsx'
 import { ProductPage } from './pages/ProductPage.tsx'
 import { ProductReviewPage } from './pages/ProductReviewPage.tsx'
+import { UserPage } from './pages/UserPage.tsx'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
@@ -41,6 +42,7 @@ createRoot(document.getElementById('root')!).render(
                                 <Route path="product_category/:id" element={<ProductCategoryPage />} />
                                 <Route path="product_files/:id" element={<ProductFilesPage />} />
                             </Route>
+                            <Route path="user" element={<UserPage />} />
                         </Route>
                         <Route path="login" element={<Login />}>
                         </Route>

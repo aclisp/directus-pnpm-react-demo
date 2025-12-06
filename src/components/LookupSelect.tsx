@@ -5,11 +5,9 @@ import type { TableProps } from 'antd'
 import { Flex, Input, Modal, Select, Table, theme } from 'antd'
 import { useEffect, useState } from 'react'
 import { ImageRender } from './ImageRender'
-import type { CollectionField, Item } from './types'
+import type { CollectionField, Item, Item2 } from './types'
 
-export type LookupSelectValueType = Record<string, unknown> & {
-    id: string | number
-}
+export type LookupSelectValueType = Item2
 
 interface LookupSelectProps {
     /** The DOM element ID */

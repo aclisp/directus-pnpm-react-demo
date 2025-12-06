@@ -1,8 +1,23 @@
+import type { Item2 } from '@/components/types'
 import type { AssetsQuery } from '@directus/sdk'
 import { useDirectus } from '.'
 
 type AssetOptions = Extract<AssetsQuery, { key?: never }> & {
     token?: string | null
+}
+
+export function asset2(
+    directus: ReturnType<typeof useDirectus>,
+    file: string | Item2,
+    options: AssetOptions = {},
+) {
+    let fileId: string
+    if (typeof file === 'string') {
+        fileId = file
+    } else {
+        fileId = String(file.id)
+    }
+    return asset(directus, fileId, options)
 }
 
 export function asset(

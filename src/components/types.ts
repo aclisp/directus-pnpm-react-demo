@@ -29,3 +29,10 @@ export interface CollectionFieldRenderUser {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Item = Record<string, any>
+
+/**
+ * The directus item that must have `id` field
+ */
+export type Item2 = Record<string, unknown> & {
+    id: string | number
+}

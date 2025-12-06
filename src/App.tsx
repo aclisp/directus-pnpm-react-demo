@@ -1,7 +1,8 @@
-import { LoginOutlined } from '@ant-design/icons'
+import { UserOutlined } from '@ant-design/icons'
 import { Button, Flex, theme } from 'antd'
 import type { NavLinkRenderProps } from 'react-router'
 import { Link, NavLink, Outlet } from 'react-router'
+import { useDirectusAuth } from './directus'
 
 type NavButtonProps = {
     children: React.ReactNode
@@ -17,12 +18,14 @@ function LoginButton() {
     const { token } = theme.useToken()
     return (
         <div style={{ width: 50, height: '100%', display: 'flex', justifyContent: 'center' }}>
-            <LoginOutlined style={{ fontSize: 20, color: token.colorText }} />
+            <UserOutlined style={{ fontSize: 20, color: token.colorText }} />
         </div>
     )
 }
 
 function App() {
+    const { token } = useDirectusAuth()
+
     return (
         <>
             <Flex id="header" justify="space-between" style={{ padding: '8px' }}>
@@ -44,7 +47,7 @@ function App() {
                     </NavLink>
                 </div>
                 <div>
-                    <Link to="/login">
+                    <Link to={token ? '/user' : '/login'}>
                         <LoginButton />
                     </Link>
                 </div>

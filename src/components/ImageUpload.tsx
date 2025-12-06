@@ -1,9 +1,10 @@
 import { useDirectusAuth } from '@/directus'
-import { asset } from '@/directus/assets'
+import { asset2 } from '@/directus/assets'
 import { UploadOutlined } from '@ant-design/icons'
 import { Button, Flex, Image, Upload, type UploadProps } from 'antd'
+import type { Item2 } from './types'
 
-type ImageUploadValueType = string
+type ImageUploadValueType = string | Item2
 
 interface ImageUploadProps {
     /** The DOM element ID */
@@ -61,7 +62,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
                             },
                         }}
                         alt="image"
-                        src={asset(directus, value, { token })}
+                        src={asset2(directus, value, { token })}
                     />
                 )}
                 <Upload

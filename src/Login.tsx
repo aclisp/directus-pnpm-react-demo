@@ -1,4 +1,4 @@
-import { HomeOutlined } from '@ant-design/icons'
+import { LeftOutlined } from '@ant-design/icons'
 import { readMe } from '@directus/sdk'
 import { useRequest } from 'ahooks'
 import type { FormProps } from 'antd'
@@ -46,7 +46,7 @@ function LoginForm({ onLoginSuccess }: { onLoginSuccess: () => void }) {
     )
 }
 
-function UserInfo({ data, onLogoutSuccess }: {
+function UserInfo({ onLogoutSuccess }: {
     data: Record<string, unknown> | undefined
     onLogoutSuccess: () => void
 }) {
@@ -64,7 +64,7 @@ function UserInfo({ data, onLogoutSuccess }: {
     return (
         <Flex vertical gap="large" style={{ width: '90%', maxWidth: '600px', marginTop: 24, marginBottom: 24 }}>
             <Card title="你已经登录了">
-                <pre>{JSON.stringify(data, null, 4)}</pre>
+                {/* <pre>{JSON.stringify(data, null, 4)}</pre> */}
             </Card>
             <Flex gap="large" justify="center">
                 <Button type="primary" onClick={logout}>
@@ -112,7 +112,7 @@ function HomeButton() {
     const { token } = theme.useToken()
     return (
         <div style={{ width: 50, height: 32, display: 'flex', justifyContent: 'center' }}>
-            <HomeOutlined style={{ fontSize: 20, color: token.colorText }} />
+            <LeftOutlined style={{ fontSize: 20, color: token.colorText }} />
         </div>
     )
 }
