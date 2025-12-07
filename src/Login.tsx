@@ -1,12 +1,9 @@
 import { LeftOutlined } from '@ant-design/icons'
-import { readMe } from '@directus/sdk'
-import { useRequest } from 'ahooks'
 import type { FormProps } from 'antd'
 import { App, Button, Card, Flex, Form, Input, theme } from 'antd'
-import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { Title } from './components/Title'
-import { useDirectus } from './directus'
+import { useDirectus, useDirectusAuth } from './directus'
 import { directusError } from './directus/errors'
 
 interface LoginReq {
@@ -14,7 +11,9 @@ interface LoginReq {
     password: string
 }
 
-function LoginForm({ onLoginSuccess }: { onLoginSuccess: () => void }) {
+function LoginForm({ onLoginSuccess }: {
+    onLoginSuccess: () => void
+}) {
     const { modal } = App.useApp()
     const directus = useDirectus()
     const navigate = useNavigate()
@@ -32,7 +31,7 @@ function LoginForm({ onLoginSuccess }: { onLoginSuccess: () => void }) {
     return (
         <Form layout="vertical" style={{ width: '80%', maxWidth: '300px' }} onFinish={onFinish}>
             <Form.Item<LoginReq> label="用户名" name="username">
-                <Input />
+                <Input type="email" />
             </Form.Item>
             <Form.Item<LoginReq> label="密码" name="password">
                 <Input.Password />
@@ -47,7 +46,6 @@ function LoginForm({ onLoginSuccess }: { onLoginSuccess: () => void }) {
 }
 
 function UserInfo({ onLogoutSuccess }: {
-    data: Record<string, unknown> | undefined
     onLogoutSuccess: () => void
 }) {
     const directus = useDirectus()
@@ -79,17 +77,8 @@ function UserInfo({ onLogoutSuccess }: {
 }
 
 export function Login() {
-    const [isLogin, setIsLogin] = useState(false)
-    const onLoginSuccess = () => setIsLogin(true)
-    const onLogoutSuccess = () => setIsLogin(false)
-    const directus = useDirectus()
-    const { data } = useRequest(async () => {
-        return await directus.request(readMe())
-    }, {
-        refreshDeps: [isLogin],
-        onSuccess: () => { setIsLogin(true) },
-        onError: () => { setIsLogin(false) },
-    })
+    const { token, refreshToken } = useDirectusAuth()
+    const isLogin = Boolean(token)
 
     return (
         <>
@@ -101,8 +90,8 @@ export function Login() {
             )}
             <Flex vertical style={{ width: '100%', minHeight: '100dvh' }} justify="center" align="center" gap="large">
                 {isLogin
-                    ? <UserInfo data={data} onLogoutSuccess={onLogoutSuccess} />
-                    : <LoginForm onLoginSuccess={onLoginSuccess} />}
+                    ? <UserInfo onLogoutSuccess={refreshToken} />
+                    : <LoginForm onLoginSuccess={refreshToken} />}
             </Flex>
         </>
     )
@@ -111,7 +100,7 @@ export function Login() {
 function HomeButton() {
     const { token } = theme.useToken()
     return (
-        <div style={{ width: 50, height: 32, display: 'flex', justifyContent: 'center' }}>
+        <div style={{ width: 39, height: 32, display: 'flex', justifyContent: 'center' }}>
             <LeftOutlined style={{ fontSize: 20, color: token.colorText }} />
         </div>
     )

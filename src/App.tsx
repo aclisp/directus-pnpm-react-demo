@@ -11,7 +11,7 @@ type NavButtonProps = {
 function NavButton({ isActive, children }: NavButtonProps) {
     const color = isActive ? 'primary' : 'default'
     const variant = isActive ? 'outlined' : 'link'
-    return (<Button variant={variant} color={color}>{children}</Button>)
+    return (<Button variant={variant} color={color} autoInsertSpace={false}>{children}</Button>)
 }
 
 function LoginButton() {
@@ -32,17 +32,17 @@ function App() {
                 <div>
                     <NavLink to="/">
                         {({ isActive }) => (
-                            <NavButton isActive={isActive}>Home</NavButton>
+                            <NavButton isActive={isActive}>开始</NavButton>
                         )}
                     </NavLink>
                     <NavLink to="/demo1">
                         {({ isActive }) => (
-                            <NavButton isActive={isActive}>Demo1</NavButton>
+                            <NavButton isActive={isActive}>演示</NavButton>
                         )}
                     </NavLink>
                     <NavLink to="/about">
                         {({ isActive }) => (
-                            <NavButton isActive={isActive}>About</NavButton>
+                            <NavButton isActive={isActive}>发现</NavButton>
                         )}
                     </NavLink>
                 </div>

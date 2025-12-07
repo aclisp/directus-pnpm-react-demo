@@ -69,6 +69,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
                     customRequest={uploadRequest}
                     onChange={onUploadChange}
                     maxCount={1}
+                    accept="image/*"
                 >
                     <Button icon={<UploadOutlined />}>上传</Button>
                 </Upload>

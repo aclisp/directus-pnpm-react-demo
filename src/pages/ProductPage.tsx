@@ -1,3 +1,4 @@
+import { DebugItem } from '@/components/DebugItem'
 import { Form1 } from '@/components/Form1'
 import { FormAction } from '@/components/FormAction'
 import { LookupSelect } from '@/components/LookupSelect'
@@ -8,7 +9,7 @@ import type { Item } from '@/components/types'
 import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update'
 import { updateItem } from '@directus/sdk'
 import type { FormProps } from 'antd'
-import { Button, Form, Input, Radio } from 'antd'
+import { Button, Divider, Form, Input, Radio } from 'antd'
 import { useNavigate } from 'react-router'
 import { useItemFromPage } from './hooks/use-item-from-page'
 
@@ -116,8 +117,8 @@ export function ProductPage() {
                 {isEdit && <SystemFields data={data} />}
             </Form1>
 
-            {/* <Divider />
-            <DebugItem collection="product" id={id} /> */}
+            <Divider />
+            <DebugItem collection="product" id={id} />
         </>
     )
 }

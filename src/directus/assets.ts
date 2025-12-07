@@ -22,9 +22,17 @@ export function asset2(
 
 export function asset(
     directus: ReturnType<typeof useDirectus>,
-    fileId: string,
+    fileId: string | null | undefined,
     options: AssetOptions = {},
 ) {
+    if (!fileId) {
+        return undefined
+    }
+
+    if (!options.token) {
+        return undefined
+    }
+
     const assetURL = new URL(`/assets/${fileId}`, directus.url)
     const searchParams = assetURL.searchParams
 

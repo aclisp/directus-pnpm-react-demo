@@ -75,6 +75,7 @@ function DeleteButton({
             onOk: () => {
                 directus.request(deleteItem(collection, String(record.id))).then(refresh)
             },
+            autoFocusButton: 'cancel',
         })
     }
     return (
