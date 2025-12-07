@@ -47,7 +47,7 @@ function App() {
                     </NavLink>
                 </div>
                 <div>
-                    <Link to={token ? '/user' : '/login'}>
+                    <Link to={token ? '/service' : '/login'}>
                         <LoginButton />
                     </Link>
                 </div>
