@@ -1,23 +1,29 @@
-import { Form, theme, type FormProps } from 'antd'
+import { Form, Spin, theme, type FormProps } from 'antd'
+
+interface Form1Props extends FormProps {
+    loading: boolean
+}
 
 /**
  * General styled Form of antd Form
  */
-export function Form1(props: FormProps) {
+export function Form1(props: Form1Props) {
     const { token } = theme.useToken()
-    const { children, ...restProps } = props
+    const { loading, children, ...restProps } = props
 
     return (
-        <Form
-            labelCol={{ span: 4 }}
-            labelAlign="left"
-            colon={false}
-            styles={{
-                label: { color: token.colorTextSecondary },
-            }}
-            {...restProps}
-        >
-            {children as React.ReactNode}
-        </Form>
+        <Spin spinning={loading}>
+            <Form
+                labelCol={{ span: 4 }}
+                labelAlign="left"
+                colon={false}
+                styles={{
+                    label: { color: token.colorTextSecondary },
+                }}
+                {...restProps}
+            >
+                {children as React.ReactNode}
+            </Form>
+        </Spin>
     )
 }

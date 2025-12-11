@@ -15,6 +15,7 @@ export function UserPage() {
         form,
         id,
         data,
+        loading,
         isDirty,
         fields,
         updatePage,
@@ -35,14 +36,14 @@ export function UserPage() {
     return (
         <>
             <Title title="用户信息" data={data} />
-            <Form1 form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
+            <Form1 loading={loading} form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
                 <FormAction label="操作">
                     <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
                     <Button onClick={logout}>退出登录</Button>
                 </FormAction>
 
                 <div className="form-grid">
-                    <Form.Item<User> className="form-item" label="名字" name="first_name">
+                    <Form.Item<User> className="form-item" label="名字" name="first_name" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
                     <Form.Item<User> className="form-item" label="姓氏" name="last_name">

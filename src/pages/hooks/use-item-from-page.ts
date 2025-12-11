@@ -53,7 +53,7 @@ export function useItemFromPage(collection: string, fields: string[]) {
     }
 
     // Request the initial data
-    useRequest(async () => {
+    const { loading } = useRequest(async () => {
         if (!params.id || !isEdit) {
             return prefill
         }
@@ -72,6 +72,7 @@ export function useItemFromPage(collection: string, fields: string[]) {
         id: params.id,
         prefill,
         data,
+        loading,
         isEdit,
         isDirty,
         fields,

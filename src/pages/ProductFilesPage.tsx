@@ -21,6 +21,7 @@ export function ProductFilesPage() {
         id,
         prefill,
         data,
+        loading,
         isEdit,
         isDirty,
         fields,
@@ -48,7 +49,7 @@ export function ProductFilesPage() {
     return (
         <>
             <Title title="产品图片" data={data} />
-            <Form1 form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
+            <Form1 loading={loading} form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
                 <FormAction label="操作">
                     <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
                 </FormAction>

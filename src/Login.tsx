@@ -29,11 +29,11 @@ function LoginForm({ onLoginSuccess }: {
     }
 
     return (
-        <Form layout="vertical" style={{ width: '80%', maxWidth: '300px' }} onFinish={onFinish}>
-            <Form.Item<LoginReq> label="用户名" name="username">
+        <Form layout="vertical" style={{ width: '80%', maxWidth: '300px' }} onFinish={onFinish} requiredMark="optional">
+            <Form.Item<LoginReq> label="用户名" name="username" rules={[{ required: true, type: 'email' }]}>
                 <Input type="email" />
             </Form.Item>
-            <Form.Item<LoginReq> label="密码" name="password">
+            <Form.Item<LoginReq> label="密码" name="password" rules={[{ required: true }]}>
                 <Input.Password />
             </Form.Item>
             <Form.Item>

@@ -90,7 +90,7 @@ export function useUserFromPage() {
     }
 
     // Request the initial data
-    useRequest(async () => {
+    const { loading } = useRequest(async () => {
         return await directus.request(readMe(
             { fields },
         ))
@@ -105,6 +105,7 @@ export function useUserFromPage() {
         id: data?.id,
         prefill,
         data,
+        loading,
         isDirty,
         fields,
         updatePage,
