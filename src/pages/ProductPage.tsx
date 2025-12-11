@@ -86,7 +86,7 @@ export function ProductPage() {
                 <div className="form-grid">
                     {isEdit && <ProductID data={data} />}
 
-                    <Form.Item<FormValues> className="form-item" label="产品名称" name="name">
+                    <Form.Item<FormValues> className="form-item" label="产品名称" name="name" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
                     <Form.Item<FormValues> className="form-item" label="产品说明" name="description">

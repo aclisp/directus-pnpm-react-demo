@@ -66,7 +66,7 @@ export function ProductCategoryPage() {
                             initialValue={prefill.product_id as LookupSelectValueType}
                         />
                     </Form.Item>
-                    <Form.Item<FormValues> className="form-item" label="类别" name="category_id">
+                    <Form.Item<FormValues> className="form-item" label="类别" name="category_id" rules={[{ required: true }]}>
                         <LookupSelect
                             collection="category"
                             collectionFields={[

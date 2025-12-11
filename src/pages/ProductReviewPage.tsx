@@ -5,7 +5,7 @@ import { SystemFields } from '@/components/SystemFields'
 import { Title } from '@/components/Title'
 import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update'
 import { createItem, updateItem } from '@directus/sdk'
-import { Button, Form, Input, InputNumber, type FormProps } from 'antd'
+import { Button, Form, Input, Rate, type FormProps } from 'antd'
 import { useItemFromPage } from './hooks/use-item-from-page'
 
 interface FormValues {
@@ -76,16 +76,16 @@ export function ProductReviewPage() {
                             initialValue={prefill.product_id as LookupSelectValueType}
                         />
                     </Form.Item>
-                    <Form.Item<FormValues> className="form-item" label="评分" name="rating">
-                        <InputNumber />
+                    <Form.Item<FormValues> className="form-item" label="评分" name="rating" rules={[{ required: true }]}>
+                        <Rate />
                     </Form.Item>
-                    <Form.Item<FormValues> className="form-item" label="标题" name="title">
+                    <Form.Item<FormValues> className="form-item" label="标题" name="title" rules={[{ required: true }]}>
                         <Input />
                     </Form.Item>
                 </div>
 
-                <Form.Item<FormValues> labelCol={{ span: 2 }} className="form-item-full" label="内容" name="content">
-                    <Input.TextArea />
+                <Form.Item<FormValues> labelCol={{ span: 2 }} className="form-item-full" label="内容" name="content" rules={[{ required: true }]}>
+                    <Input.TextArea autoSize={{ minRows: 5 }} />
                 </Form.Item>
 
                 {isEdit && <SystemFields data={data} />}

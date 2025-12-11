@@ -64,7 +64,7 @@ export function ProductFilesPage() {
                             initialValue={prefill.product_id as LookupSelectValueType}
                         />
                     </Form.Item>
-                    <Form.Item<FormValues> className="form-item" label="图片" name="directus_files_id">
+                    <Form.Item<FormValues> className="form-item" label="图片" name="directus_files_id" rules={[{ required: true }]}>
                         <ImageUpload />
                     </Form.Item>
                 </div>
