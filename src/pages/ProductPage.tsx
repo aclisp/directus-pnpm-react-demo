@@ -10,6 +10,7 @@ import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update
 import { updateItem } from '@directus/sdk'
 import type { FormProps } from 'antd'
 import { Button, Divider, Form, Input, Radio } from 'antd'
+import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useItemFromPage } from './hooks/use-item-from-page'
 
@@ -50,9 +51,12 @@ export function ProductPage() {
         'date_updated',
     ])
 
+    const [saving, setSaving] = useState(false)
+
     const onFinish: FormProps<FormValues>['onFinish'] = async (values) => {
+        setSaving(true)
         const item = reviseFormValuesForUpdate(values)
-        const data = await directus.request(updateItem('product', id!, item, { fields }))
+        const data = await directus.request(updateItem('product', id!, item, { fields })).finally(() => setSaving(false))
         updatePage(data)
     }
 
@@ -77,7 +81,7 @@ export function ProductPage() {
             <Form1 loading={loading} form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
 
                 <FormAction label="操作">
-                    <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
+                    <Button type="primary" htmlType="submit" disabled={!isDirty} loading={saving}>保存</Button>
                     {isEdit && <Button onClick={createProductFile}>新增图片</Button>}
                     {isEdit && <Button onClick={createProductCategory}>关联品类</Button>}
                     {isEdit && <Button onClick={createProductReview}>添加评论</Button>}

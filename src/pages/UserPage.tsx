@@ -6,6 +6,7 @@ import { datetime } from '@/directus/datetime'
 import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update'
 import { updateUser } from '@directus/sdk'
 import { Button, Form, Input, type FormProps } from 'antd'
+import { useState } from 'react'
 import { useUserFromPage, type User } from './hooks/use-user-from-page'
 
 export function UserPage() {
@@ -22,9 +23,12 @@ export function UserPage() {
         handleValuesChange,
     } = useUserFromPage()
 
+    const [saving, setSaving] = useState(false)
+
     const onFinish: FormProps<User>['onFinish'] = async (values) => {
+        setSaving(true)
         const item = reviseFormValuesForUpdate(values)
-        const data = await directus.request(updateUser(id!, item, { fields }))
+        const data = await directus.request(updateUser(id!, item, { fields })).finally(() => setSaving(false))
         updatePage(data as User)
     }
 
@@ -38,7 +42,7 @@ export function UserPage() {
             <Title title="用户信息" data={data} />
             <Form1 loading={loading} form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
                 <FormAction label="操作">
-                    <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
+                    <Button type="primary" htmlType="submit" disabled={!isDirty} loading={saving}>保存</Button>
                     <Button onClick={logout}>退出登录</Button>
                 </FormAction>
 

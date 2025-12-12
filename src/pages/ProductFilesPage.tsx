@@ -6,6 +6,7 @@ import { Title } from '@/components/Title'
 import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update'
 import { createItem, updateItem } from '@directus/sdk'
 import { Button, Form, type FormProps } from 'antd'
+import { useState } from 'react'
 import { useItemFromPage } from './hooks/use-item-from-page'
 
 interface FormValues {
@@ -34,13 +35,16 @@ export function ProductFilesPage() {
         'directus_files_id',
     ])
 
+    const [saving, setSaving] = useState(false)
+
     const onFinish: FormProps<FormValues>['onFinish'] = async (values) => {
+        setSaving(true)
         const item = reviseFormValuesForUpdate(values)
         if (isEdit) {
-            const data = await directus.request(updateItem('product_files', id!, item, { fields }))
+            const data = await directus.request(updateItem('product_files', id!, item, { fields })).finally(() => setSaving(false))
             updatePage(data)
         } else {
-            const data = await directus.request(createItem('product_files', item, { fields }))
+            const data = await directus.request(createItem('product_files', item, { fields })).finally(() => setSaving(false))
             updatePage(data)
         }
         navigate(-1)
@@ -51,7 +55,7 @@ export function ProductFilesPage() {
             <Title title="产品图片" data={data} />
             <Form1 loading={loading} form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
                 <FormAction label="操作">
-                    <Button type="primary" htmlType="submit" disabled={!isDirty}>保存</Button>
+                    <Button type="primary" htmlType="submit" disabled={!isDirty} loading={saving}>保存</Button>
                 </FormAction>
 
                 <div className="form-grid">
