@@ -1,6 +1,6 @@
 import { LeftOutlined } from '@ant-design/icons'
 import type { FormProps } from 'antd'
-import { App, Button, Card, Flex, Form, Input, theme } from 'antd'
+import { App, Button, Flex, Form, Input, Result, theme } from 'antd'
 import { Link, useNavigate } from 'react-router'
 import { Title } from './components/Title'
 import { useDirectus, useDirectusAuth } from './directus'
@@ -31,10 +31,10 @@ function LoginForm({ onLoginSuccess }: {
     return (
         <Form layout="vertical" style={{ width: '80%', maxWidth: '300px' }} onFinish={onFinish} requiredMark="optional">
             <Form.Item<LoginReq> label="用户名" name="username" rules={[{ required: true, type: 'email' }]}>
-                <Input type="email" />
+                <Input type="email" autoComplete="username" />
             </Form.Item>
             <Form.Item<LoginReq> label="密码" name="password" rules={[{ required: true }]}>
-                <Input.Password />
+                <Input.Password autoComplete="current-password" />
             </Form.Item>
             <Form.Item>
                 <Button type="primary" htmlType="submit">
@@ -60,19 +60,18 @@ function UserInfo({ onLogoutSuccess }: {
     }
 
     return (
-        <Flex vertical gap="large" style={{ width: '90%', maxWidth: '600px', marginTop: 24, marginBottom: 24 }}>
-            <Card title="你已经登录了">
-                {/* <pre>{JSON.stringify(data, null, 4)}</pre> */}
-            </Card>
-            <Flex gap="large" justify="center">
-                <Button type="primary" onClick={logout}>
+        <Result
+            styles={{ icon: { display: 'none' } }}
+            title="你已经登录了"
+            extra={[
+                <Button key="logout" type="primary" onClick={logout}>
                     退出登录
-                </Button>
-                <Button type="default" onClick={goHome}>
+                </Button>,
+                <Button key="gohome" type="default" onClick={goHome}>
                     返回首页
-                </Button>
-            </Flex>
-        </Flex>
+                </Button>,
+            ]}
+        />
     )
 }
 

@@ -1,5 +1,6 @@
 import type { FormProps } from 'antd'
-import { Button, Form, Typography } from 'antd'
+import { App, Button, DatePicker, Form, Space, Typography, version } from 'antd'
+import { version as reactVersion } from 'react'
 import { PriceInput, type PriceValue } from './components/PriceInput'
 import { StyledText } from './components/StyledText/StyledText'
 import { Title } from './components/Title'
@@ -8,7 +9,9 @@ import { useDirectusAuth } from './directus'
 const { Text } = Typography
 
 export function About() {
+    const { modal } = App.useApp()
     const { token } = useDirectusAuth()
+
     if (!token) {
         return (
             <>
@@ -18,10 +21,24 @@ export function About() {
         )
     }
 
+    const onClick = () => {
+        modal.info({ title: 'Good', content: 'You are Okay!' })
+    }
+
     return (
         <>
             <Title title="关于" />
-            <div>About</div>
+            <div>关于</div>
+            antd@
+            {version}
+            , react@
+            {reactVersion}
+            <br />
+            <br />
+            <Space>
+                <DatePicker />
+                <Button type="primary" onClick={onClick}>Submit</Button>
+            </Space>
             <Text ellipsis>{token}</Text>
             <TestPriceInputForm />
             <StyledText value="风格文字" />
