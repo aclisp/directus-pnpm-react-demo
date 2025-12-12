@@ -19,6 +19,19 @@ import { ProductReviewPage } from './pages/ProductReviewPage.tsx'
 import { ServicePage } from './pages/ServicePage.tsx'
 import { UserPage } from './pages/UserPage.tsx'
 
+const removeLoader = () => {
+    const loader = document.getElementById('initial-loader')
+    if (loader) {
+        // 添加隐藏类，触发 CSS 渐隐过渡效果
+        loader.classList.add('initial-loader-hidden')
+
+        // 延迟移除，等待过渡效果完成（这里设置 500ms，匹配 CSS 中的 0.5s）
+        setTimeout(() => {
+            loader.remove()
+        }, 500)
+    }
+}
+
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
         <ConfigProvider
@@ -54,3 +67,5 @@ createRoot(document.getElementById('root')!).render(
         </ConfigProvider>
     </StrictMode>,
 )
+
+removeLoader()
