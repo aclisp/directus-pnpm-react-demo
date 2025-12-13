@@ -19,6 +19,24 @@ import { ProductReviewPage } from './pages/ProductReviewPage.tsx'
 import { ServicePage } from './pages/ServicePage.tsx'
 import { UserPage } from './pages/UserPage.tsx'
 
+/**
+ * index.html 添加了过审用的 title 和 beian。
+ * 初始化时，移除它们，将由 react 来渲染
+ */
+const removeTitle = () => {
+    const title = document.getElementsByTagName('title')[0]
+    if (title) {
+        title.remove()
+    }
+}
+
+const removeBeian = () => {
+    const beian = document.getElementById('beian')
+    if (beian) {
+        beian.remove()
+    }
+}
+
 const removeLoader = () => {
     const loader = document.getElementById('initial-loader')
     if (loader) {
@@ -31,6 +49,9 @@ const removeLoader = () => {
         }, 500)
     }
 }
+
+removeTitle()
+removeBeian()
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
