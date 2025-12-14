@@ -1,4 +1,5 @@
 import 'antd/dist/reset.css'
+import 'github-markdown-css/github-markdown-light.css'
 import './index.css'
 
 import { App, ConfigProvider, theme } from 'antd'
@@ -12,6 +13,7 @@ import AppLayout from './App.tsx'
 import { Demo1 } from './Demo1'
 import { Home } from './Home'
 import { Login } from './Login.tsx'
+import { BlogPage } from './pages/BlogPage.tsx'
 import { ProductCategoryPage } from './pages/ProductCategoryPage.tsx'
 import { ProductFilesPage } from './pages/ProductFilesPage.tsx'
 import { ProductPage } from './pages/ProductPage.tsx'
@@ -69,6 +71,7 @@ createRoot(document.getElementById('root')!).render(
                     <Routes>
                         <Route element={<AppLayout />}>
                             <Route index element={<Home />} />
+                            <Route path="blog/:permalink" element={<BlogPage />} />
                             <Route path="about" element={<About />} />
                             <Route path="demo1" element={<Demo1 />} />
                             <Route path="form">

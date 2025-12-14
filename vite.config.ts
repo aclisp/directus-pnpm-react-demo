@@ -13,6 +13,7 @@ export default defineConfig({
                     react: ['react', 'react-dom', 'react-router', 'ahooks'],
                     antd: ['antd'],
                     utils: ['dayjs', 'lodash'],
+                    markdown: ['react-markdown', 'github-markdown-css'],
                 },
             },
         },
