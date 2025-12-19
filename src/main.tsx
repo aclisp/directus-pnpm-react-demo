@@ -13,6 +13,7 @@ import AppLayout from './App.tsx'
 import { Demo1 } from './Demo1'
 import { Home } from './Home'
 import { Login } from './Login.tsx'
+import { BlogEditPage } from './pages/BlogEditPage.tsx'
 import { BlogPage } from './pages/BlogPage.tsx'
 import { ProductCategoryPage } from './pages/ProductCategoryPage.tsx'
 import { ProductFilesPage } from './pages/ProductFilesPage.tsx'
@@ -79,6 +80,7 @@ createRoot(document.getElementById('root')!).render(
                                 <Route path="product_reviews/:id" element={<ProductReviewPage />} />
                                 <Route path="product_category/:id" element={<ProductCategoryPage />} />
                                 <Route path="product_files/:id" element={<ProductFilesPage />} />
+                                <Route path="blog/:id" element={<BlogEditPage />} />
                             </Route>
                             <Route path="user" element={<UserPage />} />
                             <Route path="service" element={<ServicePage />} />

@@ -1,20 +1,21 @@
 import { Title } from '@/components/Title'
-import { useDirectus } from '@/directus'
+import { useDirectusAuth } from '@/directus'
+import { FormOutlined } from '@ant-design/icons'
 import { readItems } from '@directus/sdk'
 import { useRequest } from 'ahooks'
-import { Flex, theme } from 'antd'
+import { Empty, Flex, FloatButton, Skeleton, theme } from 'antd'
 import dayjs from 'dayjs'
 import Markdown from 'react-markdown'
-import { useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 
 export function BlogPage() {
     const params = useParams()
 
-    const { token } = theme.useToken()
+    const { token: themeToken } = theme.useToken()
 
-    const directus = useDirectus()
+    const { directus, token: authToken } = useDirectusAuth()
 
-    const { data } = useRequest(async () => {
+    const { data, loading } = useRequest(async () => {
         if (!params.permalink) {
             return undefined
         }
@@ -31,12 +32,28 @@ export function BlogPage() {
 
     const blog = data?.[0]
 
+    const navigate = useNavigate()
+
+    const editBlog = () => {
+        if (blog) {
+            navigate(`/form/blog/${blog.id}`)
+        }
+    }
+
+    if (data?.length === 0) {
+        return <Empty description="走错了吧" />
+    }
+
+    if (loading) {
+        return <Skeleton />
+    }
+
     return (
         <Flex vertical align="center" gap="2rem" style={{ margin: 'auto', maxWidth: '900px' }}>
             <Title title={blog?.title} />
             <div style={{ fontSize: '30px' }}>{blog?.title}</div>
 
-            <div style={{ fontSize: token.fontSizeSM }}>
+            <div style={{ fontSize: themeToken.fontSizeSM }}>
                 <div>
                     发表于
                     {formatTime(blog?.date_created)}
@@ -52,6 +69,8 @@ export function BlogPage() {
             <div className="markdown-body" style={{ width: '100%' }}>
                 <Markdown>{blog?.content}</Markdown>
             </div>
+
+            {authToken && <FloatButton icon={<FormOutlined />} onClick={editBlog} />}
         </Flex>
     )
 }

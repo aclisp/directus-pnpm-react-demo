@@ -1,6 +1,7 @@
 import { LeftOutlined } from '@ant-design/icons'
 import type { FormProps } from 'antd'
 import { App, Button, Flex, Form, Input, Result, theme } from 'antd'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { Title } from './components/Title'
 import { useDirectus, useDirectusAuth } from './directus'
@@ -17,14 +18,18 @@ function LoginForm({ onLoginSuccess }: {
     const { modal } = App.useApp()
     const directus = useDirectus()
     const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
     const onFinish: FormProps<LoginReq>['onFinish'] = async (values) => {
         try {
+            setLoading(true)
             await directus.login({ email: values.username, password: values.password })
             onLoginSuccess()
             modal.info({ content: '登录成功' })
             navigate('/login')
         } catch (error) {
             modal.error({ content: directusError(error) })
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -37,7 +42,7 @@ function LoginForm({ onLoginSuccess }: {
                 <Input.Password autoComplete="current-password" />
             </Form.Item>
             <Form.Item>
-                <Button type="primary" htmlType="submit">
+                <Button type="primary" htmlType="submit" loading={loading}>
                     登录
                 </Button>
             </Form.Item>

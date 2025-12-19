@@ -13,7 +13,7 @@ export function ServicePage() {
                     <CardNav.Button icon={KeyOutlined} text="修改密码" color="#EB2F96" href="#" />
                 </CardNav>
                 <CardNav title="生活服务">
-                    <CardNav.Button icon={FormOutlined} text="上课记录" color="green" href="#" />
+                    <CardNav.Button icon={FormOutlined} text="撰写博客" color="green" href="/form/blog/+?status=draft" />
                     <CardNav.Button icon={SafetyOutlined} text="密码提示" color="red" href="#" />
                     <CardNav.Button icon={TransactionOutlined} text="生活缴费" color="blue" href="#" />
                     <CardNav.Button icon={MedicineBoxOutlined} text="医疗健康" color="orange" href="#" />

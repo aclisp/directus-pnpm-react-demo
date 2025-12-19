@@ -1,11 +1,12 @@
+import { EyeInvisibleOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { readItems } from '@directus/sdk'
 import { useRequest } from 'ahooks'
-import { Button, Flex, theme } from 'antd'
+import { Button, Flex, Tag, theme } from 'antd'
 import dayjs from 'dayjs'
 import { Link } from 'react-router'
 import { Title } from './components/Title'
 import type { Item } from './components/types'
-import { useDirectus } from './directus'
+import { useDirectusAuth } from './directus'
 
 export function Home() {
     const { token } = theme.useToken()
@@ -51,13 +52,22 @@ export function Home() {
 export default Home
 
 function BlogList() {
-    const directus = useDirectus()
+    const { directus, token } = useDirectusAuth()
+
+    const filter = { _or: [{ status: { _eq: 'published' } }] }
+    if (token) {
+        // authenticated user can see blogs of any status
+        filter._or.pop()
+    }
+
     const { data } = useRequest(async () => {
         return await directus.request(readItems('blog', {
-            fields: ['id', 'permalink', 'title', 'date_created'],
-            filter: { status: { _eq: 'published' } },
+            fields: ['id', 'permalink', 'title', 'date_created', 'status'],
+            filter,
             sort: ['-date_created'],
         }))
+    }, {
+        refreshDeps: [token],
     })
 
     return (
@@ -75,6 +85,7 @@ function BlogItem({ blog }: { blog: Item }) {
 
     return (
         <Flex wrap style={{ columnGap: 8 }}>
+            <BlogStatus status={blog.status} />
             <Link to={`/blog/${blog.permalink}`} style={{ color: token.colorText }}>{blog.title}</Link>
             <span style={{ color: token.colorTextTertiary }}>{formatTime(blog.date_created)}</span>
         </Flex>
@@ -88,4 +99,15 @@ function formatTime(datetime: string | undefined | null): string {
 
     const d = dayjs(datetime)
     return d.format('YYYY年M月')
+}
+
+function BlogStatus({ status }: { status: string }) {
+    switch (status) {
+        case 'archived':
+            return <Tag><EyeInvisibleOutlined /></Tag>
+        case 'draft':
+            return <Tag color="warning"><QuestionCircleOutlined /></Tag>
+        default:
+            return <></>
+    }
 }
