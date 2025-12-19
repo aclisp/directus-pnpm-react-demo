@@ -41,16 +41,23 @@ export function BlogPage() {
     }
 
     if (data?.length === 0) {
-        return <Empty description="走错了吧" />
+        return (
+            <Container title="走错了">
+                <Empty description="走错了吧" />
+            </Container>
+        )
     }
 
     if (loading) {
-        return <Skeleton />
+        return (
+            <Container title="加载中...">
+                <Skeleton />
+            </Container>
+        )
     }
 
     return (
-        <Flex vertical align="center" gap="2rem" style={{ margin: 'auto', maxWidth: '900px' }}>
-            <Title title={blog?.title} />
+        <Container title={blog?.title}>
             <div style={{ fontSize: '30px' }}>{blog?.title}</div>
 
             <div style={{ fontSize: themeToken.fontSizeSM }}>
@@ -71,6 +78,15 @@ export function BlogPage() {
             </div>
 
             {authToken && <FloatButton icon={<FormOutlined />} onClick={editBlog} />}
+        </Container>
+    )
+}
+
+function Container({ title, children }: { title: string, children: React.ReactNode }) {
+    return (
+        <Flex vertical align="center" gap="2rem" style={{ margin: 'auto', maxWidth: '900px' }}>
+            <Title title={title} />
+            {children}
         </Flex>
     )
 }
