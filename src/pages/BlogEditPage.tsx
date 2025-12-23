@@ -70,7 +70,7 @@ export function BlogEditPage() {
                 </FormAction>
 
                 <div className="form-grid">
-                    <Form.Item<FormValues> className="form-item" label="Permalink" name="permalink" rules={[{ required: true }]}>
+                    <Form.Item<FormValues> className="form-item" label="Permalink" name="permalink" rules={[{ required: true, type: 'string', min: 3 }, { pattern: /^[a-z0-9]+(?:-[a-z0-9]+)*$/, message: 'Permalink必须由小写字母、数字和连字符组成' }]}>
                         <Input />
                     </Form.Item>
                     <Form.Item<FormValues> className="form-item" label="标题" name="title" rules={[{ required: true }]}>
