@@ -109,13 +109,13 @@ Form.Item 具有 `className="form-item"` label 和 name 三个属性
 
 ## 产品和产品规格
 如果应用需要自定义产品规格，则按照下列概念来设计 Directus 数据模型.
-"规格属性 (Spec_Def)" 是产品的子表，通过 M2O 与产品关联，例如 "颜色" "尺码".
-"规格属性选择项 (Spec_Opt)" 是 Spec_Def 的子表，通过 M2O 与 Spec_Def 关联，例如 "黄色" "XXL".
+"规格属性名称 (Specification_Definition)" 是产品的子表，通过 M2O 与产品关联，例如 "颜色" "尺码".
+"规格属性值 (Specification_Values)" 是 Specification_Definition 的子表，通过 M2O 与规格属性名称关联，例如 "黄色" "XXL".
 "SKU" 是产品的子表，通过 M2O 与产品关联，具有 "成本" 和 "价格".
-"Spec_Opt" 和 "SKU" 是 M2M 关系：每个 SKU 可以有多个规格，每个规格也可以用在多个 SKU 上.
+"Specification_Values" 和 "SKU" 是 M2M 关系：每个 SKU 可以有多个规格，每个规格也可以用在多个 SKU 上.
 
 ## 只允许客户销售管理其名下客户的订单
 Order 通过 `account` 字段查找 Account
-Account 和 Member 多对多，其 Junction 为 Account_Sales，通过 `member` 查找 Member
+Account 和 Member 多对多，其连接表为 Account_Sales，通过 `member` 查找 Member
 Account 有一个 Alias M2M 字段为 `sales`
 此权限策略规则为 {"_and":[{"account":{"sales":{"member":{"user":{"_eq":"$CURRENT_USER"}}}}}]}
