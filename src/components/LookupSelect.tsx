@@ -1,7 +1,7 @@
 import { useDirectus } from '@/directus'
 import { aggregate, readItem, readItems } from '@directus/sdk'
 import { useDebounce, useRequest } from 'ahooks'
-import type { TableProps } from 'antd'
+import type { TableColumnsType, TableProps } from 'antd'
 import { Flex, Input, Modal, Select, Table, theme } from 'antd'
 import { useEffect, useState } from 'react'
 import { ImageRender } from './ImageRender'
@@ -134,21 +134,21 @@ function LookupSelectionModal({
     const [selection, setSelection] = useState<SelectionType>(() => valueToSelection(currentValue))
 
     // Columns are derived from props
-    const columns = collectionFields.map((x) => {
+    const columns: TableColumnsType<LookupSelectValueType> = collectionFields.map((x) => {
         const column = {
             key: x.field.join('.'),
             dataIndex: x.field,
             title: x.title,
         }
         if (x.render?.type == 'image') {
-            return { ...column, render: (value: unknown) => <ImageRender value={value} {...x.render} /> }
+            return { ...column, render: value => <ImageRender value={value} {...x.render} /> }
         } else {
             return column
         }
     })
 
     // Ensure that the id field is always included
-    const fields = columns.map(x => x.key).concat('id')
+    const fields = columns.map(x => String(x.key)).concat('id')
 
     // Limit the count of directus readItems request
     const limit = 10
