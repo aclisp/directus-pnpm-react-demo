@@ -143,7 +143,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
             pagination={false}
             tableLayout="auto"
             scroll={{
-                x: 600,
+                x: 591,
             }}
             bordered
             styles={{

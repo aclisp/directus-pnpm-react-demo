@@ -124,12 +124,15 @@ export function ProductPage() {
                             ]}
                         />
                     </Form.Item>
+
+                    <Form.Item className="form-item"></Form.Item>
+
+                    {isEdit && <ProductFiles data={data} />}
+                    {isEdit && <ProductCategory data={data} />}
+                    {isEdit && <ProductSpec data={data} />}
+                    {isEdit && <ProductSKU data={data} />}
                 </div>
 
-                {isEdit && <ProductFiles data={data} />}
-                {isEdit && <ProductCategory data={data} />}
-                {isEdit && <ProductSpec data={data} />}
-                {isEdit && <ProductSKU data={data} />}
                 {isEdit && <ProductReviews data={data} />}
                 {isEdit && <SystemFields data={data} />}
             </Form1>
@@ -163,13 +166,12 @@ function ProductReviews({ data }: { data?: Item }) {
 
 function ProductCategory({ data }: { data?: Item }) {
     return (
-        <Form.Item layout="vertical" label="产品类别">
+        <Form.Item className="form-item" label="产品类别">
             <RelatedList
                 foreignKeyField="product_id"
                 foreignKeyValue={data?.id}
                 collection="product_category"
                 collectionFields={[
-                    { field: ['category_id', 'id'], title: '品类ID', width: 130 },
                     { field: ['category_id', 'name'], title: '品类名称', render: { type: 'link' } },
                 ]}
                 collectionTitle={['category_id', 'name']}
@@ -180,7 +182,7 @@ function ProductCategory({ data }: { data?: Item }) {
 
 function ProductFiles({ data }: { data?: Item }) {
     return (
-        <Form.Item layout="vertical" label="产品图片">
+        <Form.Item className="form-item" label="产品图片">
             <RelatedList
                 foreignKeyField="product_id"
                 foreignKeyValue={data?.id}
@@ -196,7 +198,7 @@ function ProductFiles({ data }: { data?: Item }) {
 
 function ProductSpec({ data }: { data?: Item }) {
     return (
-        <Form.Item layout="vertical" label="产品规格">
+        <Form.Item className="form-item" layout="vertical" label="产品规格">
             <RelatedList
                 foreignKeyField="product_id"
                 foreignKeyValue={data?.id}
@@ -214,7 +216,7 @@ function ProductSpec({ data }: { data?: Item }) {
 
 function ProductSKU({ data }: { data?: Item }) {
     return (
-        <Form.Item layout="vertical" label="产品 SKU">
+        <Form.Item className="form-item" layout="vertical" label="产品 SKU">
             <RelatedList
                 foreignKeyField="product_id"
                 foreignKeyValue={data?.id}

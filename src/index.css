@@ -15,7 +15,12 @@
     width: calc(100% - 40px);
 }
 
-@media (max-width: 448px) {
+@media (max-width: 639px) {
+
+    .form-grid {
+        /* Restore to block on mobile for antd default responsive behavior */
+        display: block;
+    }
 
     .form-item {
         /* Set the base width to 100% on mobile */
