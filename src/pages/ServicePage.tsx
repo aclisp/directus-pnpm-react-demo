@@ -13,12 +13,12 @@ export function ServicePage() {
                     <CardNav.Button icon={KeyOutlined} text="修改密码" color="#EB2F96" href="#" />
                 </CardNav>
                 <CardNav title="生活服务">
-                    <CardNav.Button icon={FormOutlined} text="撰写博客" color="green" href="/form/blog/+?status=draft" />
-                    <CardNav.Button icon={AppleOutlined} text="品牌管理" color="black" href="/brand" />
-                    <CardNav.Button icon={ApartmentOutlined} text="品牌管理" color="purple" href="/category" />
-                    <CardNav.Button icon={SafetyOutlined} text="密码提示" color="red" href="#" />
-                    <CardNav.Button icon={TransactionOutlined} text="生活缴费" color="blue" href="#" />
-                    <CardNav.Button icon={MedicineBoxOutlined} text="医疗健康" color="orange" href="#" />
+                    <CardNav.Button icon={FormOutlined} text="撰写博客" color="ForestGreen" href="/form/blog/+?status=draft" />
+                    <CardNav.Button icon={AppleOutlined} text="品牌管理" color="MidnightBlue" href="/brand" />
+                    <CardNav.Button icon={ApartmentOutlined} text="品类设置" color="BlueViolet" href="/category" />
+                    <CardNav.Button icon={SafetyOutlined} text="密码提示" color="Red" href="#" />
+                    <CardNav.Button icon={TransactionOutlined} text="生活缴费" color="RoyalBlue" href="#" />
+                    <CardNav.Button icon={MedicineBoxOutlined} text="医疗健康" color="Orange" href="#" />
                 </CardNav>
             </Flex>
         </>
