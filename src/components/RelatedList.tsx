@@ -6,6 +6,7 @@ import { Table } from 'antd'
 import { ActionRender } from './ActionRender'
 import { ImageRender } from './ImageRender'
 import { LinkRender } from './LinkRender'
+import { O2MRender } from './O2MRender'
 import type { CollectionField } from './types'
 import { UserRender } from './UserRender'
 
@@ -23,6 +24,8 @@ interface RelatedListProps {
     collectionTitle?: string[]
     /** Show `edit` button in the action column, default is `false` */
     showEdit?: boolean
+    /** Call this `refresh` on row actions */
+    refresh?: () => void
 }
 
 /**
@@ -36,6 +39,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         collectionFields,
         collectionTitle,
         showEdit = false,
+        refresh,
     } = props
 
     const columns: TableColumnsType = collectionFields.map((x) => {
@@ -51,6 +55,15 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
             return {
                 ...column, render: value => (
                     <ImageRender
+                        value={value}
+                        {...x.render}
+                    />
+                ),
+            }
+        } else if (x.render?.type == 'o2m') {
+            return {
+                ...column, render: value => (
+                    <O2MRender
                         value={value}
                         {...x.render}
                     />
@@ -83,7 +96,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
 
     const directus = useDirectus()
 
-    const { data, refresh } = useRequest(async () => {
+    const { data, refresh: refreshRequest } = useRequest(async () => {
         if (foreignKeyValue == undefined) {
             return undefined
         }
@@ -107,7 +120,10 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         fixed: 'end',
         render: (_, record) => (
             <ActionRender
-                refresh={refresh}
+                refresh={() => {
+                    refreshRequest()
+                    refresh?.()
+                }}
                 record={record}
                 collection={collection}
                 showEdit={showEdit}

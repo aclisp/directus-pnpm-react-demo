@@ -74,6 +74,14 @@ export function ProductPage() {
         navigate(`/form/product_files/+?product_id.id=${id}&product_id.name=${data?.name}`)
     }
 
+    const createProductSpec = () => {
+        navigate(`/form/specification_definition/+?product_id.id=${id}&product_id.name=${data?.name}`)
+    }
+
+    const createProductSKU = () => {
+        navigate(`/form/stock_keeping_unit/+?product_id.id=${id}&product_id.name=${data?.name}`)
+    }
+
     return (
         <>
             <Title title="产品详情" data={data} />
@@ -85,6 +93,8 @@ export function ProductPage() {
                     {isEdit && <Button onClick={createProductFile}>新增图片</Button>}
                     {isEdit && <Button onClick={createProductCategory}>关联品类</Button>}
                     {isEdit && <Button onClick={createProductReview}>添加评论</Button>}
+                    {isEdit && <Button onClick={createProductSpec}>添加规格</Button>}
+                    {isEdit && <Button onClick={createProductSKU}>添加SKU</Button>}
                 </FormAction>
 
                 <div className="form-grid">
@@ -118,6 +128,8 @@ export function ProductPage() {
 
                 {isEdit && <ProductFiles data={data} />}
                 {isEdit && <ProductCategory data={data} />}
+                {isEdit && <ProductSpec data={data} />}
+                {isEdit && <ProductSKU data={data} />}
                 {isEdit && <ProductReviews data={data} />}
                 {isEdit && <SystemFields data={data} />}
             </Form1>
@@ -143,6 +155,7 @@ function ProductReviews({ data }: { data?: Item }) {
                     { field: ['user_created', 'last_name'], title: '', hidden: true },
                 ]}
                 showEdit
+                collectionTitle={['title']}
             />
         </Form.Item>
     )
@@ -176,6 +189,44 @@ function ProductFiles({ data }: { data?: Item }) {
                     { field: ['directus_files_id', 'id'], title: '图片', render: { type: 'image', height: 96, maxWidth: 192, preview: true } },
                 ]}
                 showEdit
+            />
+        </Form.Item>
+    )
+}
+
+function ProductSpec({ data }: { data?: Item }) {
+    return (
+        <Form.Item layout="vertical" label="产品规格">
+            <RelatedList
+                foreignKeyField="product_id"
+                foreignKeyValue={data?.id}
+                collection="specification_definition"
+                collectionFields={[
+                    { field: ['name'], title: '规格名称', width: 130, render: { type: 'link' } },
+                    { field: ['specification_values'], title: '规格值', render: { type: 'o2m', render: item => item.value } },
+                    { field: ['specification_values', 'id'], title: '', hidden: true },
+                    { field: ['specification_values', 'value'], title: '', hidden: true },
+                ]}
+            />
+        </Form.Item>
+    )
+}
+
+function ProductSKU({ data }: { data?: Item }) {
+    return (
+        <Form.Item layout="vertical" label="产品 SKU">
+            <RelatedList
+                foreignKeyField="product_id"
+                foreignKeyValue={data?.id}
+                collection="stock_keeping_unit"
+                collectionFields={[
+                    { field: ['code'], title: '编号', width: 130, render: { type: 'link' } },
+                    { field: ['specifications'], title: '规格', render: { type: 'o2m', render: item => `${item.specification_value_id.specification_definition_id.name} ${item.specification_value_id.value}` } },
+                    { field: ['specifications', 'id'], title: '', hidden: true },
+                    { field: ['specifications', 'specification_value_id', 'value'], title: '', hidden: true },
+                    { field: ['specifications', 'specification_value_id', 'specification_definition_id', 'name'], title: '', hidden: true },
+                ]}
+                collectionTitle={['code']}
             />
         </Form.Item>
     )

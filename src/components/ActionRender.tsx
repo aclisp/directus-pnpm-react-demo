@@ -25,8 +25,6 @@ export function ActionRender(props: ActionRenderProps) {
         name = get(record, collectionTitle)
     } else if (Object.hasOwn(record, 'name')) {
         name = String(record.name)
-    } else if (Object.hasOwn(record, 'title')) {
-        name = String(record.title)
     }
     return (
         <>

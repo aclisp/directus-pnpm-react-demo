@@ -1,6 +1,6 @@
 import { CardNav } from '@/components/CardNav'
 import { Title } from '@/components/Title'
-import { FormOutlined, KeyOutlined, MedicineBoxOutlined, SafetyOutlined, TransactionOutlined, UserOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, AppleOutlined, FormOutlined, KeyOutlined, MedicineBoxOutlined, SafetyOutlined, TransactionOutlined, UserOutlined } from '@ant-design/icons'
 import { Flex } from 'antd'
 
 export function ServicePage() {
@@ -14,6 +14,8 @@ export function ServicePage() {
                 </CardNav>
                 <CardNav title="生活服务">
                     <CardNav.Button icon={FormOutlined} text="撰写博客" color="green" href="/form/blog/+?status=draft" />
+                    <CardNav.Button icon={AppleOutlined} text="品牌管理" color="black" href="/brand" />
+                    <CardNav.Button icon={ApartmentOutlined} text="品牌管理" color="purple" href="/category" />
                     <CardNav.Button icon={SafetyOutlined} text="密码提示" color="red" href="#" />
                     <CardNav.Button icon={TransactionOutlined} text="生活缴费" color="blue" href="#" />
                     <CardNav.Button icon={MedicineBoxOutlined} text="医疗健康" color="orange" href="#" />

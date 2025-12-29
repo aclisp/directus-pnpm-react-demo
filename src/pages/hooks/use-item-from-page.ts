@@ -53,7 +53,7 @@ export function useItemFromPage(collection: string, fields: string[]) {
     }
 
     // Request the initial data
-    const { loading } = useRequest(async () => {
+    const { loading, refresh: refreshRequest } = useRequest(async () => {
         if (!params.id || !isEdit) {
             return prefill
         }
@@ -63,6 +63,7 @@ export function useItemFromPage(collection: string, fields: string[]) {
         ))
     }, {
         onSuccess: data => updatePage(data),
+        refreshDeps: [params.id],
     })
 
     return {
@@ -78,5 +79,7 @@ export function useItemFromPage(collection: string, fields: string[]) {
         fields,
         updatePage,
         handleValuesChange,
+        setIsDirty,
+        refreshRequest,
     }
 }

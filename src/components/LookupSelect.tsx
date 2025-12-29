@@ -16,8 +16,8 @@ interface LookupSelectProps {
     value?: LookupSelectValueType
     /** The onChange event as required by the form controlled input */
     onChange?: (value: LookupSelectValueType | null) => void
-    /** Defaults to the `name` property in `LookupValue` */
-    displayField?: string
+    /** Defaults to render the `name` property in `LookupValue` */
+    valueRender?: (item?: Item2) => string
     /** Clear the lookup relationship by nullifying the value, defaults to `false` */
     allowClear?: boolean
     /** The "looked up" collection name */
@@ -26,6 +26,8 @@ interface LookupSelectProps {
     collectionFields: CollectionField[]
     /** Once initialValue is set, other options are not available */
     initialValue?: LookupSelectValueType
+    /** Filter the result of select options */
+    filter?: Record<string, unknown>
 }
 
 interface SelectionType {
@@ -47,11 +49,12 @@ export const LookupSelect: React.FC<LookupSelectProps> = (props) => {
         id,
         value,
         onChange,
-        displayField = 'name',
+        valueRender = item => String(item?.name ?? ''),
         allowClear = false,
         collection,
         collectionFields,
         initialValue,
+        filter,
     } = props
 
     // Controller state for modal visibility
@@ -84,7 +87,7 @@ export const LookupSelect: React.FC<LookupSelectProps> = (props) => {
     }
 
     // Determine the display value for the Input
-    const displayValue = String(value?.[displayField] ?? '')
+    const displayValue = valueRender(value)
 
     return (
         <span id={id}>
@@ -103,6 +106,7 @@ export const LookupSelect: React.FC<LookupSelectProps> = (props) => {
                 onSelect={handleSelection} // Pass back selected item
                 onCancel={handleCancel} // Close modal
                 initialValue={initialValue}
+                filter={filter}
             />
         </span>
     )
@@ -116,6 +120,7 @@ function LookupSelectionModal({
     onSelect,
     onCancel,
     initialValue,
+    filter,
 }: {
     open: boolean
     // Fields needed for Directus request and table display
@@ -128,6 +133,7 @@ function LookupSelectionModal({
     onCancel: () => void
     // Once initialValue is set, other options are not available
     initialValue?: LookupSelectValueType
+    filter?: Record<string, unknown>
 }) {
     const directus = useDirectus()
     const [selectionList, setSelectionList] = useState<LookupSelectValueType[]>([])
@@ -161,6 +167,7 @@ function LookupSelectionModal({
     } = useSearchRequest({
         collection,
         fields,
+        filter,
         limit,
         onSuccess: data => setSelectionList(data as LookupSelectValueType[]),
     })
@@ -181,6 +188,7 @@ function LookupSelectionModal({
         // Get the data list as the options for selection.
         const dataList = await directus.request(readItems(collection, {
             fields,
+            filter,
             limit,
         }))
 
@@ -196,6 +204,7 @@ function LookupSelectionModal({
         // Determine if 'Search' shoud be present
         directus.request(aggregate(collection, {
             aggregate: { count: '*' },
+            query: { filter },
         })).then((data) => {
             if (Number(data[0]?.count) > limit) {
                 setShowSearch(true)
@@ -277,11 +286,13 @@ function LookupSelectionModal({
 function useSearchRequest({
     collection,
     fields,
+    filter,
     limit,
     onSuccess,
 }: {
     collection: string
     fields: string[]
+    filter?: Record<string, unknown>
     limit: number
     onSuccess: (data: Item[]) => void
 }) {
@@ -295,6 +306,7 @@ function useSearchRequest({
             collection,
             {
                 fields,
+                filter,
                 limit,
                 search: debouncedSearchTerm,
             },

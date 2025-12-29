@@ -15,10 +15,18 @@ import { Home } from './Home'
 import { Login } from './Login.tsx'
 import { BlogEditPage } from './pages/BlogEditPage.tsx'
 import { BlogPage } from './pages/BlogPage.tsx'
+import { BrandListPage } from './pages/BrandListPage.tsx'
+import { BrandPage } from './pages/BrandPage.tsx'
+import { CategoryListPage } from './pages/CategoryListPage.tsx'
+import { CategoryPage } from './pages/CategoryPage.tsx'
 import { ProductCategoryPage } from './pages/ProductCategoryPage.tsx'
 import { ProductFilesPage } from './pages/ProductFilesPage.tsx'
 import { ProductPage } from './pages/ProductPage.tsx'
 import { ProductReviewPage } from './pages/ProductReviewPage.tsx'
+import { ProductSKUPage } from './pages/ProductSKUPage.tsx'
+import { ProductSKUSpecPage } from './pages/ProductSKUSpecPage.tsx'
+import { ProductSpecPage } from './pages/ProductSpecPage.tsx'
+import { ProductSpecValuePage } from './pages/ProductSpecValuePage.tsx'
 import { ServicePage } from './pages/ServicePage.tsx'
 import { UserPage } from './pages/UserPage.tsx'
 
@@ -80,10 +88,18 @@ createRoot(document.getElementById('root')!).render(
                                 <Route path="product_reviews/:id" element={<ProductReviewPage />} />
                                 <Route path="product_category/:id" element={<ProductCategoryPage />} />
                                 <Route path="product_files/:id" element={<ProductFilesPage />} />
+                                <Route path="specification_definition/:id" element={<ProductSpecPage />} />
+                                <Route path="specification_values/:id" element={<ProductSpecValuePage />} />
+                                <Route path="stock_keeping_unit/:id" element={<ProductSKUPage />} />
+                                <Route path="stock_keeping_unit_specification_junction/:id" element={<ProductSKUSpecPage />} />
+                                <Route path="brand/:id" element={<BrandPage />} />
+                                <Route path="category/:id" element={<CategoryPage />} />
                                 <Route path="blog/:id" element={<BlogEditPage />} />
                             </Route>
                             <Route path="user" element={<UserPage />} />
                             <Route path="service" element={<ServicePage />} />
+                            <Route path="brand" element={<BrandListPage />} />
+                            <Route path="category" element={<CategoryListPage />} />
                         </Route>
                         <Route path="login" element={<Login />}>
                         </Route>
