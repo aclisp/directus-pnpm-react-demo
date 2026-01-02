@@ -19,6 +19,7 @@ import { BrandListPage } from './pages/BrandListPage.tsx'
 import { BrandPage } from './pages/BrandPage.tsx'
 import { CategoryListPage } from './pages/CategoryListPage.tsx'
 import { CategoryPage } from './pages/CategoryPage.tsx'
+import { FactoryPage } from './pages/FactoryPage.tsx'
 import { ProductCategoryPage } from './pages/ProductCategoryPage.tsx'
 import { ProductFilesPage } from './pages/ProductFilesPage.tsx'
 import { ProductPage } from './pages/ProductPage.tsx'
@@ -83,6 +84,7 @@ createRoot(document.getElementById('root')!).render(
                             <Route path="blog/:permalink" element={<BlogPage />} />
                             <Route path="about" element={<About />} />
                             <Route path="demo1" element={<Demo1 />} />
+                            <Route path="factory" element={<FactoryPage />} />
                             <Route path="form">
                                 <Route path="product/:id" element={<ProductPage />} />
                                 <Route path="product_reviews/:id" element={<ProductReviewPage />} />
