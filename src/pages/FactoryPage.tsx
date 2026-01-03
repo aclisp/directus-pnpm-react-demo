@@ -347,8 +347,6 @@ function CollectionFields({ collection }: { collection: string }) {
     const { data: relations } = useRequest(async () => {
         const relations = await directus.request(readRelations())
         return relations as DirectusRelation[]
-    }, {
-        refreshDeps: [collection],
     })
 
     const onLoadData = async (treeNode: TreeNode) => {
@@ -710,14 +708,13 @@ function gen_CollectionPage(props: GenProps) {
     }
     output += `
                 </div>
-
 `
     Array.from(allCheckedNodes.values())
         .filter(v => !v.parent)
         .filter(v => v.type == 'alias')
         .forEach((v) => {
-            output += `                {isEdit && <${toPascalCase(v.key)} data={data} />}
-`
+            output += `
+                {isEdit && <${toPascalCase(v.key)} data={data} />}`
         })
     output += `
             </Form1>
@@ -728,7 +725,12 @@ function gen_CollectionPage(props: GenProps) {
 }
 
 function gen_FormItemInput(props: GenProps, node?: TreeNode) {
-    if (node?.meta.interface == 'select-dropdown-m2o') {
+    if (node?.schema?.foreign_key_table == 'directus_files') {
+        return `
+                        <ImageUpload />`
+    }
+
+    if (node?.meta.interface == 'select-dropdown-m2o' || node?.schema?.foreign_key_table) {
         return `
                         <LookupSelect
                             collection="${node.relation?.collection}"
