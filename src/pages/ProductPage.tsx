@@ -1,4 +1,3 @@
-import { DebugItem } from '@/components/DebugItem'
 import { Form1 } from '@/components/Form1'
 import { FormAction } from '@/components/FormAction'
 import { LookupSelect } from '@/components/LookupSelect'
@@ -7,11 +6,10 @@ import { SystemFields } from '@/components/SystemFields'
 import { Title } from '@/components/Title'
 import type { Item } from '@/components/types'
 import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update'
-import { updateItem } from '@directus/sdk'
+import { createItem, updateItem } from '@directus/sdk'
 import type { FormProps } from 'antd'
-import { Button, Divider, Form, Input, Radio } from 'antd'
+import { Button, Form, Input, Radio } from 'antd'
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { useItemFromPage } from './hooks/use-item-from-page'
 
 interface FormValues {
@@ -26,6 +24,7 @@ interface FormValues {
 
 export function ProductPage() {
     const {
+        navigate,
         directus,
         form,
         id,
@@ -56,11 +55,15 @@ export function ProductPage() {
     const onFinish: FormProps<FormValues>['onFinish'] = async (values) => {
         setSaving(true)
         const item = reviseFormValuesForUpdate(values)
-        const data = await directus.request(updateItem('product', id!, item, { fields })).finally(() => setSaving(false))
-        updatePage(data)
+        if (isEdit) {
+            const data = await directus.request(updateItem('product', id!, item, { fields })).finally(() => setSaving(false))
+            updatePage(data)
+        } else {
+            const data = await directus.request(createItem('product', item, { fields })).finally(() => setSaving(false))
+            updatePage(data)
+            navigate(`/form/product/${data.id}`)
+        }
     }
-
-    const navigate = useNavigate()
 
     const createProductReview = () => {
         navigate(`/form/product_reviews/+?product_id.id=${id}&product_id.name=${data?.name}`)
@@ -136,9 +139,6 @@ export function ProductPage() {
                 {isEdit && <ProductReviews data={data} />}
                 {isEdit && <SystemFields data={data} />}
             </Form1>
-
-            <Divider />
-            <DebugItem collection="product" id={id} />
         </>
     )
 }
