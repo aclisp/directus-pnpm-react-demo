@@ -1,6 +1,6 @@
 import { CardNav } from '@/components/CardNav'
 import { Title } from '@/components/Title'
-import { ApartmentOutlined, AppleOutlined, DeploymentUnitOutlined, FormOutlined, KeyOutlined, MedicineBoxOutlined, ProductOutlined, SafetyOutlined, TransactionOutlined, UserOutlined } from '@ant-design/icons'
+import { ApartmentOutlined, AppleOutlined, FormOutlined, InteractionTwoTone, KeyOutlined, MedicineBoxOutlined, ProductOutlined, SafetyOutlined, TransactionOutlined, UserOutlined } from '@ant-design/icons'
 import { Flex } from 'antd'
 
 export function ServicePage() {
@@ -22,7 +22,7 @@ export function ServicePage() {
                     <CardNav.Button icon={MedicineBoxOutlined} text="医疗健康" color="orange" href="#" />
                 </CardNav>
                 <CardNav title="工具箱">
-                    <CardNav.Button icon={DeploymentUnitOutlined} text="生成页面" color="violet" href="/factory" />
+                    <CardNav.Button icon={InteractionTwoTone} text="生成页面" twoToneColor="#1677FF" href="/factory" />
                 </CardNav>
             </Flex>
         </>

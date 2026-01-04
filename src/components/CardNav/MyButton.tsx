@@ -6,10 +6,12 @@ export function MyButton({
     text,
     color,
     href,
+    twoToneColor,
 }: {
     icon: React.ElementType
     text: string
-    color: string
+    color?: string
+    twoToneColor?: string
     href: string
 }) {
     const navigate = useNavigate()
@@ -21,7 +23,7 @@ export function MyButton({
     return (
         <Button onClick={handleClick} color="default" variant="text" style={{ height: 'auto' }}>
             <Flex vertical align="center" gap={12} style={{ paddingTop: 12, paddingBottom: 12 }}>
-                <Icon style={{ fontSize: 24, color }} />
+                <Icon style={{ fontSize: 24, color }} twoToneColor={twoToneColor} />
                 <div>{text}</div>
             </Flex>
         </Button>
