@@ -441,24 +441,11 @@ function SearchCollectionInput({
     )
 }
 
-interface PageCodeProps {
-    collection: string
-    treeData: TreeNode[]
-    checkedKeys: CheckedKeys
-    relations?: DirectusRelation[]
-}
-
-function PageCode({
-    collection,
-    treeData,
-    checkedKeys,
-    relations,
-}: PageCodeProps) {
-    const checkedNodes = getTreeNodes(treeData, checkedKeys.checked)
-    const halfCheckedNodes = getTreeNodes(treeData, checkedKeys.halfChecked)
-    const allCheckedNodes = new Map([...halfCheckedNodes, ...checkedNodes])
-    const formItemKeys = getFormItemKeys(checkedNodes)
-
+function CopiablePre({
+    children,
+}: {
+    children: React.ReactNode
+}) {
     const preRef = useRef<HTMLPreElement>(null)
     const [copied, setCopied] = useState(false)
 
@@ -477,18 +464,43 @@ function PageCode({
         <>
             <Button style={{ marginBottom: 4 }} icon={copied ? <CheckOutlined /> : <CopyOutlined />} onClick={handleCopy} />
             <pre style={{ fontSize: 12 }} ref={preRef}>
-                {gen_({
-                    collection,
-                    treeData,
-                    checkedKeys,
-                    relations,
-                    checkedNodes,
-                    halfCheckedNodes,
-                    allCheckedNodes,
-                    formItemKeys,
-                })}
+                {children}
             </pre>
         </>
+    )
+}
+
+interface PageCodeProps {
+    collection: string
+    treeData: TreeNode[]
+    checkedKeys: CheckedKeys
+    relations?: DirectusRelation[]
+}
+
+function PageCode({
+    collection,
+    treeData,
+    checkedKeys,
+    relations,
+}: PageCodeProps) {
+    const checkedNodes = getTreeNodes(treeData, checkedKeys.checked)
+    const halfCheckedNodes = getTreeNodes(treeData, checkedKeys.halfChecked)
+    const allCheckedNodes = new Map([...halfCheckedNodes, ...checkedNodes])
+    const formItemKeys = getFormItemKeys(checkedNodes)
+
+    return (
+        <CopiablePre>
+            {gen_({
+                collection,
+                treeData,
+                checkedKeys,
+                relations,
+                checkedNodes,
+                halfCheckedNodes,
+                allCheckedNodes,
+                formItemKeys,
+            })}
+        </CopiablePre>
     )
 }
 
