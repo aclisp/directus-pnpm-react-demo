@@ -2,7 +2,7 @@ import { useDirectus } from '@/directus'
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { deleteItem } from '@directus/sdk'
 import { App, Button, ConfigProvider, theme } from 'antd'
-import { get } from 'lodash'
+import { get } from 'lodash-es'
 import { Link } from 'react-router'
 
 interface ActionRenderProps {
