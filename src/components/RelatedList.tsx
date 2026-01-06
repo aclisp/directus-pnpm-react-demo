@@ -223,7 +223,10 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
                     prefill={prefill}
                     relatedItemId={relatedId}
                     open={drawerOpen}
-                    onClose={closeDrawer}
+                    onClose={() => {
+                        closeDrawer()
+                        handleActionFinish() // Call this in case the indirect relational data is updated
+                    }}
                     onFormFinish={() => {
                         closeDrawer()
                         handleActionFinish()

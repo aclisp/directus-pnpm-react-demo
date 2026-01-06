@@ -12,6 +12,7 @@ import { Button, Form, Input, Radio } from 'antd'
 import { useState } from 'react'
 import { useItemFromPage } from './hooks/use-item-from-page'
 import { ProductCategoryDrawer } from './ProductCategoryPage/ProductCategoryDrawer'
+import { ProductSpecDrawer } from './ProductSpecPage/ProductSpecDrawer'
 
 interface FormValues {
     name: string
@@ -214,6 +215,10 @@ function ProductSpec({ data }: { data?: Item }) {
                     { field: ['specification_values', 'id'], title: '', hidden: true },
                     { field: ['specification_values', 'value'], title: '', hidden: true },
                 ]}
+                showTitle
+                showEdit
+                drawer={ProductSpecDrawer}
+                prefill={{ product_id: { id: data?.id, name: data?.name } }}
             />
         </Form.Item>
     )
