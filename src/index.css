@@ -1,7 +1,8 @@
 .form-grid {
     display: flex;
     flex-wrap: wrap;
-    column-gap: 40px; /* Adjust gap as needed */
+    column-gap: 40px;
+    /* Adjust gap as needed */
 }
 
 .form-item {
@@ -15,7 +16,8 @@
     width: calc(100% - 40px);
 }
 
-@media (max-width: 639px) {
+/* Breakpoint: screen width 640px - left padding 24px - right padding 24px */
+@container (max-width: 591px) {
 
     .form-grid {
         /* Restore to block on mobile for antd default responsive behavior */

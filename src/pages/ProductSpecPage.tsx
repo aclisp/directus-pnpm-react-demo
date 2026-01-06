@@ -100,7 +100,18 @@ function ProductSpecValues({ data }: { data?: Item }) {
                     { field: ['value'], title: '规格值' },
                 ]}
                 showEdit
+                showTitle
                 collectionTitle={['value']}
+                prefill={{
+                    specification_definition_id: {
+                        id: data?.id,
+                        name: data?.name,
+                        product_id: {
+                            id: data?.product_id.id,
+                            name: data?.product_id.name,
+                        },
+                    },
+                }}
             />
         </Form.Item>
     )

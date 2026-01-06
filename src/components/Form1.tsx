@@ -17,9 +17,13 @@ export function Form1(props: Form1Props) {
                 labelCol={{ span: 4 }}
                 labelAlign="left"
                 colon={false}
+                style={{
+                    containerType: 'inline-size',
+                }}
                 styles={{
                     label: { color: token.colorTextSecondary },
                 }}
+                initialValues={{}}
                 {...restProps}
             >
                 {children as React.ReactNode}

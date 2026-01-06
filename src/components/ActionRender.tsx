@@ -3,16 +3,18 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
 import { deleteItem } from '@directus/sdk'
 import { App, Button, ConfigProvider, theme } from 'antd'
 import { get } from 'lodash-es'
-import { Link } from 'react-router'
+import { useNavigate } from 'react-router'
+import type { RelatedItemEditingEvent } from './RelatedList'
 
 interface ActionRenderProps {
-    refresh: () => void
+    onActionFinish: () => void
     record: Record<string, unknown>
     collection: string
     showEdit: boolean
     collectionTitle?: string[]
     foreignKeyField: string
     foreignKeyValue?: string | number
+    onEdit?: (e: RelatedItemEditingEvent) => void
 }
 
 /**
@@ -44,16 +46,24 @@ function EditButton({
     record,
     foreignKeyField,
     foreignKeyValue,
+    onEdit,
 }: EditOrDeleteProps) {
+    const navigate = useNavigate()
+    const handleEdit = () => {
+        if (onEdit) {
+            onEdit({ record, collection, foreignKeyField, foreignKeyValue })
+        } else {
+            navigate(`/form/${collection}/${record.id}?${foreignKeyField}.id=${foreignKeyValue}`)
+        }
+    }
     return (
-        <Link to={`/form/${collection}/${record.id}?${foreignKeyField}.id=${foreignKeyValue}`}>
-            <Button
-                variant="text"
-                size="small"
-                color="primary"
-                icon={<EditOutlined />}
-            />
-        </Link>
+        <Button
+            variant="text"
+            size="small"
+            color="primary"
+            icon={<EditOutlined />}
+            onClick={handleEdit}
+        />
     )
 }
 
@@ -61,7 +71,7 @@ function DeleteButton({
     collection,
     record,
     name,
-    refresh,
+    onActionFinish,
 }: EditOrDeleteProps) {
     const directus = useDirectus()
     const { modal } = App.useApp()
@@ -71,7 +81,7 @@ function DeleteButton({
         modal.confirm({
             content,
             onOk: () => {
-                directus.request(deleteItem(collection, String(record.id))).then(refresh)
+                directus.request(deleteItem(collection, String(record.id))).then(onActionFinish)
             },
             autoFocusButton: 'cancel',
         })

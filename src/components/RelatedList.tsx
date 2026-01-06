@@ -1,14 +1,31 @@
 import { useDirectus } from '@/directus'
+import { nestedObjectToQuery } from '@/utils/nested-object-to-query'
+import { PlusOutlined } from '@ant-design/icons'
 import { readItems } from '@directus/sdk'
 import { useRequest } from 'ahooks'
-import type { TableColumnsType } from 'antd'
-import { Table } from 'antd'
+import type { DrawerProps, TableColumnsType } from 'antd'
+import { Button, Flex, Table } from 'antd'
+import { useState } from 'react'
+import { useNavigate } from 'react-router'
 import { ActionRender } from './ActionRender'
 import { ImageRender } from './ImageRender'
 import { LinkRender } from './LinkRender'
 import { O2MRender } from './O2MRender'
 import type { CollectionField } from './types'
 import { UserRender } from './UserRender'
+
+export interface RelatedItemEditingEvent {
+    record: Record<string, unknown>
+    collection: string
+    foreignKeyField: string
+    foreignKeyValue?: string | number
+}
+
+export interface RelatedItemDrawerProps extends DrawerProps {
+    prefill: Record<string, unknown>
+    relatedItemId: string
+    onFormFinish: (isEdit: boolean) => void
+}
 
 interface RelatedListProps {
     /** The foreign key references the "parent" table's `id` field */
@@ -24,8 +41,14 @@ interface RelatedListProps {
     collectionTitle?: string[]
     /** Show `edit` button in the action column, default is `false` */
     showEdit?: boolean
-    /** Call this `refresh` on row actions */
-    refresh?: () => void
+    /** Show table title, which has the button to add a related item */
+    showTitle?: boolean
+    /** Called when an action (Add, Edit or Delete) on a related item is finished */
+    onActionFinish?: () => void
+    /** Drawer component to Add or Edit a related item */
+    drawer?: React.ComponentType<RelatedItemDrawerProps>
+    /** Drawer form prefill */
+    prefill?: Record<string, unknown>
 }
 
 /**
@@ -39,8 +62,28 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         collectionFields,
         collectionTitle,
         showEdit = false,
-        refresh,
+        showTitle = false,
+        onActionFinish,
+        drawer: Drawer,
+        prefill = {},
     } = props
+
+    const {
+        drawerOpen,
+        relatedId,
+        handleAddItem,
+        handleEditItem,
+        closeDrawer,
+    } = useRelatedItemDrawer()
+
+    const navigate = useNavigate()
+    const handleAddItemWithNavigate = () => {
+        let queryString = nestedObjectToQuery(prefill).toString()
+        if (queryString) {
+            queryString = '?' + queryString
+        }
+        navigate(`/form/${collection}/+${queryString}`)
+    }
 
     const columns: TableColumnsType = collectionFields.map((x) => {
         const column = {
@@ -111,6 +154,11 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         refreshDeps: [foreignKeyValue],
     })
 
+    const handleActionFinish = () => {
+        refreshRequest()
+        onActionFinish?.()
+    }
+
     // The last column contains the row actions
     columns.push({
         key: 'action',
@@ -120,39 +168,95 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
         fixed: 'end',
         render: (_, record) => (
             <ActionRender
-                refresh={() => {
-                    refreshRequest()
-                    refresh?.()
-                }}
+                onActionFinish={handleActionFinish}
                 record={record}
                 collection={collection}
                 showEdit={showEdit}
                 collectionTitle={collectionTitle}
                 foreignKeyField={foreignKeyField}
                 foreignKeyValue={foreignKeyValue}
+                onEdit={Drawer ? handleEditItem : undefined}
             />
         ),
     })
 
+    const title = () => {
+        return (
+            <Flex justify="end">
+                <Flex justify="center" style={{ width: 48 }}>
+                    <Button
+                        variant="text"
+                        size="small"
+                        color="primary"
+                        icon={<PlusOutlined />}
+                        onClick={Drawer ? handleAddItem : handleAddItemWithNavigate}
+                    />
+                </Flex>
+            </Flex>
+        )
+    }
+
     return (
-        <Table
-            rowKey="id"
-            dataSource={data}
-            columns={columns}
-            size="small"
-            pagination={false}
-            tableLayout="auto"
-            scroll={{
-                x: 591,
-            }}
-            bordered
-            styles={{
-                header: {
-                    cell: {
-                        fontWeight: 'normal',
+        <>
+            <Table
+                rowKey="id"
+                dataSource={data}
+                columns={columns}
+                size="small"
+                pagination={false}
+                tableLayout="auto"
+                scroll={{
+                    x: 591,
+                }}
+                bordered
+                styles={{
+                    header: {
+                        cell: {
+                            fontWeight: 'normal',
+                        },
                     },
-                },
-            }}
-        />
+                }}
+                title={showTitle ? title : undefined}
+            />
+            {Drawer && (
+                <Drawer
+                    prefill={prefill}
+                    relatedItemId={relatedId}
+                    open={drawerOpen}
+                    onClose={closeDrawer}
+                    onFormFinish={() => {
+                        closeDrawer()
+                        handleActionFinish()
+                    }}
+                />
+            )}
+        </>
     )
+}
+
+function useRelatedItemDrawer() {
+    const [drawerOpen, setDrawerOpen] = useState(false)
+    const [relatedId, setRelatedId] = useState('+')
+
+    const handleAddItem = () => {
+        setRelatedId('+')
+        setDrawerOpen(true)
+    }
+
+    const handleEditItem = (e: RelatedItemEditingEvent) => {
+        setRelatedId(String(e.record.id))
+        setDrawerOpen(true)
+    }
+
+    const closeDrawer = () => {
+        setDrawerOpen(false)
+    }
+
+    return {
+        drawerOpen,
+        relatedId,
+        handleAddItem,
+        handleEditItem,
+        closeDrawer,
+    }
 }

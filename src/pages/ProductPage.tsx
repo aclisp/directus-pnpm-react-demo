@@ -11,6 +11,7 @@ import type { FormProps } from 'antd'
 import { Button, Form, Input, Radio } from 'antd'
 import { useState } from 'react'
 import { useItemFromPage } from './hooks/use-item-from-page'
+import { ProductCategoryDrawer } from './ProductCategoryPage/ProductCategoryDrawer'
 
 interface FormValues {
     name: string
@@ -175,6 +176,10 @@ function ProductCategory({ data }: { data?: Item }) {
                     { field: ['category_id', 'name'], title: '品类名称', render: { type: 'link' } },
                 ]}
                 collectionTitle={['category_id', 'name']}
+                showTitle
+                showEdit
+                drawer={ProductCategoryDrawer}
+                prefill={{ product_id: { id: data?.id, name: data?.name } }}
             />
         </Form.Item>
     )

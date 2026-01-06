@@ -109,7 +109,7 @@ function ChildCategory({ data, refresh }: { data?: Item, refresh: () => void }) 
                 collectionFields={[
                     { field: ['name'], title: '品类名称', render: { type: 'link' } },
                 ]}
-                refresh={refresh}
+                onActionFinish={refresh}
             />
         </Form.Item>
     )
