@@ -10,5 +10,5 @@ export function useItemFromPage(collection: string, fields: string[]) {
     const [searchParams] = useSearchParams() // Depends on the Page's url
     // The prefilled data is coming from the Page's url query string
     const prefill = queryToNestedObject(searchParams)
-    return useItem(collection, id!, { fields, prefill })
+    return useItem(collection, id, { fields, prefill })
 }

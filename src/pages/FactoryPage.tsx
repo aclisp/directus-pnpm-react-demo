@@ -193,7 +193,7 @@ function updateTreeData({
     relation: Relation
 }): TreeNode[] {
     return origin.map((node) => {
-        if (node.key == nodeToUpdate.key) {
+        if (node.key === nodeToUpdate.key) {
             // 1. Create the base of the updated node first
             const updatedNode: TreeNode = {
                 ...node,
@@ -284,8 +284,8 @@ function findRelation(relations: DirectusRelation[], treeNode: TreeNode): Relati
 
 function findRelationM2O(relations: DirectusRelation[], treeNode: TreeNode): M2ORelation | null {
     const m2o = relations.find((relation) => {
-        return relation.meta.many_collection == treeNode.collection
-            && relation.meta.many_field == treeNode.field
+        return relation.meta.many_collection === treeNode.collection
+            && relation.meta.many_field === treeNode.field
     })
     if (!m2o) {
         return null
@@ -298,8 +298,8 @@ function findRelationM2O(relations: DirectusRelation[], treeNode: TreeNode): M2O
 
 function findRelationO2M(relations: DirectusRelation[], treeNode: TreeNode): O2MRelation | null {
     const o2m = relations.find((relation) => {
-        return relation.meta.one_collection == treeNode.collection
-            && relation.meta.one_field == treeNode.field
+        return relation.meta.one_collection === treeNode.collection
+            && relation.meta.one_field === treeNode.field
     })
     if (!o2m) {
         return null
@@ -313,8 +313,8 @@ function findRelationO2M(relations: DirectusRelation[], treeNode: TreeNode): O2M
 
 function findRelationM2M(relations: DirectusRelation[], treeNode: TreeNode): M2MRelation | null {
     const m2m = relations.find((relation) => {
-        return relation.meta.one_collection == treeNode.collection
-            && relation.meta.one_field == treeNode.field
+        return relation.meta.one_collection === treeNode.collection
+            && relation.meta.one_field === treeNode.field
     })
     if (!m2m) {
         return null
@@ -507,12 +507,12 @@ function PageCode({
 function getFormItemKeys(checkedNodes: Map<string, TreeNode>) {
     const formItemKeys = new Map<string, string | string[]>()
     Array.from(checkedNodes.values())
-        .filter(v => !v.parent || v.parent.relation?.type == 'm2o')
-        .filter(v => v.key != 'id')
-        .filter(v => findRoot(v).type != 'alias')
+        .filter(v => !v.parent || v.parent.relation?.type === 'm2o')
+        .filter(v => v.key !== 'id')
+        .filter(v => findRoot(v).type !== 'alias')
         .forEach((v) => {
             const parts = v.key.split('.', 2)
-            if (parts.length == 1) {
+            if (parts.length === 1) {
                 // It's a top-level key
                 formItemKeys.set(parts[0], parts[0])
             } else {
@@ -580,7 +580,7 @@ ${gen_CollectionPage(props)}
 `
     Array.from(props.allCheckedNodes.values())
         .filter(v => !v.parent)
-        .filter(v => v.type == 'alias')
+        .filter(v => v.type === 'alias')
         .forEach((v) => {
             output += gen_RelatedList(props, v)
         })
@@ -629,16 +629,16 @@ function gen_FormValues({
 }
 
 function getTypeScriptType(field: DirectusField | undefined) {
-    if (field?.meta.interface == 'select-dropdown') {
+    if (field?.meta.interface === 'select-dropdown') {
         return field.meta.options?.choices.map((x: { value: string }) => `'${x.value}'`).join(' | ')
     }
-    if (field?.type == 'text') {
+    if (field?.type === 'text') {
         return 'string'
     }
-    if (field?.type == 'integer') {
+    if (field?.type === 'integer') {
         return 'number'
     }
-    if (field?.type == 'uuid') {
+    if (field?.type === 'uuid') {
         return 'string'
     }
 
@@ -677,7 +677,7 @@ function gen_CollectionPage(props: GenProps) {
     } = useItemFromPage('${collection}', [
 `
     for (const [key, node] of checkedNodes) {
-        if (findRoot(node).type != 'alias') {
+        if (findRoot(node).type !== 'alias') {
             output += `        '${key}',\n`
         }
     }
@@ -723,7 +723,7 @@ function gen_CollectionPage(props: GenProps) {
 `
     Array.from(allCheckedNodes.values())
         .filter(v => !v.parent)
-        .filter(v => v.type == 'alias')
+        .filter(v => v.type === 'alias')
         .forEach((v) => {
             output += `
                 {isEdit && <${toPascalCase(v.key)} data={data} />}`
@@ -737,12 +737,12 @@ function gen_CollectionPage(props: GenProps) {
 }
 
 function gen_FormItemInput(props: GenProps, node?: TreeNode) {
-    if (node?.schema?.foreign_key_table == 'directus_files') {
+    if (node?.schema?.foreign_key_table === 'directus_files') {
         return `
                         <ImageUpload />`
     }
 
-    if (node?.meta.interface == 'select-dropdown-m2o' || node?.schema?.foreign_key_table) {
+    if (node?.meta.interface === 'select-dropdown-m2o' || node?.schema?.foreign_key_table) {
         return `
                         <LookupSelect
                             collection="${node.relation?.collection}"
@@ -751,7 +751,7 @@ function gen_FormItemInput(props: GenProps, node?: TreeNode) {
                         />`
     }
 
-    if (node?.meta.interface == 'select-dropdown') {
+    if (node?.meta.interface === 'select-dropdown') {
         return `
                         <Radio.Group
                             options={[${gen_RadioGroup_Options(props, node)}
@@ -806,7 +806,7 @@ function gen_RelatedList(props: GenProps, node: TreeNode) {
     if (!relation) {
         return
     }
-    if (relation.type != 'o2m' && relation.type != 'm2m') {
+    if (relation.type !== 'o2m' && relation.type !== 'm2m') {
         return
     }
     let output = `

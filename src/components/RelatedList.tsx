@@ -23,7 +23,7 @@ export interface RelatedItemEditingEvent {
 
 export interface RelatedItemDrawerProps extends DrawerProps {
     prefill: Record<string, unknown>
-    relatedItemId: string
+    relatedItemId: string | undefined
     onFormFinish: (isEdit: boolean) => void
 }
 
@@ -94,7 +94,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
             minWidth: x.width,
             hidden: x.hidden,
         }
-        if (x.render?.type == 'image') {
+        if (x.render?.type === 'image') {
             return {
                 ...column, render: value => (
                     <ImageRender
@@ -103,7 +103,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
                     />
                 ),
             }
-        } else if (x.render?.type == 'o2m') {
+        } else if (x.render?.type === 'o2m') {
             return {
                 ...column, render: value => (
                     <O2MRender
@@ -112,7 +112,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
                     />
                 ),
             }
-        } else if (x.render?.type == 'link') {
+        } else if (x.render?.type === 'link') {
             return {
                 ...column, render: (value, record) => (
                     <LinkRender
@@ -124,7 +124,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
                     />
                 ),
             }
-        } else if (x.render?.type == 'user') {
+        } else if (x.render?.type === 'user') {
             return {
                 ...column, render: value => (
                     <UserRender
@@ -140,12 +140,12 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
     const directus = useDirectus()
 
     const { data, refresh: refreshRequest } = useRequest(async () => {
-        if (foreignKeyValue == undefined) {
+        if (foreignKeyValue === undefined) {
             return undefined
         }
 
         // Ensure that the id field is always included
-        const fields = columns.map(x => String(x.key)).filter(x => x != 'action').concat('id')
+        const fields = columns.map(x => String(x.key)).filter(x => x !== 'action').concat('id')
         return await directus.request(readItems(collection, {
             fields,
             filter: { [foreignKeyField]: { _eq: foreignKeyValue } },
@@ -236,7 +236,7 @@ export const RelatedList: React.FC<RelatedListProps> = (props) => {
 
 function useRelatedItemDrawer() {
     const [drawerOpen, setDrawerOpen] = useState(false)
-    const [relatedId, setRelatedId] = useState('+')
+    const [relatedId, setRelatedId] = useState<string>()
 
     const handleAddItem = () => {
         setRelatedId('+')

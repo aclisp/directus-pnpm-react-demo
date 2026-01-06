@@ -32,6 +32,10 @@ export default defineConfig([
         plugins: {
             '@stylistic': stylistic,
         },
+        rules: {
+            '@typescript-eslint/no-non-null-assertion': 'off',
+            'eqeqeq': ['error', 'always'],
+        },
     },
     stylistic.configs.customize({
         indent: 4,

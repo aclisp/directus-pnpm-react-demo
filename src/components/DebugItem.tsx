@@ -22,7 +22,7 @@ export function DebugItem({ collection, id }: {
     const { data: relations } = useRequest(async () => {
         const relations = await directus.request(readRelations())
         return relations.filter(record => (
-            record.meta.many_collection == collection || record.meta.one_collection == collection
+            record.meta.many_collection === collection || record.meta.one_collection === collection
         ))
     })
 

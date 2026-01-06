@@ -76,7 +76,7 @@ export function CategoryPage() {
                 <FormAction label="操作">
                     <Button type="primary" htmlType="submit" disabled={!isDirty} loading={saving}>保存</Button>
                     {isEdit && <Button onClick={createChildCategory}>新增下级</Button>}
-                    {isEdit && data?.children?.length == 0 && <Button variant="outlined" color="danger" onClick={deleteSelf}>删除</Button>}
+                    {isEdit && data?.children?.length === 0 && <Button variant="outlined" color="danger" onClick={deleteSelf}>删除</Button>}
                 </FormAction>
                 <div className="form-grid">
                     <Form.Item<FormValues> className="form-item" label="上级品类" name="parent_id">

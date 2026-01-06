@@ -41,7 +41,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
     }
 
     const onUploadChange: UploadProps['onChange'] = (info) => {
-        if (info.file.status == 'done') {
+        if (info.file.status === 'done') {
             triggerChange(info.file.response.data.id)
             refreshToken()
         }

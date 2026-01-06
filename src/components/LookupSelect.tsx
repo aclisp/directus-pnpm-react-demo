@@ -146,7 +146,7 @@ function LookupSelectionModal({
             dataIndex: x.field,
             title: x.title,
         }
-        if (x.render?.type == 'image') {
+        if (x.render?.type === 'image') {
             return { ...column, render: value => <ImageRender value={value} {...x.render} /> }
         } else {
             return column
@@ -195,7 +195,7 @@ function LookupSelectionModal({
         // If there's currentValue, then get it and merge it into the final result.
         if (currentValue) {
             const data = await directus.request(readItem(collection, currentValue.id, { fields }))
-            if (dataList.find(v => v.id == data.id) === undefined) {
+            if (dataList.find(v => v.id === data.id) === undefined) {
                 dataList.unshift(data)
                 dataList.pop()
             }

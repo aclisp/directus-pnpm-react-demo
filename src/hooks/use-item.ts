@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { useNavigate, type NavigateFunction } from 'react-router'
 
 interface UsableItem {
-    id: string
+    id: string | undefined
     data: Item | undefined
     directus: ReturnType<typeof useDirectus>
     form: FormInstance
@@ -28,7 +28,7 @@ interface UsableItemOptions {
     prefill: Record<string, unknown>
 }
 
-export function useItem(collection: string, id: string, {
+export function useItem(collection: string, id: string | undefined, {
     fields,
     prefill,
 }: UsableItemOptions): UsableItem {
@@ -37,7 +37,7 @@ export function useItem(collection: string, id: string, {
     const navigate = useNavigate() // Depends on the page router
 
     // Whether it is a 'New Item' form or an 'Edit Item' form
-    const isEdit = Boolean(id && id != '+')
+    const isEdit = Boolean(id !== '+')
 
     // The item data is a reactive state to update the page
     const [data, setData] = useState<Item>()
