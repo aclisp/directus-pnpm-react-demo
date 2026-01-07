@@ -19,7 +19,6 @@ interface UsableItem {
     navigate: NavigateFunction
     updatePage: (data: Item) => void
     handleValuesChange: () => void
-    setIsDirty: React.Dispatch<React.SetStateAction<boolean>>
     refreshRequest: () => void
 }
 
@@ -96,7 +95,6 @@ export function useItem(collection: string, id: string | undefined, {
         navigate,
         updatePage,
         handleValuesChange,
-        setIsDirty,
         refreshRequest,
     }
 }

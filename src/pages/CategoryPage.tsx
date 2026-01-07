@@ -25,7 +25,6 @@ export function CategoryPage() {
         loading,
         isEdit,
         isDirty,
-        setIsDirty,
         fields,
         prefill,
         updatePage,
@@ -61,7 +60,6 @@ export function CategoryPage() {
             'name': '',
         })
         navigate(`/form/category/+?` + params.toString())
-        setIsDirty(true)
     }
 
     const deleteSelf = async () => {

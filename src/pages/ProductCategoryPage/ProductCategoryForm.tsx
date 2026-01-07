@@ -15,6 +15,7 @@ interface _FormProps {
     loading: boolean
     isDirty: boolean
     saving: boolean
+    hideAction?: boolean
     onFinish: FormProps<FormValues>['onFinish']
     handleValuesChange: FormProps<FormValues>['onValuesChange']
     prefill: Record<string, unknown>
@@ -25,13 +26,14 @@ export function ProductCategoryForm({
     loading,
     isDirty,
     saving,
+    hideAction,
     onFinish,
     handleValuesChange,
     prefill,
 }: _FormProps) {
     return (
         <Form1 loading={loading} form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
-            <FormAction label="操作">
+            <FormAction label="操作" hidden={hideAction}>
                 <Button type="primary" htmlType="submit" disabled={!isDirty} loading={saving}>保存</Button>
             </FormAction>
 

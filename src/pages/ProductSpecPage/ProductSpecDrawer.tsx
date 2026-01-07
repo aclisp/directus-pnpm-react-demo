@@ -2,7 +2,7 @@ import type { RelatedItemDrawerProps } from '@/components/RelatedList'
 import { useItem } from '@/hooks/use-item'
 import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update'
 import { createItem, updateItem } from '@directus/sdk'
-import { Drawer, type FormProps } from 'antd'
+import { Button, Drawer, type FormProps } from 'antd'
 import { useState } from 'react'
 import { ProductSpecForm, type FormValues } from './ProductSpecForm'
 
@@ -51,11 +51,13 @@ export function ProductSpecDrawer({
     return (
         <Drawer
             title={(isEdit ? '更新' : '新增') + '规格'}
+            extra={<Button type="primary" disabled={!isDirty} loading={saving} onClick={form.submit}>保存</Button>}
             size={639}
             {...drawProps}
             forceRender
         >
             <ProductSpecForm
+                hideAction
                 form={form}
                 data={data}
                 loading={loading}
