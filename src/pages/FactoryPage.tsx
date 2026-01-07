@@ -1,10 +1,10 @@
+import { CopiablePre } from '@/components/CopiablePre/CopiablePre'
 import { useDirectus } from '@/directus'
-import { CheckOutlined, CopyOutlined } from '@ant-design/icons'
 import type { DirectusField, DirectusRelation } from '@directus/sdk'
 import { readCollections, readFieldsByCollection, readRelations } from '@directus/sdk'
 import { useRequest } from 'ahooks'
-import { Button, Select, Tree } from 'antd'
-import { useRef, useState } from 'react'
+import { Select, Space, Tree } from 'antd'
+import { useState } from 'react'
 
 export function FactoryPage() {
     const [collection, setCollection] = useState<string>()
@@ -441,35 +441,6 @@ function SearchCollectionInput({
     )
 }
 
-function CopiablePre({
-    children,
-}: {
-    children: React.ReactNode
-}) {
-    const preRef = useRef<HTMLPreElement>(null)
-    const [copied, setCopied] = useState(false)
-
-    const handleCopy = async () => {
-        if (preRef.current) {
-            const text = preRef.current.innerText // Get the text inside <pre>
-            await navigator.clipboard.writeText(text)
-            setCopied(true)
-
-            // Reset the "Copied!" state after 2 seconds
-            setTimeout(() => setCopied(false), 2000)
-        }
-    }
-
-    return (
-        <>
-            <Button style={{ marginBottom: 4 }} icon={copied ? <CheckOutlined /> : <CopyOutlined />} onClick={handleCopy} />
-            <pre style={{ fontSize: 12 }} ref={preRef}>
-                {children}
-            </pre>
-        </>
-    )
-}
-
 interface PageCodeProps {
     collection: string
     treeData: TreeNode[]
@@ -487,20 +458,31 @@ function PageCode({
     const halfCheckedNodes = getTreeNodes(treeData, checkedKeys.halfChecked)
     const allCheckedNodes = new Map([...halfCheckedNodes, ...checkedNodes])
     const formItemKeys = getFormItemKeys(checkedNodes)
-
+    const genProps = {
+        collection,
+        treeData,
+        checkedKeys,
+        relations,
+        checkedNodes,
+        halfCheckedNodes,
+        allCheckedNodes,
+        formItemKeys,
+    }
     return (
-        <CopiablePre>
-            {gen_({
-                collection,
-                treeData,
-                checkedKeys,
-                relations,
-                checkedNodes,
-                halfCheckedNodes,
-                allCheckedNodes,
-                formItemKeys,
-            })}
-        </CopiablePre>
+        <Space orientation="vertical" size={4} style={{ width: '100%' }}>
+            <CopiablePre title={`${toPascalCase(collection)}Page.tsx`} collapsed>
+                {gen_CollectionPage(genProps)}
+            </CopiablePre>
+            <CopiablePre title={`${toPascalCase(collection)}Page/${toPascalCase(collection)}Form.tsx`} collapsed>
+                {gen_CollectionForm(genProps)}
+            </CopiablePre>
+            <CopiablePre title={`${toPascalCase(collection)}Page/index.tsx`} collapsed>
+                {gen_CollectionPageIndex(genProps)}
+            </CopiablePre>
+            <CopiablePre title={`${toPascalCase(collection)}Page/${toPascalCase(collection)}Drawer.tsx`} collapsed>
+                {gen_CollectionDrawer(genProps)}
+            </CopiablePre>
+        </Space>
     )
 }
 
@@ -573,35 +555,22 @@ interface GenProps extends PageCodeProps {
     formItemKeys: Map<string, string | string[]>
 }
 
-function gen_(props: GenProps) {
-    let output = `${gen_Imports()}
-${gen_FormValues(props)}
-${gen_CollectionPage(props)}
-`
-    Array.from(props.allCheckedNodes.values())
-        .filter(v => !v.parent)
-        .filter(v => v.type === 'alias')
-        .forEach((v) => {
-            output += gen_RelatedList(props, v)
-        })
-
-    return output
-}
-
 function gen_Imports() {
     return `import { Form1 } from '@/components/Form1'
 import { FormAction } from '@/components/FormAction'
 import { ImageUpload } from '@/components/ImageUpload'
 import { LookupSelect } from '@/components/LookupSelect'
+import type { RelatedItemDrawerProps } from '@/components/RelatedList'
 import { RelatedList } from '@/components/RelatedList'
 import { Title } from '@/components/Title'
 import type { Item } from '@/components/types'
+import { useItem } from '@/hooks/use-item'
+import { useItemFromPage } from '@/pages/hooks/use-item-from-page'
 import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update'
 import { createItem, updateItem } from '@directus/sdk'
-import type { FormProps } from 'antd'
-import { Button, Form, Input, Radio } from 'antd'
+import type { FormInstance, FormProps } from 'antd'
+import { Button, Drawer, Form, Input, Radio } from 'antd'
 import { useState } from 'react'
-import { useItemFromPage } from './hooks/use-item-from-page'
 `
 }
 
@@ -661,7 +630,11 @@ function gen_CollectionPage(props: GenProps) {
         checkedNodes,
         allCheckedNodes,
     } = props
-    let output = `export function ${toPascalCase(collection)}Page() {
+
+    let output = `${gen_Imports()}
+${gen_FormValues(props)}
+`
+    output += `export function ${toPascalCase(collection)}Page() {
     const {
         navigate,
         directus,
@@ -732,7 +705,14 @@ function gen_CollectionPage(props: GenProps) {
             </Form1>
         </>
     )
-}`
+}
+`
+    Array.from(props.allCheckedNodes.values())
+        .filter(v => !v.parent)
+        .filter(v => v.type === 'alias')
+        .forEach((v) => {
+            output += gen_RelatedList(props, v)
+        })
     return output
 }
 
@@ -849,5 +829,233 @@ function gen_RelatedList_CollectionFields(props: GenProps, node: TreeNode) {
             output += gen_RelatedList_CollectionFields(props, h)
         }
     }
+    return output
+}
+
+function gen_CollectionForm(props: GenProps) {
+    const {
+        collection,
+        formItemKeys,
+        allCheckedNodes,
+    } = props
+
+    let output = `${gen_Imports()}
+export ${gen_FormValues(props)}
+`
+    output += `interface _FormProps {
+    form: FormInstance
+    data: Item | undefined
+    loading: boolean
+    isEdit: boolean
+    isDirty: boolean
+    saving: boolean
+    hideAction?: boolean
+    onFinish: FormProps<FormValues>['onFinish']
+    handleValuesChange: FormProps<FormValues>['onValuesChange']
+    prefill: Record<string, unknown>
+}
+`
+    output += `
+export function ${toPascalCase(collection)}Form({
+    form,
+    data,
+    loading,
+    isEdit,
+    isDirty,
+    saving,
+    hideAction,
+    onFinish,
+    handleValuesChange,
+    prefill,
+}: _FormProps) {`
+    output += `
+    return (
+        <Form1 loading={loading} form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
+
+            <FormAction label="操作" hidden={hideAction}>
+                <Button type="primary" htmlType="submit" disabled={!isDirty} loading={saving}>保存</Button>
+            </FormAction>
+
+            <div className="form-grid">`
+    for (const [key] of formItemKeys) {
+        const node = allCheckedNodes.get(key)
+        output += `
+                <Form.Item<FormValues> className="form-item" label="${key}" name="${key}">`
+        output += gen_FormItemInput(props, node)
+        output += `
+                </Form.Item>`
+    }
+    output += `
+            </div>
+`
+    Array.from(allCheckedNodes.values())
+        .filter(v => !v.parent)
+        .filter(v => v.type === 'alias')
+        .forEach((v) => {
+            output += `
+                {isEdit && <${toPascalCase(v.key)} data={data} />}`
+        })
+    output += `
+        </Form1>
+    )
+}
+`
+    Array.from(props.allCheckedNodes.values())
+        .filter(v => !v.parent)
+        .filter(v => v.type === 'alias')
+        .forEach((v) => {
+            output += gen_RelatedList(props, v)
+        })
+    return output
+}
+
+function gen_CollectionPageIndex(props: GenProps) {
+    const {
+        collection,
+        checkedNodes,
+    } = props
+
+    let output = `${gen_Imports()}import { ${toPascalCase(collection)}Form, type FormValues } from './${toPascalCase(collection)}Form'
+`
+    output += `
+export function ${toPascalCase(collection)}Page() {
+    const {
+        navigate,
+        directus,
+        form,
+        id,
+        prefill,
+        data,
+        loading,
+        isEdit,
+        isDirty,
+        fields,
+        updatePage,
+        handleValuesChange,
+    } = useItemFromPage('${collection}', [
+`
+    for (const [key, node] of checkedNodes) {
+        if (findRoot(node).type !== 'alias') {
+            output += `        '${key}',\n`
+        }
+    }
+    output += '    ])\n'
+    output += `
+    const [saving, setSaving] = useState(false)
+
+    const onFinish: FormProps<FormValues>['onFinish'] = async (values) => {
+        setSaving(true)
+        const item = reviseFormValuesForUpdate(values)
+        if (isEdit) {
+            const data = await directus.request(updateItem('${collection}', id!, item, { fields })).finally(() => setSaving(false))
+            updatePage(data)
+        } else {
+            const data = await directus.request(createItem('${collection}', item, { fields })).finally(() => setSaving(false))
+            updatePage(data)
+        }
+        navigate(-1)
+    }
+`
+    output += `
+    return (
+        <>
+            <Title title="${toPascalCase(collection)}" data={data} />
+            <${toPascalCase(collection)}Form
+                form={form}
+                data={data}
+                loading={loading}
+                isEdit={isEdit}
+                isDirty={isDirty}
+                saving={saving}
+                onFinish={onFinish}
+                handleValuesChange={handleValuesChange}
+                prefill={prefill}
+            />
+        </>
+    )
+}
+`
+    return output
+}
+
+function gen_CollectionDrawer(props: GenProps) {
+    const {
+        collection,
+        checkedNodes,
+    } = props
+
+    let output = `${gen_Imports()}import { ${toPascalCase(collection)}Form, type FormValues } from './${toPascalCase(collection)}Form'
+`
+    output += `
+export function ${toPascalCase(collection)}Drawer({
+    prefill,
+    relatedItemId,
+    onFormFinish,
+    ...drawerProps
+}: RelatedItemDrawerProps) {
+    const {
+        directus,
+        form,
+        id,
+        data,
+        loading,
+        isEdit,
+        isDirty,
+        fields,
+        updatePage,
+        handleValuesChange,
+    } = useItem('${collection}', relatedItemId, {
+        fields: [
+`
+    for (const [key, node] of checkedNodes) {
+        if (findRoot(node).type !== 'alias') {
+            output += `            '${key}',\n`
+        }
+    }
+    output += `        ],
+        prefill,
+    })
+`
+    output += `
+    const [saving, setSaving] = useState(false)
+
+    const onFinish: FormProps<FormValues>['onFinish'] = async (values) => {
+        setSaving(true)
+        const item = reviseFormValuesForUpdate(values)
+        if (isEdit) {
+            const data = await directus.request(updateItem('${collection}', id!, item, { fields })).finally(() => setSaving(false))
+            updatePage(data)
+        } else {
+            const data = await directus.request(createItem('${collection}', item, { fields })).finally(() => setSaving(false))
+            updatePage(data)
+        }
+        onFormFinish(isEdit)
+    }
+`
+    output += `
+    return (
+        <Drawer
+            title={(isEdit ? 'Update' : 'Create') + ' ${toPascalCase(collection)}'}
+            extra={<Button type="primary" disabled={!isDirty} loading={saving} onClick={form.submit}>保存</Button>}
+            size={639}
+            {...drawerProps}
+            forceRender
+        >
+            <${toPascalCase(collection)}Form
+                hideAction
+                form={form}
+                data={data}
+                loading={loading}
+                isEdit={isEdit}
+                isDirty={isDirty}
+                saving={saving}
+                onFinish={onFinish}
+                handleValuesChange={handleValuesChange}
+                prefill={prefill}
+            />
+        </Drawer>
+    )
+}
+`
     return output
 }

@@ -10,7 +10,7 @@ export function ProductCategoryDrawer({
     prefill,
     relatedItemId,
     onFormFinish,
-    ...drawProps
+    ...drawerProps
 }: RelatedItemDrawerProps) {
     const {
         directus,
@@ -56,7 +56,7 @@ export function ProductCategoryDrawer({
             title={(isEdit ? '更新' : '新增') + '类别'}
             extra={<Button type="primary" disabled={!isDirty} loading={saving} onClick={form.submit}>保存</Button>}
             size={639}
-            {...drawProps}
+            {...drawerProps}
             forceRender
         >
             <ProductCategoryForm

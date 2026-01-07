@@ -10,7 +10,7 @@ export function ProductSpecDrawer({
     prefill,
     relatedItemId,
     onFormFinish,
-    ...drawProps
+    ...drawerProps
 }: RelatedItemDrawerProps) {
     const {
         directus,
@@ -53,7 +53,7 @@ export function ProductSpecDrawer({
             title={(isEdit ? '更新' : '新增') + '规格'}
             extra={<Button type="primary" disabled={!isDirty} loading={saving} onClick={form.submit}>保存</Button>}
             size={639}
-            {...drawProps}
+            {...drawerProps}
             forceRender
         >
             <ProductSpecForm

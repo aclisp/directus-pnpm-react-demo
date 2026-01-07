@@ -1,0 +1,13 @@
+.pre {
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* This class hides the content but keeps it in the DOM */
+.collapsed {
+    height: 0;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+}
