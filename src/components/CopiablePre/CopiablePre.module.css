@@ -1,6 +1,8 @@
 .pre {
     font-size: 12px;
     margin-top: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
 }
 
 /* This class hides the content but keeps it in the DOM */

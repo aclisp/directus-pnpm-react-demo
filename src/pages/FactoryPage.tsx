@@ -458,7 +458,8 @@ function PageCode({
     const halfCheckedNodes = getTreeNodes(treeData, checkedKeys.halfChecked)
     const allCheckedNodes = new Map([...halfCheckedNodes, ...checkedNodes])
     const formItemKeys = getFormItemKeys(checkedNodes)
-    const genProps = {
+    const pascalCaseCollection = toPascalCase(collection)
+    const genProps: GenProps = {
         collection,
         treeData,
         checkedKeys,
@@ -467,19 +468,20 @@ function PageCode({
         halfCheckedNodes,
         allCheckedNodes,
         formItemKeys,
+        pascalCaseCollection,
     }
     return (
         <Space orientation="vertical" size={4} style={{ width: '100%' }}>
-            <CopiablePre title={`${toPascalCase(collection)}Page.tsx`} collapsed>
+            <CopiablePre title={`${pascalCaseCollection}Page.tsx`} collapsed>
                 {gen_CollectionPage(genProps)}
             </CopiablePre>
-            <CopiablePre title={`${toPascalCase(collection)}Page/${toPascalCase(collection)}Form.tsx`} collapsed>
+            <CopiablePre title={`${pascalCaseCollection}Page/${pascalCaseCollection}Form.tsx`} collapsed>
                 {gen_CollectionForm(genProps)}
             </CopiablePre>
-            <CopiablePre title={`${toPascalCase(collection)}Page/index.tsx`} collapsed>
+            <CopiablePre title={`${pascalCaseCollection}Page/index.tsx`} collapsed>
                 {gen_CollectionPageIndex(genProps)}
             </CopiablePre>
-            <CopiablePre title={`${toPascalCase(collection)}Page/${toPascalCase(collection)}Drawer.tsx`} collapsed>
+            <CopiablePre title={`${pascalCaseCollection}Page/${pascalCaseCollection}Drawer.tsx`} collapsed>
                 {gen_CollectionDrawer(genProps)}
             </CopiablePre>
         </Space>
@@ -549,6 +551,7 @@ function findRoot(node: TreeNode): TreeNode {
 }
 
 interface GenProps extends PageCodeProps {
+    pascalCaseCollection: string
     checkedNodes: Map<string, TreeNode>
     halfCheckedNodes: Map<string, TreeNode>
     allCheckedNodes: Map<string, TreeNode>
@@ -629,12 +632,13 @@ function gen_CollectionPage(props: GenProps) {
         formItemKeys,
         checkedNodes,
         allCheckedNodes,
+        pascalCaseCollection,
     } = props
 
     let output = `${gen_Imports()}
 ${gen_FormValues(props)}
 `
-    output += `export function ${toPascalCase(collection)}Page() {
+    output += `export function ${pascalCaseCollection}Page() {
     const {
         navigate,
         directus,
@@ -674,7 +678,7 @@ ${gen_FormValues(props)}
     output += `
     return (
         <>
-            <Title title="${toPascalCase(collection)}" data={data} />
+            <Title title="${pascalCaseCollection}" data={data} />
 
             <Form1 loading={loading} form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
 
@@ -834,9 +838,9 @@ function gen_RelatedList_CollectionFields(props: GenProps, node: TreeNode) {
 
 function gen_CollectionForm(props: GenProps) {
     const {
-        collection,
         formItemKeys,
         allCheckedNodes,
+        pascalCaseCollection,
     } = props
 
     let output = `${gen_Imports()}
@@ -856,7 +860,7 @@ export ${gen_FormValues(props)}
 }
 `
     output += `
-export function ${toPascalCase(collection)}Form({
+export function ${pascalCaseCollection}Form({
     form,
     data,
     loading,
@@ -913,12 +917,13 @@ function gen_CollectionPageIndex(props: GenProps) {
     const {
         collection,
         checkedNodes,
+        pascalCaseCollection,
     } = props
 
-    let output = `${gen_Imports()}import { ${toPascalCase(collection)}Form, type FormValues } from './${toPascalCase(collection)}Form'
+    let output = `${gen_Imports()}import { ${pascalCaseCollection}Form, type FormValues } from './${pascalCaseCollection}Form'
 `
     output += `
-export function ${toPascalCase(collection)}Page() {
+export function ${pascalCaseCollection}Page() {
     const {
         navigate,
         directus,
@@ -959,8 +964,8 @@ export function ${toPascalCase(collection)}Page() {
     output += `
     return (
         <>
-            <Title title="${toPascalCase(collection)}" data={data} />
-            <${toPascalCase(collection)}Form
+            <Title title="${pascalCaseCollection}" data={data} />
+            <${pascalCaseCollection}Form
                 form={form}
                 data={data}
                 loading={loading}
@@ -982,12 +987,13 @@ function gen_CollectionDrawer(props: GenProps) {
     const {
         collection,
         checkedNodes,
+        pascalCaseCollection,
     } = props
 
-    let output = `${gen_Imports()}import { ${toPascalCase(collection)}Form, type FormValues } from './${toPascalCase(collection)}Form'
+    let output = `${gen_Imports()}import { ${pascalCaseCollection}Form, type FormValues } from './${pascalCaseCollection}Form'
 `
     output += `
-export function ${toPascalCase(collection)}Drawer({
+export function ${pascalCaseCollection}Drawer({
     prefill,
     relatedItemId,
     onFormFinish,
@@ -1035,13 +1041,13 @@ export function ${toPascalCase(collection)}Drawer({
     output += `
     return (
         <Drawer
-            title={(isEdit ? 'Update' : 'Create') + ' ${toPascalCase(collection)}'}
+            title={(isEdit ? 'Update' : 'Create') + ' ${pascalCaseCollection}'}
             extra={<Button type="primary" disabled={!isDirty} loading={saving} onClick={form.submit}>保存</Button>}
             size={639}
             {...drawerProps}
             forceRender
         >
-            <${toPascalCase(collection)}Form
+            <${pascalCaseCollection}Form
                 hideAction
                 form={form}
                 data={data}

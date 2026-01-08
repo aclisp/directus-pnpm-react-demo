@@ -35,9 +35,11 @@ export function CopiablePre({
     return (
         <div style={{ border: '1px solid #D9D9D9', borderRadius: '6px' }}>
             <Space size={4}>
-                <Button variant="text" color="default" icon={hideContent ? <CaretRightOutlined /> : <CaretDownOutlined />} onClick={handleHideContent} />
-                <Button variant="text" color="default" icon={copied ? <CheckOutlined /> : <CopyOutlined />} onClick={handleCopy} />
-                <span style={{ fontWeight: 500 }}>{title}</span>
+                <Space.Compact>
+                    <Button variant="text" color="default" icon={hideContent ? <CaretRightOutlined /> : <CaretDownOutlined />} onClick={handleHideContent} />
+                    <Button variant="text" color="default" icon={copied ? <CheckOutlined /> : <CopyOutlined />} onClick={handleCopy} />
+                </Space.Compact>
+                <span style={{ wordBreak: 'break-all' }}>{title}</span>
             </Space>
             <pre ref={preRef} className={clsx(styles.pre, { [styles.collapsed]: hideContent })}>
                 {children}
