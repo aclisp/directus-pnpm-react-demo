@@ -1,5 +1,5 @@
 import { CaretDownOutlined, CaretRightOutlined, CheckOutlined, CopyOutlined } from '@ant-design/icons'
-import { Button, Space } from 'antd'
+import { Button, Space, theme } from 'antd'
 import clsx from 'clsx'
 import { useRef, useState } from 'react'
 import styles from './CopiablePre.module.css'
@@ -32,9 +32,11 @@ export function CopiablePre({
         setHideContent(hideContent => !hideContent)
     }
 
+    const { token } = theme.useToken()
+
     return (
-        <div style={{ border: '1px solid #D9D9D9', borderRadius: '6px' }}>
-            <Space size={4}>
+        <div style={{ borderWidth: 1, borderStyle: 'solid', borderColor: token.colorBorder, borderRadius: token.borderRadius }}>
+            <Space size={token.sizeXXS}>
                 <Space.Compact>
                     <Button variant="text" color="default" icon={hideContent ? <CaretRightOutlined /> : <CaretDownOutlined />} onClick={handleHideContent} />
                     <Button variant="text" color="default" icon={copied ? <CheckOutlined /> : <CopyOutlined />} onClick={handleCopy} />

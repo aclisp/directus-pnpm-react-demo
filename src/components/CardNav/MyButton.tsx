@@ -1,4 +1,4 @@
-import { Button, Flex } from 'antd'
+import { Button, Flex, theme } from 'antd'
 import { useNavigate } from 'react-router'
 
 export function MyButton({
@@ -20,10 +20,12 @@ export function MyButton({
         navigate(href)
     }
 
+    const { token } = theme.useToken()
+
     return (
         <Button onClick={handleClick} color="default" variant="text" style={{ height: 'auto' }}>
-            <Flex vertical align="center" gap={12} style={{ paddingTop: 12, paddingBottom: 12 }}>
-                <Icon style={{ fontSize: 24, color }} twoToneColor={twoToneColor} />
+            <Flex vertical align="center" gap={token.sizeSM} style={{ paddingTop: token.paddingContentVertical, paddingBottom: token.paddingContentVertical }}>
+                <Icon style={{ fontSize: token.fontSizeHeading3, color }} twoToneColor={twoToneColor} />
                 <div>{text}</div>
             </Flex>
         </Button>

@@ -58,7 +58,7 @@ export function BlogPage() {
 
     return (
         <Container title={blog?.title}>
-            <div style={{ fontSize: '30px' }}>{blog?.title}</div>
+            <div style={{ fontSize: themeToken.fontSizeHeading3 }}>{blog?.title}</div>
 
             <div style={{ fontSize: themeToken.fontSizeSM }}>
                 <div>

@@ -22,9 +22,9 @@ export const FormAction: React.FC<FormActionProps> = ({ hidden, label, children 
                 <Flex
                     wrap
                     style={{
-                        paddingTop: 8,
-                        paddingBottom: 8,
-                        gap: 8,
+                        paddingTop: token.paddingContentVerticalSM,
+                        paddingBottom: token.paddingContentVerticalSM,
+                        gap: token.sizeXS,
                         backgroundColor: token.colorBgElevated,
                     }}
                 >

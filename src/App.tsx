@@ -25,10 +25,11 @@ function LoginButton() {
 
 function App() {
     const { token } = useDirectusAuth()
+    const { token: { paddingXS, paddingLG } } = theme.useToken()
 
     return (
         <>
-            <Flex id="header" justify="space-between" style={{ padding: '8px' }}>
+            <Flex id="header" justify="space-between" style={{ padding: paddingXS }}>
                 <div>
                     <NavLink to="/">
                         {({ isActive }) => (
@@ -52,7 +53,7 @@ function App() {
                     </Link>
                 </div>
             </Flex>
-            <div id="main" style={{ padding: '24px' }}>
+            <div id="main" style={{ padding: paddingLG }}>
                 <Outlet />
             </div>
         </>

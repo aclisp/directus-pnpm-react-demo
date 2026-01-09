@@ -24,7 +24,7 @@ export function Home() {
                 }}
             >
                 <Flex vertical gap="large">
-                    <div style={{ fontSize: '24px', marginLeft: 'auto', marginRight: 'auto' }}>回忆久了，记忆就失了真。</div>
+                    <div style={{ fontSize: token.fontSizeHeading3, marginLeft: 'auto', marginRight: 'auto' }}>回忆久了，记忆就失了真。</div>
                     <div style={{ marginLeft: 'auto', marginRight: 'auto' }}>有关编程的想法和连接</div>
                     <BlogList />
                 </Flex>
@@ -70,10 +70,12 @@ function BlogList() {
         refreshDeps: [token],
     })
 
+    const { token: { sizeXXS } } = theme.useToken()
+
     return (
         <Flex vertical gap="middle">
             <div>文章目录</div>
-            <Flex vertical gap={2}>
+            <Flex vertical gap={sizeXXS}>
                 {data?.map(blog => <BlogItem key={blog.id} blog={blog} />)}
             </Flex>
         </Flex>
@@ -84,7 +86,7 @@ function BlogItem({ blog }: { blog: Item }) {
     const { token } = theme.useToken()
 
     return (
-        <Flex wrap style={{ columnGap: 8 }}>
+        <Flex wrap style={{ columnGap: token.sizeXS }}>
             <BlogStatus status={blog.status} />
             <Link to={`/blog/${blog.permalink}`} style={{ color: token.colorText }}>{blog.title}</Link>
             <span style={{ color: token.colorTextTertiary }}>{formatTime(blog.date_created)}</span>

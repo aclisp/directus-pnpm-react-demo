@@ -1,8 +1,8 @@
 .pre {
-    font-size: 12px;
-    margin-top: 4px;
-    margin-left: 4px;
-    margin-right: 4px;
+    font-size: var(--ant-font-size-sm);
+    margin-top: var(--ant-size-xxs);
+    margin-left: var(--ant-size-xxs);
+    margin-right: var(--ant-size-xxs);
 }
 
 /* This class hides the content but keeps it in the DOM */

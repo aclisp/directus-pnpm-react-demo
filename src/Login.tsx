@@ -83,12 +83,13 @@ function UserInfo({ onLogoutSuccess }: {
 export function Login() {
     const { token, refreshToken } = useDirectusAuth()
     const isLogin = Boolean(token)
+    const { token: { paddingXS } } = theme.useToken()
 
     return (
         <>
             <Title title="登录" />
             {isLogin || (
-                <div style={{ padding: '8px', position: 'absolute' }}>
+                <div style={{ padding: paddingXS, position: 'absolute' }}>
                     <Link to="/"><HomeButton /></Link>
                 </div>
             )}
@@ -104,7 +105,7 @@ export function Login() {
 function HomeButton() {
     const { token } = theme.useToken()
     return (
-        <div style={{ width: 39, height: 32, display: 'flex', justifyContent: 'center' }}>
+        <div style={{ width: 39, height: token.controlHeight, display: 'flex', justifyContent: 'center' }}>
             <LeftOutlined style={{ fontSize: 20, color: token.colorText }} />
         </div>
     )
