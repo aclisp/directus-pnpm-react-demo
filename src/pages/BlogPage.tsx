@@ -7,6 +7,7 @@ import { Empty, Flex, FloatButton, Skeleton, theme } from 'antd'
 import dayjs from 'dayjs'
 import Markdown from 'react-markdown'
 import { useNavigate, useParams } from 'react-router'
+import remarkGfm from 'remark-gfm'
 
 export function BlogPage() {
     const params = useParams()
@@ -74,7 +75,7 @@ export function BlogPage() {
             </div>
 
             <div className="markdown-body" style={{ width: '100%' }}>
-                <Markdown>{blog?.content}</Markdown>
+                <Markdown remarkPlugins={[remarkGfm]}>{blog?.content}</Markdown>
             </div>
 
             {authToken && <FloatButton icon={<FormOutlined />} onClick={editBlog} />}

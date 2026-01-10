@@ -13,7 +13,7 @@ export default defineConfig({
                 manualChunks: {
                     react: ['react', 'react-dom', 'react-router', 'ahooks'],
                     antd: ['antd'],
-                    markdown: ['react-markdown', 'github-markdown-css'],
+                    markdown: ['react-markdown', 'github-markdown-css', 'remark-gfm'],
                 },
             },
         },
