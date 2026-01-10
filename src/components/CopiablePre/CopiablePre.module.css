@@ -1,5 +1,5 @@
 .pre {
-    font-size: var(--ant-font-size-sm);
+    font-size: calc(var(--ant-font-size-sm) - 2px);
     margin-top: var(--ant-size-xxs);
     margin-left: var(--ant-size-xxs);
     margin-right: var(--ant-size-xxs);
