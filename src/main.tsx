@@ -13,6 +13,8 @@ import AppLayout from './App'
 import { Demo1 } from './Demo1'
 import { Home } from './Home'
 import { Login } from './Login'
+import { LoginOTP } from './LoginOTP'
+import { LoginOTPVerify } from './LoginOTPVerify'
 import { BlogEditPage } from './pages/BlogEditPage'
 import { BlogPage } from './pages/BlogPage'
 import { BrandListPage } from './pages/BrandListPage'
@@ -103,8 +105,9 @@ createRoot(document.getElementById('root')!).render(
                             <Route path="brand" element={<BrandListPage />} />
                             <Route path="category" element={<CategoryListPage />} />
                         </Route>
-                        <Route path="login" element={<Login />}>
-                        </Route>
+                        <Route path="login" element={<Login />} />
+                        <Route path="login/otp" element={<LoginOTP />} />
+                        <Route path="login/otp/verify" element={<LoginOTPVerify />} />
                     </Routes>
                 </BrowserRouter>
             </App>
