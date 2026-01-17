@@ -1,3 +1,4 @@
+import { jwtDecode } from '@/utils/jwt-decode'
 import { authentication, createDirectus, rest } from '@directus/sdk'
 import { useRequest } from 'ahooks'
 import { localStorage } from './storage'
@@ -13,7 +14,21 @@ export function useDirectus() {
 
 export function useDirectusAuth() {
     const { data: token, refresh: refreshToken } = useRequest(async () => {
-        return await directus.getToken()
+        const token = await directus.getToken()
+        // Because `directus.getToken()` never throws, It might return an expired token in case `refresh` failed.
+        // In this case we have to extract expiring time from the token and perform a logout.
+        if (token) {
+            try {
+                const expiresAt = jwtDecode(token).exp * 1000
+                if (expiresAt < Date.now()) {
+                    await directus.logout()
+                    return null
+                }
+            } catch {
+                // Do nothing
+            }
+        }
+        return token
     })
     return { directus, token, refreshToken }
 }
