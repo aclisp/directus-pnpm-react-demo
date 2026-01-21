@@ -23,7 +23,7 @@ function LoginButton() {
     )
 }
 
-function App() {
+export function AppLayout() {
     const { token } = useDirectusAuth()
     const { token: { paddingXS, paddingLG } } = theme.useToken()
 
@@ -59,5 +59,3 @@ function App() {
         </>
     )
 }
-
-export default App

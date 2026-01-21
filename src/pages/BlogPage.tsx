@@ -74,7 +74,14 @@ export function BlogPage() {
                 )}
             </div>
 
-            <div className="markdown-body" style={{ width: '100%' }}>
+            <div
+                className="markdown-body"
+                style={{
+                    width: '100%',
+                    color: themeToken.colorText,
+                    backgroundColor: themeToken.colorBgContainer,
+                }}
+            >
                 <Markdown remarkPlugins={[remarkGfm]}>{blog?.content}</Markdown>
             </div>
 
@@ -85,7 +92,16 @@ export function BlogPage() {
 
 function Container({ title, children }: { title: string, children: React.ReactNode }) {
     return (
-        <Flex vertical align="center" gap="2rem" style={{ margin: 'auto', maxWidth: '900px' }}>
+        <Flex
+            vertical
+            align="center"
+            gap="2rem"
+            style={{
+                margin: 'auto',
+                maxWidth: '900px',
+                minHeight: 'calc(100dvh - 96px)',
+            }}
+        >
             <Title title={title} />
             {children}
         </Flex>

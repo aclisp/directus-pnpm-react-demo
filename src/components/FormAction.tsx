@@ -25,7 +25,7 @@ export const FormAction: React.FC<FormActionProps> = ({ hidden, label, children 
                         paddingTop: token.paddingContentVerticalSM,
                         paddingBottom: token.paddingContentVerticalSM,
                         gap: token.sizeXS,
-                        backgroundColor: token.colorBgElevated,
+                        backgroundColor: token.colorBgContainer,
                     }}
                 >
                     {children}
