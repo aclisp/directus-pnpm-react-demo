@@ -103,10 +103,7 @@ export function Login() {
 }
 
 function HomeButton() {
-    const { token } = theme.useToken()
     return (
-        <div style={{ width: 39, height: token.controlHeight, display: 'flex', justifyContent: 'center' }}>
-            <LeftOutlined style={{ fontSize: 20, color: token.colorText }} />
-        </div>
+        <Button variant="link" color="default" styles={{ icon: { paddingTop: 2 } }} icon={<LeftOutlined style={{ fontSize: 20 }} />} />
     )
 }

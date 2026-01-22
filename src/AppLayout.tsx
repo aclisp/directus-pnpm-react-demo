@@ -15,18 +15,14 @@ function NavButton({ isActive, children }: NavButtonProps) {
 }
 
 function LoginButton() {
-    const { token } = theme.useToken()
     return (
-        <div style={{ width: 50, height: '100%', display: 'flex', justifyContent: 'center' }}>
-            <UserOutlined style={{ fontSize: 20, color: token.colorText }} />
-        </div>
+        <Button variant="link" color="default" styles={{ icon: { paddingTop: 2 } }} icon={<UserOutlined style={{ fontSize: 20 }} />} />
     )
 }
 
 export function AppLayout() {
     const { token } = useDirectusAuth()
     const { token: { paddingXS, paddingLG } } = theme.useToken()
-
     return (
         <>
             <Flex id="header" justify="space-between" style={{ padding: paddingXS }}>
