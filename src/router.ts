@@ -6,7 +6,6 @@ import { Home } from './Home'
 import { Login } from './Login'
 import { LoginOTP } from './LoginOTP'
 import { LoginOTPVerify } from './LoginOTPVerify'
-import { BlogEditPage } from './pages/BlogEditPage'
 import { BlogPage } from './pages/BlogPage'
 import { BrandListPage } from './pages/BrandListPage'
 import { BrandPage } from './pages/BrandPage'
@@ -53,7 +52,7 @@ const routes: RouteObject[] = [
                     { path: 'stock_keeping_unit_specification_junction/:id', Component: ProductSKUSpecPage },
                     { path: 'brand/:id', Component: BrandPage },
                     { path: 'category/:id', Component: CategoryPage },
-                    { path: 'blog/:id', Component: BlogEditPage },
+                    { path: 'blog/:id', lazy: BlogEditPage },
                 ],
             },
         ],
@@ -61,3 +60,8 @@ const routes: RouteObject[] = [
 ]
 
 export const router = createBrowserRouter(routes)
+
+async function BlogEditPage() {
+    const { BlogEditPage } = await import('./pages/BlogEditPage')
+    return { Component: BlogEditPage }
+}

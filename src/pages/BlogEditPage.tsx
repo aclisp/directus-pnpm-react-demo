@@ -4,7 +4,9 @@ import { Title } from '@/components/Title'
 import type { Item } from '@/components/types'
 import { directusError } from '@/directus/errors'
 import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update'
+import { EditorView } from '@codemirror/view'
 import { createItem, updateItem } from '@directus/sdk'
+import MarkdownEditor from '@uiw/react-markdown-editor'
 import { App, Button, Form, Input, Radio, type FormProps } from 'antd'
 import { useState } from 'react'
 import { useItemFromPage } from './hooks/use-item-from-page'
@@ -88,7 +90,17 @@ export function BlogEditPage() {
                 </div>
 
                 <Form.Item<FormValues> labelCol={{ span: 2 }} className="form-item-full" label="内容" name="content" rules={[{ required: true }]}>
-                    <Input.TextArea autoSize={{ minRows: 15 }} />
+                    <MarkdownEditor
+                        minHeight="200px"
+                        enablePreview={false}
+                        basicSetup={{
+                            lineNumbers: false,
+                            foldGutter: false,
+                        }}
+                        extensions={[
+                            EditorView.lineWrapping,
+                        ]}
+                    />
                 </Form.Item>
             </Form1>
         </>
