@@ -91,6 +91,7 @@ export function BlogPage() {
 }
 
 function Container({ title, children }: { title: string, children: React.ReactNode }) {
+    const { token: { paddingLG } } = theme.useToken()
     return (
         <Flex
             vertical
@@ -99,7 +100,8 @@ function Container({ title, children }: { title: string, children: React.ReactNo
             style={{
                 margin: 'auto',
                 maxWidth: '900px',
-                minHeight: 'calc(100dvh - 96px)',
+                minHeight: '100dvh',
+                padding: paddingLG,
             }}
         >
             <Title title={title} />

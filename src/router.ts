@@ -28,11 +28,11 @@ const routes: RouteObject[] = [
     { path: 'login', Component: Login },
     { path: 'login/otp', Component: LoginOTP },
     { path: 'login/otp/verify', Component: LoginOTPVerify },
+    { path: 'blog/:permalink', Component: BlogPage },
     {
         Component: AppLayout,
         children: [
             { index: true, Component: Home },
-            { path: 'blog/:permalink', Component: BlogPage },
             { path: 'about', Component: About },
             { path: 'demo1', Component: Demo1 },
             { path: 'factory', Component: FactoryPage },
