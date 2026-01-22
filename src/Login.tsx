@@ -104,6 +104,6 @@ export function Login() {
 
 function HomeButton() {
     return (
-        <Button variant="link" color="default" styles={{ icon: { paddingTop: 2 } }} icon={<LeftOutlined style={{ fontSize: 20 }} />} />
+        <Button variant="link" color="default" icon={<LeftOutlined style={{ fontSize: 20 }} />} />
     )
 }

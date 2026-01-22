@@ -16,7 +16,7 @@ function NavButton({ isActive, children }: NavButtonProps) {
 
 function LoginButton() {
     return (
-        <Button variant="link" color="default" styles={{ icon: { paddingTop: 2 } }} icon={<UserOutlined style={{ fontSize: 20 }} />} />
+        <Button variant="link" color="default" icon={<UserOutlined style={{ fontSize: 20 }} />} />
     )
 }
 
