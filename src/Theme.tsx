@@ -24,6 +24,16 @@ export function Theme() {
                 algorithm: currentTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
                 token: {
                     fontSize: 16,
+                    colorPrimary: '#2F54EB',
+                    borderRadius: 10,
+                },
+                components: {
+                    Button: {
+                        // We change: 0 2px 0 (Hard Edge) -> 0 0 4px (Soft Glow)
+                        primaryShadow: '0 0 4px rgba(5, 145, 255, 0.15)',
+                        dangerShadow: '0 0 4px rgba(255, 38, 5, 0.12)',
+                        defaultShadow: '0 0 4px rgba(0, 0, 0, 0.08)',
+                    },
                 },
             }}
         >
