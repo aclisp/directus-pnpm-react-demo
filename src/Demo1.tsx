@@ -19,8 +19,6 @@ export function Demo1() {
     )
 }
 
-export default Demo1
-
 function ServerInfo() {
     const directus = useDirectus()
     const { data } = useRequest(async () => {

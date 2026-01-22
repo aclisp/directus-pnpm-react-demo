@@ -46,8 +46,6 @@ export function About() {
     )
 }
 
-export default About
-
 interface PriceInputFormFieldType {
     price: PriceValue
 }

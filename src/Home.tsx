@@ -49,8 +49,6 @@ export function Home() {
     )
 }
 
-export default Home
-
 function BlogList() {
     const { directus, token } = useDirectusAuth()
 
