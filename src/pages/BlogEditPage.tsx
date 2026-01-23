@@ -7,8 +7,9 @@ import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update
 import { EditorView } from '@codemirror/view'
 import { createItem, updateItem } from '@directus/sdk'
 import MarkdownEditor from '@uiw/react-markdown-editor'
-import { App, Button, Form, Input, Radio, type FormProps } from 'antd'
+import { App, Button, Form, Input, Modal, Radio, theme, type FormProps } from 'antd'
 import { useState } from 'react'
+import { useBlocker } from 'react-router'
 import { useItemFromPage } from './hooks/use-item-from-page'
 
 interface FormValues {
@@ -42,6 +43,11 @@ export function BlogEditPage() {
     const [saving, setSaving] = useState(false)
 
     const { modal } = App.useApp()
+    const { token } = theme.useToken()
+
+    const blocker = useBlocker(({ currentLocation, nextLocation }) =>
+        isDirty && currentLocation.pathname !== nextLocation.pathname,
+    )
 
     const onFinish: FormProps<FormValues>['onFinish'] = async (values) => {
         setSaving(true)
@@ -103,6 +109,18 @@ export function BlogEditPage() {
                     />
                 </Form.Item>
             </Form1>
+            <Modal
+                title="变更未保存"
+                open={blocker.state === 'blocked'}
+                onOk={blocker.proceed}
+                onCancel={blocker.reset}
+                okText="丢弃变更"
+                cancelText="继续编辑"
+                okButtonProps={{ danger: true }}
+                styles={{ body: { marginTop: token.marginLG } }}
+            >
+                <p>确定要离开这个页面吗？你的变更将会丢失。</p>
+            </Modal>
         </>
     )
 }
