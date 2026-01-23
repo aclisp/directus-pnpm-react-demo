@@ -46,7 +46,7 @@ export function BlogEditPage() {
     const { token } = theme.useToken()
 
     const blocker = useBlocker(({ currentLocation, nextLocation }) =>
-        isDirty && currentLocation.pathname !== nextLocation.pathname,
+        isDirty && !saving && currentLocation.pathname !== nextLocation.pathname,
     )
 
     const onFinish: FormProps<FormValues>['onFinish'] = async (values) => {
