@@ -1,5 +1,6 @@
 import { Form1 } from '@/components/Form1'
 import { FormAction } from '@/components/FormAction'
+import { RelatedList } from '@/components/RelatedList'
 import { Title } from '@/components/Title'
 import type { Item } from '@/components/types'
 import { directusError } from '@/directus/errors'
@@ -93,6 +94,8 @@ export function BlogEditPage() {
                             ]}
                         />
                     </Form.Item>
+                    <Form.Item className="form-item"></Form.Item>
+                    {isEdit && <BlogFiles data={data} />}
                 </div>
 
                 <Form.Item<FormValues> labelCol={{ span: 2 }} className="form-item-full" label="内容" name="content" rules={[{ required: true }]}>
@@ -122,5 +125,22 @@ export function BlogEditPage() {
                 <p>确定要离开这个页面吗？你的变更将会丢失。</p>
             </Modal>
         </>
+    )
+}
+
+function BlogFiles({ data }: { data?: Item }) {
+    return (
+        <Form.Item className="form-item" label="文章图片">
+            <RelatedList
+                foreignKeyField="blog_id"
+                foreignKeyValue={data?.id}
+                collection="blog_files"
+                collectionFields={[
+                    { field: ['directus_files_id', 'id'], title: '图片', render: { type: 'image', height: 96, maxWidth: 192, preview: true } },
+                    { field: ['sort'], title: '序号', width: 100 },
+                ]}
+                showEdit
+            />
+        </Form.Item>
     )
 }

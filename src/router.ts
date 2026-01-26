@@ -6,6 +6,7 @@ import { Home } from './Home'
 import { Login } from './Login'
 import { LoginOTP } from './LoginOTP'
 import { LoginOTPVerify } from './LoginOTPVerify'
+import { BlogFilesPage } from './pages/BlogFilesPage'
 import { BlogPage } from './pages/BlogPage'
 import { BrandListPage } from './pages/BrandListPage'
 import { BrandPage } from './pages/BrandPage'
@@ -53,6 +54,7 @@ const routes: RouteObject[] = [
                     { path: 'brand/:id', Component: BrandPage },
                     { path: 'category/:id', Component: CategoryPage },
                     { path: 'blog/:id', lazy: BlogEditPage },
+                    { path: 'blog_files/:id', Component: BlogFilesPage },
                 ],
             },
         ],

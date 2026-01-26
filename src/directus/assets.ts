@@ -29,10 +29,6 @@ export function asset(
         return undefined
     }
 
-    if (!options.token) {
-        return undefined
-    }
-
     const assetURL = new URL(`/assets/${fileId}`, directus.url)
     const searchParams = assetURL.searchParams
 
