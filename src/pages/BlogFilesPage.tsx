@@ -8,13 +8,16 @@ import { useItemFromPage } from '@/pages/hooks/use-item-from-page'
 import { reviseFormValuesForUpdate } from '@/utils/revise-form-values-for-update'
 import { CheckOutlined, CopyOutlined } from '@ant-design/icons'
 import { createItem, updateItem } from '@directus/sdk'
-import type { FormProps } from 'antd'
+import type { ButtonProps, FormProps } from 'antd'
 import { Button, Form, InputNumber } from 'antd'
 import { useState } from 'react'
 
 interface FormValues {
     blog_id: string
-    directus_files_id: string
+    directus_files_id: {
+        id: string
+        title: string
+    }
     sort: number
 }
 
@@ -41,6 +44,8 @@ export function BlogFilesPage() {
         'sort',
     ])
 
+    const directus_files_id = Form.useWatch<FormValues['directus_files_id']>('directus_files_id', form)
+
     const [saving, setSaving] = useState(false)
 
     const onFinish: FormProps<FormValues>['onFinish'] = async (values) => {
@@ -57,7 +62,7 @@ export function BlogFilesPage() {
     }
 
     const handleCopy = async () => {
-        const text = `![${data?.directus_files_id.title}](${asset2(directus, data?.directus_files_id)})`
+        const text = `![${directus_files_id.title}](${asset2(directus, directus_files_id)})`
         await navigator.clipboard.writeText(text)
     }
 
@@ -69,7 +74,7 @@ export function BlogFilesPage() {
 
                 <FormAction label="操作">
                     <Button type="primary" htmlType="submit" disabled={!isDirty} loading={saving}>保存</Button>
-                    <CopyButton onClick={handleCopy}>Copy as markdown</CopyButton>
+                    <CopyButton onClick={handleCopy} disabled={!directus_files_id}>Copy as markdown</CopyButton>
                 </FormAction>
 
                 <div className="form-grid">
@@ -84,7 +89,7 @@ export function BlogFilesPage() {
                         />
                     </Form.Item>
                     <Form.Item<FormValues> className="form-item" label="图片" name="directus_files_id" rules={[{ required: true }]}>
-                        <ImageUpload />
+                        <ImageUpload folder="1848d623-8156-43f5-90db-aee309d95845" />
                     </Form.Item>
                     <Form.Item<FormValues> className="form-item" label="序号" name="sort">
                         <InputNumber />
@@ -99,10 +104,10 @@ export function BlogFilesPage() {
 function CopyButton({
     onClick,
     children,
+    ...restProps
 }: {
     onClick: () => Promise<void>
-    children: React.ReactNode
-}) {
+} & Omit<ButtonProps, 'onClick'>) {
     const [copied, setCopied] = useState(false)
     const handleClick = async () => {
         await onClick()
@@ -110,6 +115,12 @@ function CopyButton({
         setTimeout(() => setCopied(false), 2000)
     }
     return (
-        <Button icon={copied ? <CheckOutlined /> : <CopyOutlined />} onClick={handleClick}>{children}</Button>
+        <Button
+            {...restProps}
+            icon={copied ? <CheckOutlined /> : <CopyOutlined />}
+            onClick={handleClick}
+        >
+            {children}
+        </Button>
     )
 }

@@ -13,6 +13,8 @@ interface ImageUploadProps {
     value?: ImageUploadValueType
     /** The onChange event as required by the form controlled input */
     onChange?: (value: ImageUploadValueType | null) => void
+    /** Virtual folder where this file resides in */
+    folder?: string
 }
 
 /**
@@ -23,6 +25,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
         id,
         value,
         onChange,
+        folder,
     } = props
 
     const { directus, token, refreshToken } = useDirectusAuth()
@@ -37,12 +40,15 @@ export const ImageUpload: React.FC<ImageUploadProps> = (props) => {
         options.action = new URL('/files', directus.url).toString()
         options.headers ??= {}
         options.headers.Authorization = `Bearer ${token}`
+        options.data = {
+            ...(folder !== undefined && { folder }),
+        }
         info.defaultRequest(options)
     }
 
     const onUploadChange: UploadProps['onChange'] = (info) => {
         if (info.file.status === 'done') {
-            triggerChange(info.file.response.data.id)
+            triggerChange(info.file.response.data)
             refreshToken()
         }
     }

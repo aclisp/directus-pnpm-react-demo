@@ -70,12 +70,17 @@ export function BlogEditPage() {
             .finally(() => setSaving(false))
     }
 
+    const createBlogFile = () => {
+        navigate(`/form/blog_files/+?blog_id.id=${id}&blog_id.title=${data?.title}`)
+    }
+
     return (
         <>
             <Title title="Blog" data={data} />
             <Form1 loading={loading} form={form} onFinish={onFinish} onValuesChange={handleValuesChange}>
                 <FormAction label="操作">
                     <Button type="primary" htmlType="submit" disabled={!isDirty} loading={saving}>保存</Button>
+                    {isEdit && <Button onClick={createBlogFile}>新增图片</Button>}
                 </FormAction>
 
                 <div className="form-grid">
