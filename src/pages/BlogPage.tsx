@@ -52,7 +52,7 @@ export function BlogPage() {
     if (loading) {
         return (
             <Container title="加载中...">
-                <Skeleton />
+                <Skeleton active styles={{ title: { marginLeft: 'auto', marginRight: 'auto' } }} />
             </Container>
         )
     }
