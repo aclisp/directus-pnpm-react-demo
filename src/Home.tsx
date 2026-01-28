@@ -1,7 +1,7 @@
 import { EyeInvisibleOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { readItems } from '@directus/sdk'
 import { useRequest } from 'ahooks'
-import { Button, Flex, Tag, theme } from 'antd'
+import { Button, Flex, Skeleton, Tag, theme } from 'antd'
 import dayjs from 'dayjs'
 import { Link } from 'react-router'
 import { Title } from './components/Title'
@@ -58,7 +58,7 @@ function BlogList() {
         filter._or.pop()
     }
 
-    const { data } = useRequest(async () => {
+    const { data, loading } = useRequest(async () => {
         return await directus.request(readItems('blog', {
             fields: ['id', 'permalink', 'title', 'date_created', 'status'],
             filter,
@@ -70,12 +70,18 @@ function BlogList() {
 
     const { token: { sizeXXS } } = theme.useToken()
 
+    const blogList = (
+        <Flex vertical gap={sizeXXS}>
+            {data?.map(blog => <BlogItem key={blog.id} blog={blog} />)}
+        </Flex>
+    )
+
     return (
         <Flex vertical gap="middle">
             <div>文章目录</div>
-            <Flex vertical gap={sizeXXS}>
-                {data?.map(blog => <BlogItem key={blog.id} blog={blog} />)}
-            </Flex>
+            {loading
+                ? <Skeleton active title={false} paragraph={{ rows: 3, width: ['65%', '50%', '80%'] }} />
+                : blogList}
         </Flex>
     )
 }

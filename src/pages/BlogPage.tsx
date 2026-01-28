@@ -3,7 +3,7 @@ import { useDirectusAuth } from '@/directus'
 import { FormOutlined } from '@ant-design/icons'
 import { readItems } from '@directus/sdk'
 import { useRequest } from 'ahooks'
-import { Empty, Flex, FloatButton, Skeleton, theme } from 'antd'
+import { Empty, Flex, FloatButton, theme } from 'antd'
 import dayjs from 'dayjs'
 import Markdown from 'react-markdown'
 import { useNavigate, useParams } from 'react-router'
@@ -52,7 +52,7 @@ export function BlogPage() {
     if (loading) {
         return (
             <Container title="加载中...">
-                <Skeleton />
+                <></>
             </Container>
         )
     }
