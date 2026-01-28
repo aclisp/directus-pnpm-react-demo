@@ -80,7 +80,7 @@ function BlogList() {
         <Flex vertical gap="middle">
             <div>文章目录</div>
             {loading
-                ? <Skeleton active title={false} paragraph={{ rows: 3, width: [250, 200, 350] }} />
+                ? <Skeleton active title={false} paragraph={{ rows: 3, width: ['65%', '50%', '80%'] }} />
                 : blogList}
         </Flex>
     )
