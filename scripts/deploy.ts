@@ -3,7 +3,7 @@ import { $ } from 'bun'
 await $`pnpm run lint`
 await $`pnpm run test`
 await $`pnpm run build`
-await $`tar zcvf dist.tar.gz dist`
+await $`tar zcf dist.tar.gz dist`
 
 await $`echo `
 
@@ -15,7 +15,7 @@ await $`echo `
 const remoteDeploymentCommands = `
 cd /var/www/www.aclisp.xyz &&
 rm -rf dist &&
-tar zxvf dist.tar.gz &&
+tar zxf dist.tar.gz &&
 rm dist.tar.gz
 `
 
