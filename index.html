@@ -3,10 +3,10 @@
 
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" type="image/png" href="/favicon.png" />
+    <link rel="icon" type="image/png" href="%VITE_WEBSITE_FAVICON%" />
+    <link rel="apple-touch-icon" type="image/png" href="%VITE_WEBSITE_FAVICON%" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>我的回忆录A</title>
+    <title>%VITE_WEBSITE_TITLE%</title>
     <style>
         html,
         body {
@@ -37,7 +37,7 @@
         :root {
             --loader-bg: #ffffff;
             --spinner-border: rgba(0, 0, 0, 0.1);
-            --spinner-color: #1677ff;
+            --spinner-color: %VITE_SPINNER_COLOR%;
             --text-color: rgba(0, 0, 0, 0.88);
         }
 
@@ -48,7 +48,7 @@
                 /* Dark background */
                 --spinner-border: rgba(255, 255, 255, 0.1);
                 /* Light border for contrast */
-                --spinner-color: #4096ff;
+                --spinner-color: %VITE_SPINNER_COLOR_DARK%;
                 /* Slightly brighter blue for dark mode */
                 --text-color: rgba(255, 255, 255, 0.85);
                 /* Derived from colorText */
@@ -111,7 +111,7 @@
         </div>
     </div>
     <div id="beian">
-        <a href="https://beian.miit.gov.cn">粤ICP备2021138173号</a>
+        <a href="https://beian.miit.gov.cn">%VITE_WEBSITE_BEIAN%</a>
     </div>
     <script type="module" src="/src/main.tsx"></script>
 </body>

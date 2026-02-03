@@ -20,7 +20,7 @@ interface FormValues {
     status: string
 }
 
-export function BlogEditPage() {
+export default function BlogEditPage() {
     const {
         navigate,
         directus,

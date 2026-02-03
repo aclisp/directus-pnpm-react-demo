@@ -8,12 +8,14 @@ import { Title } from './components/Title'
 import type { Item } from './components/types'
 import { useDirectusAuth } from './directus'
 
+const { VITE_WEBSITE_TITLE, VITE_WEBSITE_BEIAN } = import.meta.env
+
 export function Home() {
     const { token } = theme.useToken()
 
     return (
         <>
-            <Title title="我的回忆录A" />
+            <Title title={VITE_WEBSITE_TITLE} />
             <Flex
                 vertical
                 justify="space-between"
@@ -41,7 +43,7 @@ export function Home() {
                             },
                         }}
                     >
-                        粤ICP备2021138173号
+                        {VITE_WEBSITE_BEIAN}
                     </Button>
                 </Flex>
             </Flex>

@@ -8,6 +8,8 @@ import zhCN from 'antd/locale/zh_CN'
 import 'dayjs/locale/zh-cn'
 import { ThemeApp } from './ThemeApp'
 
+const { VITE_COLOR_PRIMARY } = import.meta.env
+
 export function Theme() {
     const { theme: currentTheme, themeMode, setThemeMode } = useTheme({ localStorageKey: 'antd-theme' })
 
@@ -24,7 +26,7 @@ export function Theme() {
                 algorithm: currentTheme === 'dark' ? theme.darkAlgorithm : theme.defaultAlgorithm,
                 token: {
                     fontSize: 16,
-                    colorPrimary: '#2F54EB',
+                    colorPrimary: VITE_COLOR_PRIMARY,
                     borderRadius: 10,
                 },
                 components: {
