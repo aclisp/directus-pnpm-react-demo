@@ -35,6 +35,7 @@ export default defineConfig([
         rules: {
             '@typescript-eslint/no-non-null-assertion': 'off',
             'eqeqeq': ['error', 'always'],
+            '@typescript-eslint/no-unused-vars': 'warn',
         },
     },
     stylistic.configs.customize({

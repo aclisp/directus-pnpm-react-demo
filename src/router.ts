@@ -30,10 +30,13 @@ const routes: RouteObject[] = []
 if (import.meta.env.MODE === 'dancingcat') {
     routes.push(
         { index: true, lazy: LazyRoute(await import('./pages/DancingCat/DancingCatLanding.tsx')) },
-        { path: 'certificate', lazy: LazyRoute(await import('./pages/DancingCat/CertificateQuery.tsx')) },
+        { path: 'gala', lazy: LazyRoute(await import('./pages/DancingCat/Gala.tsx')) },
+        { path: 'gala/certificate', lazy: LazyRoute(await import('./pages/DancingCat/CertificateQuery.tsx')) },
     )
 } else {
     routes.push(
+        { path: 'gala', lazy: LazyRoute(await import('./pages/DancingCat/Gala.tsx')) },
+        { path: 'gala/certificate', lazy: LazyRoute(await import('./pages/DancingCat/CertificateQuery.tsx')) },
         { path: 'login', Component: Login },
         { path: 'login/otp', Component: LoginOTP },
         { path: 'login/otp/verify', Component: LoginOTPVerify },
