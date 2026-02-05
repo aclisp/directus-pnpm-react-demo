@@ -4,7 +4,7 @@
     min-height: 100dvh;
     max-width: 40rem;
     margin: auto;
-    align-items: center;
+    align-items: start;
     justify-content: start;
     padding: 2rem;
 }
@@ -15,4 +15,23 @@
 
 .form-buttons {
     margin-top: 4rem;
+}
+
+.header {
+    border-left: 0.5rem solid var(--ant-purple-2);
+    padding-left: 0.5rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: var(--ant-font-size-sm);
+}
+
+.item-attr {
+    display: flex;
+    font-size: var(--ant-font-size-sm);
+    width: 100%;
+}
+
+.item-attr-label {
+    flex: 0 0 20%;
+    color: var(--ant-color-text-secondary);
 }
